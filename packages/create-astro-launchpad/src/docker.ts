@@ -52,6 +52,7 @@ RUN corepack enable${bunInstall}
 
 function dockerfile(packageManager: PackageManager, isServer: boolean): string {
   const manager = packageManagerConfig(packageManager);
+  const workspaceFile = packageManager === "pnpm" ? " pnpm-workspace.yaml" : "";
   const output = isServer
     ? `FROM base AS runner
 ENV HOST=0.0.0.0
@@ -71,7 +72,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
   return `${dockerBase(packageManager)}
 FROM base AS deps
-COPY package.json ${manager.lockfile} ./
+COPY package.json ${manager.lockfile}${workspaceFile} ./
 RUN ${manager.install}
 
 FROM base AS dev

@@ -275,7 +275,11 @@ describe("built CLI", () => {
   });
 
   it.each([
-    ["pnpm", "pnpm-lock.yaml", "pnpm install --frozen-lockfile"],
+    [
+      "pnpm",
+      "pnpm-lock.yaml pnpm-workspace.yaml",
+      "pnpm install --frozen-lockfile",
+    ],
     ["npm", "package-lock.json", "npm ci"],
     ["yarn", "yarn.lock", "yarn install --frozen-lockfile"],
     ["bun", "bun.lock", "bun install --frozen-lockfile"],
