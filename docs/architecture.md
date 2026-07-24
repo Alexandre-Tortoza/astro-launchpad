@@ -7,11 +7,21 @@ Astro Launchpad is a pnpm monorepo. The `templates/base` workspace is the source
 1. The CLI parses command-line flags or collects interactive answers.
 2. It validates that the destination is empty.
 3. The build embeds a clean copy of `templates/base` and the AGPL-3.0 license in the CLI package.
-4. The CLI copies that template, updates `package.json`, and writes `astro-launchpad.json` with the selected preset and feature placeholders.
+4. The CLI copies that template, updates `package.json`, writes `astro-launchpad.json` with the selected configuration, and applies supported feature assets.
 5. It optionally installs dependencies and initializes Git.
 
 The CLI owns terminal interaction, filesystem writes, and child processes. Template components and content validation remain isolated in `templates/base`.
 
+## CLI boundaries and errors
+
+`src/options.ts` parses and validates command-line input. `src/prompts.ts` owns interactive collection, while `src/scaffold.ts` performs filesystem writes only after verifying that the destination is empty. `src/process.ts` starts package-manager and Git commands without a shell. The `src/index.ts` entrypoint turns expected failures into concise user-facing messages and non-zero exit codes.
+
+Keep new commands small: parse or route them in the entrypoint, isolate I/O from option validation, and test the compiled executable rather than only imported source functions.
+
+## Compatibility
+
+The CLI requires Node.js 22 or later. CI exercises Node.js 22 and 24 on Linux, macOS, and Windows. The packaged CLI is smoke-tested from the npm tarball before publication.
+
 ## Current boundaries
 
-In `0.0.x`, presets and feature packs are not supported end-to-end workflows. They must not be described as installed functionality until their files, dependencies, tests, and documentation are complete.
+In `0.0.x`, ai-kit is a supported scaffolded feature. Presets and other feature selections must not be described as installed functionality until their files, dependencies, tests, and documentation are complete.

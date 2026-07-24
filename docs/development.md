@@ -29,3 +29,14 @@ pnpm audit
 ## Testing the CLI
 
 Use `pnpm --filter create-astro-launchpad test` for CLI tests. Integration tests create projects in temporary directories and run the compiled CLI rather than importing source files directly.
+
+## Debugging and fixtures
+
+Build the CLI before debugging its executable behavior:
+
+```bash
+pnpm --filter create-astro-launchpad build
+node --inspect-brk packages/create-astro-launchpad/dist/index.js --help
+```
+
+Integration tests must create and remove their own temporary directories. Add a fixture under `packages/create-astro-launchpad/test/` only when a stable input file communicates the behavior more clearly than test setup code.
