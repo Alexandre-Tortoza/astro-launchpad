@@ -9,8 +9,9 @@ Projects created with `--cms directus` run three services with `docker compose u
 - PostgreSQL: available only to the Compose network.
 
 The site runs as an Astro SSR server and reads Directus through the internal
-`http://directus:8055` address. Set `DIRECTUS_TOKEN` in `.env` before starting
-the stack; create a static token in the Directus admin after its first startup.
+`http://directus:8055` address. Without `DIRECTUS_TOKEN`, it serves the bundled
+Markdown demo so the first startup remains usable. Create a static token in the
+Directus admin, add it to `.env`, and restart `web` to serve CMS content.
 
 ```bash
 cp .env.example .env

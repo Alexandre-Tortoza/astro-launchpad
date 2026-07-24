@@ -125,7 +125,7 @@ describe("built CLI", () => {
 
       await expect(
         readFile(join(destination, "src/lib/content/index.ts"), "utf8"),
-      ).resolves.toContain("contentProvider = directusProvider");
+      ).resolves.toContain("process.env.DIRECTUS_TOKEN");
       const packageJson = JSON.parse(
         await readFile(join(destination, "package.json"), "utf8"),
       );

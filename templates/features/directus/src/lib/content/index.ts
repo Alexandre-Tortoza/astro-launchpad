@@ -18,4 +18,8 @@ import { DirectusContentProvider } from "./directus";
 export const mockProvider = new MockContentProvider();
 export const markdownProvider = new MarkdownContentProvider();
 export const directusProvider = new DirectusContentProvider();
-export const contentProvider = directusProvider;
+
+// Keep the first Docker startup usable until an editor configures a read token.
+export const contentProvider = process.env.DIRECTUS_TOKEN
+  ? directusProvider
+  : markdownProvider;
