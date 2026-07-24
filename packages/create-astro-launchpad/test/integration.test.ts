@@ -130,8 +130,14 @@ describe("built CLI", () => {
         await readFile(join(destination, "package.json"), "utf8"),
       );
       expect(packageJson.dependencies["@directus/sdk"]).toBe("^17.0.0");
+      expect(packageJson.scripts["cms:setup"]).toBe(
+        "bash scripts/setup-directus.sh",
+      );
       expect(packageJson.scripts["cms:seed"]).toBe("tsx seed/seed.ts");
       expect(packageJson.scripts["cms:snapshot"]).toBe("tsx seed/snapshot.ts");
+      await expect(
+        readFile(join(destination, ".dockerignore"), "utf8"),
+      ).resolves.toContain(".env");
     },
   );
 
@@ -195,8 +201,21 @@ describe("built CLI", () => {
       readFile(join(destination, "src/pages/blog/index.astro"), "utf8"),
     ).resolves.toContain("contentProvider");
     await expect(
-      readFile(join(destination, "docker-compose.yml"), "utf8"),
-    ).resolves.toContain("web:");
+      readFile(join(destination, "compose.dev.yml"), "utf8"),
+    ).resolves.toContain("target: dev");
+    await expect(
+      readFile(join(destination, "compose.prod.yml"), "utf8"),
+    ).resolves.toContain("target: runner");
+    await expect(
+      readFile(join(destination, "Dockerfile"), "utf8"),
+    ).resolves.toContain("COPY package.json package-lock.json ./");
+    await expect(
+      readFile(join(destination, "Dockerfile"), "utf8"),
+    ).resolves.toContain("RUN npm ci");
+    await expect(stat(join(destination, ".env"))).resolves.toBeDefined();
+    await expect(
+      readFile(join(destination, "astro.config.mjs"), "utf8"),
+    ).resolves.toContain('output: "server"');
     await expect(stat(join(destination, "node_modules"))).rejects.toMatchObject(
       { code: "ENOENT" },
     );
@@ -251,8 +270,51 @@ describe("built CLI", () => {
       typecheck: "astro sync && tsc --noEmit",
       format: "prettier --write .",
       "launchpad:doctor": "npx create-astro-launchpad doctor",
+      check: "pnpm lint && pnpm typecheck && pnpm build",
     });
   });
+
+  it.each([
+    ["pnpm", "pnpm-lock.yaml", "pnpm install --frozen-lockfile"],
+    ["npm", "package-lock.json", "npm ci"],
+    ["yarn", "yarn.lock", "yarn install --frozen-lockfile"],
+    ["bun", "bun.lock", "bun install --frozen-lockfile"],
+  ] as const)(
+    "materializes Docker for %s",
+    async (packageManager, lockfile, installCommand) => {
+      const temporaryDirectory = await mkdtemp(
+        join(tmpdir(), "create-astro-launchpad-docker-"),
+      );
+      temporaryDirectories.push(temporaryDirectory);
+      const destination = join(temporaryDirectory, packageManager);
+
+      await expectSuccessfulCli(
+        [
+          destination,
+          "--docker",
+          "--package-manager",
+          packageManager,
+          "--yes",
+          "--skip-install",
+          "--no-git",
+        ],
+        temporaryDirectory,
+      );
+
+      const dockerfile = await readFile(
+        join(destination, "Dockerfile"),
+        "utf8",
+      );
+      expect(dockerfile).toContain(`COPY package.json ${lockfile} ./`);
+      expect(dockerfile).toContain(`RUN ${installCommand}`);
+      await expect(
+        stat(join(destination, "compose.dev.yml")),
+      ).resolves.toBeDefined();
+      await expect(
+        stat(join(destination, "compose.prod.yml")),
+      ).resolves.toBeDefined();
+    },
+  );
 
   it("supports help and version without creating a project", async () => {
     const temporaryDirectory = await mkdtemp(

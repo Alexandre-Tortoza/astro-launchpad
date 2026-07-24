@@ -1,86 +1,62 @@
 # Docker
 
-## Directus stack
+Projects created with Docker include two isolated environments:
 
-Projects created with `--cms directus` run three services with `docker compose up`:
+- `compose.yml` and `compose.dev.yml` run the development environment with Astro hot reload.
+- `compose.prod.yml` builds the optimized production image without source mounts.
 
-- Site: `http://localhost:3000` by default (`PORT` changes the host port).
-- Directus: `http://localhost:8055` by default (`DIRECTUS_PORT` changes it).
-- PostgreSQL: available only to the Compose network.
+The generated Dockerfile is materialized for the selected package manager. npm,
+pnpm, Yarn, and Bun therefore use their own lockfile and deterministic install
+command in Docker.
 
-The site runs as an Astro SSR server and reads Directus through the internal
-`http://directus:8055` address. Without `DIRECTUS_TOKEN`, it serves the bundled
-Markdown demo so the first startup remains usable. Create a static token in the
-Directus admin, add it to `.env`, and restart `web` to serve CMS content.
+## Development
 
 ```bash
-cp .env.example .env
+# `compose.yml` is the development default
+docker compose up --build
+
+# equivalent package command
+pnpm docker:dev
+```
+
+The site is available at `http://localhost:4321` unless `PORT` is set. Source
+files are mounted into the container and Astro updates the browser on changes.
+
+With Directus selected, this command also starts PostgreSQL and Directus. Run
+the one-time bootstrap after dependencies are installed:
+
+```bash
+pnpm cms:setup
 docker compose up --build
 ```
 
-Astro Launchpad ships optional Docker support for local development and self-hosted deployments. Docker is never required — `pnpm dev` and `pnpm build` always work without it.
-
-## Without CMS (static site)
-
-The `docker` feature pack adds a Dockerfile and a minimal `docker-compose.yml` for the built static site served by nginx.
-
-```bash
-# Build and start the container
-docker compose up --build
-
-# Stop containers
-docker compose down
-```
-
-The site is served at `http://localhost:3000` by default. Change the port with `PORT=8080 docker compose up`.
-
-**nginx is used as the static file server** because Astro's static output is a plain directory of HTML, CSS, and JS — no Node.js runtime needed at serve time.
-
-## With Directus CMS
-
-When the Directus feature pack is applied, the `docker-compose.yml` includes three services:
-
-```
-web       — your Astro site (nginx)
-directus  — Directus headless CMS
-postgres  — PostgreSQL database
-```
-
-```bash
-# Copy the example env file
-cp .env.example .env
-# Edit .env with your secrets
-
-# Start all services
-docker compose up
-
-# Access CMS
-open http://localhost:8055
-```
-
-## Environment variables
-
-Copy `.env.example` to `.env` and fill in the values. Never commit `.env` to version control — it is already in `.gitignore`.
-
-| Variable   | Default               | Description                                |
-| ---------- | --------------------- | ------------------------------------------ |
-| `SITE_URL` | `https://example.com` | Public URL for canonical links and sitemap |
-| `PORT`     | `3000`                | Local port for the web container           |
-
-When Directus is included, additional variables for the database and CMS admin are added to `.env.example`.
-
-## Reset local state
-
-```bash
-# Stop containers and remove volumes (resets the database)
-docker compose down -v
-
-# Rebuild images from scratch
-docker compose up --build --force-recreate
-```
+`cms:setup` waits for Directus, applies the bundled schema, creates the local
+runtime token, and seeds demo content. It can be rerun after a clean database.
 
 ## Production
 
-For production deployment, prefer a platform that builds the Astro site as a static artifact (Netlify, Vercel, Cloudflare Pages, S3 + CloudFront). Docker is primarily designed for local dev and self-hosted setups.
+```bash
+docker compose -f compose.prod.yml up -d --build
+# or: pnpm docker:prod
+```
 
-See [deployment.md](./deployment.md) for platform-specific instructions.
+For Markdown projects, production uses a small nginx image containing only the
+static `dist/` output. Directus projects run Astro as an SSR Node service, so
+CMS edits are visible on the next request without a site rebuild.
+
+`PUBLIC_SITE_URL` is a build-time value. Set it to the real HTTPS site URL in
+the production environment before building; it controls canonical URLs and the
+sitemap. Directus production configuration also requires unique database,
+application, and administrator secrets. The production Compose file binds the
+Directus admin port to localhost; put a TLS reverse proxy in front of any public
+service.
+
+## Reset local CMS state
+
+```bash
+docker compose down -v
+pnpm cms:setup
+```
+
+Never use `down -v` against a production project: it removes the PostgreSQL and
+upload volumes.

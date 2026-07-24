@@ -49,9 +49,11 @@ supported by the Directus schema and adapter.
 
 `--tailwind`, `--blog`, `--motion`, `--docker`, `--ai-kit`, and
 `--cms directus` apply their corresponding files to the generated project.
-Tailwind and Blog also add their runtime dependencies to `package.json`. When
-Docker and Directus are both selected, the Directus Compose configuration is
-kept so `docker compose up` starts the CMS stack.
+Tailwind and Blog also add their runtime dependencies to `package.json`. Docker
+projects receive `compose.yml`/`compose.dev.yml` for hot reload and
+`compose.prod.yml` for an optimized deploy. Selecting Directus always creates
+the SSR CMS stack, even when `--docker` was not passed, because the CMS bootstrap
+requires PostgreSQL and Directus containers.
 
 Use `--version` to print the installed CLI version. Errors are written to standard error and return a non-zero exit code. Add `--debug` to include a stack trace when diagnosing an unexpected failure.
 

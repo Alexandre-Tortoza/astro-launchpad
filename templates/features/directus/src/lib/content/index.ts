@@ -19,7 +19,10 @@ export const mockProvider = new MockContentProvider();
 export const markdownProvider = new MarkdownContentProvider();
 export const directusProvider = new DirectusContentProvider();
 
-// Keep the first Docker startup usable until an editor configures a read token.
+// A Directus project is always SSR. Falling back to bundled Markdown in a
+// production container would silently publish stale demo content.
 export const contentProvider = process.env.DIRECTUS_TOKEN
   ? directusProvider
-  : markdownProvider;
+  : import.meta.env.DEV
+    ? markdownProvider
+    : directusProvider;

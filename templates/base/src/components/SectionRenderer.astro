@@ -31,12 +31,18 @@ const parsed = parseSection(section);
   )
 }
 
-{parsed?.type === "hero" && <Hero {...parsed.payload} />}
-{parsed?.type === "features" && <Features {...parsed.payload} />}
-{parsed?.type === "cta" && <Cta {...parsed.payload} />}
-{parsed?.type === "faq" && <Faq {...parsed.payload} />}
-{parsed?.type === "testimonials" && <Testimonials {...parsed.payload} />}
-{parsed?.type === "pricing" && <Pricing {...parsed.payload} />}
-{parsed?.type === "stats" && <Stats {...parsed.payload} />}
-{parsed?.type === "logo_cloud" && <LogoCloud {...parsed.payload} />}
-{parsed?.type === "footer" && <Footer {...parsed.payload} />}
+{
+  parsed && (
+    <div id={section.id}>
+      {parsed.type === "hero" && <Hero {...parsed.payload} />}
+      {parsed.type === "features" && <Features {...parsed.payload} />}
+      {parsed.type === "cta" && <Cta {...parsed.payload} />}
+      {parsed.type === "faq" && <Faq {...parsed.payload} />}
+      {parsed.type === "testimonials" && <Testimonials {...parsed.payload} />}
+      {parsed.type === "pricing" && <Pricing {...parsed.payload} />}
+      {parsed.type === "stats" && <Stats {...parsed.payload} />}
+      {parsed.type === "logo_cloud" && <LogoCloud {...parsed.payload} />}
+      {parsed.type === "footer" && <Footer {...parsed.payload} />}
+    </div>
+  )
+}

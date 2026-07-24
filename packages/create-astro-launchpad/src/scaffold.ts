@@ -1,5 +1,7 @@
 import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { randomBytes } from "node:crypto";
 import { basename, join } from "node:path";
+import { writeDockerConfiguration } from "./docker.js";
 import type { LaunchpadManifest, ProjectOptions } from "./types.js";
 
 const excludedTemplateDirectories = new Set(["node_modules", ".astro", "dist"]);
@@ -36,6 +38,21 @@ interface PackPackageJson {
   scripts?: Record<string, string>;
 }
 
+function packageRunCommand(
+  packageManager: ProjectOptions["packageManager"],
+): string {
+  switch (packageManager) {
+    case "npm":
+      return "npm run";
+    case "yarn":
+      return "yarn";
+    case "bun":
+      return "bun run";
+    case "pnpm":
+      return "pnpm";
+  }
+}
+
 async function mergePackPackageJson(
   packageJson: Record<string, unknown>,
   packDirectory: string,
@@ -50,6 +67,23 @@ async function mergePackPackageJson(
     Object.assign(values, pack[field]);
     packageJson[field] = values;
   }
+}
+
+async function writeAstroConfiguration(
+  destination: string,
+  options: ProjectOptions,
+): Promise<void> {
+  if (options.features.cms !== "directus") return;
+  const tailwind = options.features.tailwind
+    ? 'import tailwindcss from "@tailwindcss/vite";\n'
+    : "";
+  const vite = options.features.tailwind
+    ? "  vite: { plugins: [tailwindcss()] },\n"
+    : "";
+  await writeFile(
+    join(destination, "astro.config.mjs"),
+    `import { defineConfig } from "astro/config";\nimport node from "@astrojs/node";\nimport sitemap from "@astrojs/sitemap";\n${tailwind}\nexport default defineConfig({\n  site: process.env.PUBLIC_SITE_URL ?? "https://example.com",\n  integrations: [sitemap()],\n  output: "server",\n  adapter: node({ mode: "standalone" }),\n${vite}});\n`,
+  );
 }
 
 export async function ensureEmptyDestination(
@@ -97,6 +131,14 @@ export async function scaffoldProject(
     if (feature)
       await mergePackPackageJson(packageJson, join(featuresDirectory, feature));
   }
+  const scripts = (packageJson.scripts ?? {}) as Record<string, string>;
+  const run = packageRunCommand(options.packageManager);
+  scripts.check = `${run} lint && ${run} typecheck && ${run} build`;
+  if (options.features.docker || options.features.cms === "directus") {
+    scripts["docker:dev"] = "docker compose -f compose.dev.yml up --build";
+    scripts["docker:prod"] = "docker compose -f compose.prod.yml up --build";
+  }
+  packageJson.scripts = scripts;
   await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 
   const manifest: LaunchpadManifest = {
@@ -155,5 +197,14 @@ export async function scaffoldProject(
       join(featuresDirectory, "directus"),
       options.destination,
     );
+
+    const randomSecret = () => randomBytes(32).toString("hex");
+    await writeFile(
+      join(options.destination, ".env"),
+      `PUBLIC_SITE_URL=http://localhost:3000\nPUBLIC_SITE_NAME=${options.projectName}\nPORT=3000\nDIRECTUS_PORT=8055\nDIRECTUS_PUBLIC_URL=http://localhost:8055\nDB_USER=directus\nDB_DATABASE=directus\nDB_PASSWORD=${randomSecret()}\nDIRECTUS_SECRET=${randomSecret()}\nDIRECTUS_ADMIN_EMAIL=admin@example.com\nDIRECTUS_ADMIN_PASSWORD=${randomSecret()}\nDIRECTUS_TOKEN=\n`,
+    );
   }
+
+  await writeAstroConfiguration(options.destination, options);
+  await writeDockerConfiguration(options.destination, options);
 }

@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "typecheck": "astro sync && tsc --noEmit",
     "format": "prettier --write .",
+    "launch:check": "node scripts/launch-check.mjs",
     "launchpad:doctor": "npx create-astro-launchpad doctor"
   },
   "dependencies": {

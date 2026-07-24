@@ -16,8 +16,12 @@ import {
   staticToken,
   createItem,
   createItems,
+  deleteItems,
+  updateItem,
   updateSingleton,
   readSingleton,
+  readItems,
+  readPermissions,
 } from "@directus/sdk";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -68,8 +72,74 @@ async function step(label: string, fn: () => Promise<void>) {
   console.log("done");
 }
 
+async function assertAdministratorAccess() {
+  try {
+    // System collections are not visible to ordinary content tokens. Check this
+    // before creating content so a Directus 11 policy issue fails clearly.
+    await client.request(readPermissions({ limit: 1 }));
+  } catch (error) {
+    throw new Error(
+      "DIRECTUS_TOKEN cannot access Directus system permissions. Run `pnpm cms:setup` to apply the schema and repair the administrator access policy before seeding.",
+      { cause: error },
+    );
+  }
+}
+
+async function upsertRows(
+  collection: string,
+  rows: Array<Record<string, unknown>>,
+) {
+  for (const row of rows) {
+    const id = row["id"];
+    if (typeof id !== "string" && typeof id !== "number") {
+      await client.request(createItem(collection as never, row as never));
+      continue;
+    }
+
+    const existing = await client.request(
+      readItems(
+        collection as never,
+        {
+          fields: ["id"],
+          filter: { id: { _eq: id } },
+          limit: 1,
+        } as never,
+      ),
+    );
+    if ((existing as unknown[]).length > 0) {
+      await client.request(
+        updateItem(collection as never, id as never, row as never),
+      );
+    } else {
+      await client.request(createItem(collection as never, row as never));
+    }
+  }
+}
+
+async function replaceJunctions(
+  collection: string,
+  rows: Array<Record<string, string>>,
+) {
+  const postIds = [...new Set(rows.map((row) => row.blog_posts_id))];
+  const existing = await client.request(
+    readItems(
+      collection as never,
+      {
+        fields: ["id"],
+        filter: { blog_posts_id: { _in: postIds } },
+      } as never,
+    ),
+  );
+  const ids = (existing as Array<{ id: number }>).map((row) => row.id);
+  if (ids.length > 0)
+    await client.request(deleteItems(collection as never, ids as never));
+  if (rows.length > 0)
+    await client.request(createItems(collection as never, rows as never));
+}
+
 async function seed() {
   console.log(`\nSeeding Directus at ${DIRECTUS_URL}\n`);
+  await assertAdministratorAccess();
 
   // 1. Site settings (singleton — PATCH creates or updates)
   await step("site_settings", async () => {
@@ -88,76 +158,68 @@ async function seed() {
 
   // 2. Navigation items
   await step("navigation_items", async () => {
-    await client.request(
-      createItems("navigation_items" as never, data.navigation_items as never),
-    );
+    await upsertRows("navigation_items", data.navigation_items);
   });
 
   // 3. Taxonomy — must precede blog_posts and junction inserts
   await step("authors", async () => {
-    await client.request(
-      createItems("authors" as never, data.authors as never),
-    );
+    await upsertRows("authors", data.authors);
   });
 
   await step("categories", async () => {
-    await client.request(
-      createItems("categories" as never, data.categories as never),
-    );
+    await upsertRows("categories", data.categories);
   });
 
   await step("tags", async () => {
-    await client.request(createItems("tags" as never, data.tags as never));
+    await upsertRows("tags", data.tags);
   });
 
   // 4. Pages — must precede sections
   await step("pages", async () => {
-    await client.request(createItems("pages" as never, data.pages as never));
+    await upsertRows("pages", data.pages);
   });
 
   // 5. Sections — linked to pages via page_id
   await step("sections", async () => {
     // Strip any helper fields not in the DB schema
     const rows = data.sections.map(({ ...s }) => s);
-    await client.request(createItems("sections" as never, rows as never));
+    await upsertRows("sections", rows);
   });
 
   // 6. Blog posts and their M2M junctions
   await step("blog_posts", async () => {
+    const categoryJunctions: Array<Record<string, string>> = [];
+    const tagJunctions: Array<Record<string, string>> = [];
     for (const post of data.blog_posts) {
       const { categories, tags, ...postFields } = post;
 
-      await client.request(
-        createItem("blog_posts" as never, postFields as never),
-      );
+      await upsertRows("blog_posts", [postFields]);
 
-      if (categories && categories.length > 0) {
-        const junctions = categories.map((categoryId) => ({
-          blog_posts_id: post.id,
-          categories_id: categoryId,
-        }));
-        await client.request(
-          createItems("blog_posts_categories" as never, junctions as never),
+      if (categories) {
+        categoryJunctions.push(
+          ...categories.map((categoryId) => ({
+            blog_posts_id: post.id,
+            categories_id: categoryId,
+          })),
         );
       }
 
-      if (tags && tags.length > 0) {
-        const junctions = tags.map((tagId) => ({
-          blog_posts_id: post.id,
-          tags_id: tagId,
-        }));
-        await client.request(
-          createItems("blog_posts_tags" as never, junctions as never),
+      if (tags) {
+        tagJunctions.push(
+          ...tags.map((tagId) => ({
+            blog_posts_id: post.id,
+            tags_id: tagId,
+          })),
         );
       }
     }
+    await replaceJunctions("blog_posts_categories", categoryJunctions);
+    await replaceJunctions("blog_posts_tags", tagJunctions);
   });
 
   // 7. Redirects
   await step("redirects", async () => {
-    await client.request(
-      createItems("redirects" as never, data.redirects as never),
-    );
+    await upsertRows("redirects", data.redirects);
   });
 
   console.log("\nSeed complete.\n");

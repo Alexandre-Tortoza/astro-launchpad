@@ -83,8 +83,18 @@ export async function run(
       );
   }
 
+  const runScript =
+    options.packageManager === "npm"
+      ? "npm run"
+      : options.packageManager === "bun"
+        ? "bun run"
+        : options.packageManager;
+  const nextSteps =
+    options.features.cms === "directus"
+      ? `cd ${options.destination}\n  ${runScript} cms:setup\n  ${runScript} docker:dev`
+      : `cd ${options.destination}\n  ${developmentCommand(options.packageManager)}`;
   p.outro(
-    `Project created in ${options.destination}\n\nNext steps:\n  cd ${options.destination}\n  ${developmentCommand(options.packageManager)}`,
+    `Project created in ${options.destination}\n\nNext steps:\n  ${nextSteps}`,
   );
 }
 

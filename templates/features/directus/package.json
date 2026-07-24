@@ -10,6 +10,7 @@
     "tsx": "^4.20.0"
   },
   "scripts": {
+    "cms:setup": "bash scripts/setup-directus.sh",
     "cms:seed": "tsx seed/seed.ts",
     "cms:snapshot": "tsx seed/snapshot.ts"
   },

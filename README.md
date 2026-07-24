@@ -35,6 +35,17 @@ npm create astro-launchpad@latest my-site
 
 The CLI copies the base template, normalizes its package name, writes `astro-launchpad.json`, and can install dependencies and initialize Git.
 
+For a Docker-backed CMS project, select Directus during the prompts, then run:
+
+```bash
+pnpm cms:setup
+pnpm docker:dev
+```
+
+This starts a hot-reloading Astro container, Directus, and PostgreSQL, applies
+the schema, and seeds the local CMS. Production uses the separately optimized
+`compose.prod.yml` stack.
+
 ## What's included
 
 - Astro base template with TypeScript and Zod validation

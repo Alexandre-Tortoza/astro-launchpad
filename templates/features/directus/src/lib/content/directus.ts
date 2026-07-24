@@ -6,6 +6,11 @@ import {
   readSingleton,
 } from "@directus/sdk";
 import type {
+  DirectusClient,
+  RestClient,
+  StaticTokenClient,
+} from "@directus/sdk";
+import type {
   ContentProvider,
   Page,
   BlogPost,
@@ -25,7 +30,7 @@ interface LaunchpadSchema {
     seo_title: string | null;
     seo_description: string | null;
     seo_og_image: string | null;
-  };
+  }[];
   sections: {
     id: string;
     page_id: string;
@@ -34,7 +39,7 @@ interface LaunchpadSchema {
     order: number;
     payload: Record<string, unknown>;
     status: string;
-  };
+  }[];
   blog_posts: {
     id: string;
     status: string;
@@ -47,7 +52,7 @@ interface LaunchpadSchema {
     // Deep-fetched variants are cast via BlogPostWithRelations below
     author_id: string | null;
     tags: unknown[];
-  };
+  }[];
   site_settings: {
     id: number;
     site_name: string;
@@ -63,7 +68,7 @@ interface LaunchpadSchema {
     href: string;
     group: string;
     platform: string | null;
-  };
+  }[];
   // Remaining collections — defined for completeness, not directly queried here
   authors: {
     id: string;
@@ -72,41 +77,46 @@ interface LaunchpadSchema {
     slug: string;
     bio: string | null;
     avatar: string | null;
-  };
-  categories: { id: string; name: string; slug: string };
-  tags: { id: string; name: string; slug: string };
+  }[];
+  categories: { id: string; name: string; slug: string }[];
+  tags: { id: string; name: string; slug: string }[];
   redirects: {
     id: string;
     status: string;
     from_path: string;
     to_path: string;
     status_code: number;
-  };
+  }[];
   blog_posts_categories: {
     id: number;
     blog_posts_id: string;
     categories_id: string;
-  };
-  blog_posts_tags: { id: number; blog_posts_id: string; tags_id: string };
+  }[];
+  blog_posts_tags: { id: number; blog_posts_id: string; tags_id: string }[];
 }
 
 // Resolved shape after deep-fetching author and tag relations
 type BlogPostWithRelations = Omit<
-  LaunchpadSchema["blog_posts"],
+  LaunchpadSchema["blog_posts"][number],
   "author_id" | "tags"
 > & {
   author_id: { name: string } | null;
   tags: Array<{ tags_id: { name: string } | null }>;
 };
 
-let _client: ReturnType<typeof createDirectus<LaunchpadSchema>> | null = null;
+type DirectusRestClient = DirectusClient<LaunchpadSchema> &
+  RestClient<LaunchpadSchema> &
+  StaticTokenClient<LaunchpadSchema>;
+
+let _client: DirectusRestClient | null = null;
 
 function getClient() {
   if (_client) return _client;
 
-  // import.meta.env is available in Astro SSR context
-  const url = (import.meta.env as Record<string, string>)["DIRECTUS_URL"];
-  const token = (import.meta.env as Record<string, string>)["DIRECTUS_TOKEN"];
+  // These are private server-side values. Astro only exposes PUBLIC_* values
+  // through import.meta.env, so Docker/SSR configuration must use process.env.
+  const url = process.env["DIRECTUS_URL"];
+  const token = process.env["DIRECTUS_TOKEN"];
 
   if (!url || !token) {
     throw new Error(
@@ -116,7 +126,7 @@ function getClient() {
 
   _client = createDirectus<LaunchpadSchema>(url)
     .with(rest())
-    .with(staticToken(token));
+    .with(staticToken(token)) as DirectusRestClient;
 
   return _client;
 }
@@ -152,7 +162,13 @@ async function fetchSectionsForPage(pageId: string): Promise<PageSection[]> {
   }));
 }
 
-function toPage(raw: LaunchpadSchema["pages"], sections: PageSection[]): Page {
+function toPage(
+  raw: Pick<
+    LaunchpadSchema["pages"][number],
+    "id" | "slug" | "title" | "seo_title" | "seo_description" | "seo_og_image"
+  >,
+  sections: PageSection[],
+): Page {
   return {
     slug: raw.slug,
     title: raw.title,
@@ -249,7 +265,7 @@ export class DirectusContentProvider implements ContentProvider {
     const rows = await getClient().request(
       readItems("blog_posts", {
         filter: { slug: { _eq: slug }, status: { _eq: "published" } },
-        fields: BLOG_POST_FIELDS as unknown as string[],
+        fields: BLOG_POST_FIELDS as never,
         limit: 1,
       }),
     );
@@ -265,7 +281,7 @@ export class DirectusContentProvider implements ContentProvider {
       readItems("blog_posts", {
         filter: { status: { _eq: "published" } },
         sort: ["-date_published"],
-        fields: BLOG_POST_FIELDS as unknown as string[],
+        fields: BLOG_POST_FIELDS as never,
       }),
     );
 

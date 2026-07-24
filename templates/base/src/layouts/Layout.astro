@@ -75,6 +75,25 @@ const canonical = canonicalUrl ?? Astro.url.href;
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
+    {
+      siteSettings && siteSettings.nav.length > 0 && (
+        <header style="max-width:var(--container-width);margin:0 auto;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem">
+          <a
+            href="/"
+            style="color:inherit;text-decoration:none;font-weight:700"
+          >
+            {siteName}
+          </a>
+          <nav aria-label="Primary navigation" style="display:flex;gap:1rem">
+            {siteSettings.nav.map((link) => (
+              <a href={link.href} style="color:inherit;text-decoration:none">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </header>
+      )
+    }
     <slot />
   </body>
 </html>

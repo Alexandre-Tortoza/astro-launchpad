@@ -133,6 +133,14 @@ export function defaultProjectName(directory?: string): string {
   return directory ? toPackageName(basename(directory)) : "astro-launchpad-app";
 }
 
+function detectedPackageManager(): PackageManager {
+  const userAgent = process.env["npm_config_user_agent"] ?? "";
+  if (userAgent.startsWith("npm/")) return "npm";
+  if (userAgent.startsWith("yarn/")) return "yarn";
+  if (userAgent.startsWith("bun/")) return "bun";
+  return "pnpm";
+}
+
 export function defaultsFromFlags(
   flags: CliFlags,
   currentDirectory: string,
@@ -152,7 +160,7 @@ export function defaultsFromFlags(
       docker: flags.docker ?? false,
       aiKit: flags.aiKit ?? false,
     },
-    packageManager: flags.packageManager ?? "pnpm",
+    packageManager: flags.packageManager ?? detectedPackageManager(),
     install: flags.install ?? true,
     initializeGit: flags.initializeGit ?? true,
   };
