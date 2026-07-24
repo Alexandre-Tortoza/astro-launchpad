@@ -76,8 +76,8 @@ if (!post) return Astro.redirect("/blog");
     </div>
 
     <article
-      style="color: var(--color-foreground); line-height: 1.75; font-size: 1.0625rem;"
-      set:html={post.content}
+      style="color: var(--color-foreground); line-height: 1.75; font-size: 1.0625rem; white-space: pre-wrap;"
+      set:text={post.content}
     />
   </main>
 </Layout>

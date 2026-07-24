@@ -64,7 +64,8 @@ Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md),
 [Markdown](./docs/cms-markdown.md), [Directus](./docs/cms-directus.md),
 [Docker](./docs/docker.md), [deployment](./docs/deployment.md),
 [client editing](./docs/client-guide.md), [ai-kit](./docs/ai.md),
-[architecture](./docs/architecture.md), and [development](./docs/development.md).
+[architecture](./docs/architecture.md), [security](./docs/security.md), and
+[development](./docs/development.md).
 
 ## Roadmap
 
