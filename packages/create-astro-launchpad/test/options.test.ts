@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { resolve } from "node:path";
 import {
   defaultsFromFlags,
   parseCliArguments,
@@ -54,7 +55,7 @@ describe("CLI options", () => {
       "/projects",
     );
     expect(options.projectName).toBe("my-project");
-    expect(options.destination).toBe("/projects/my-project");
+    expect(options.destination).toBe(resolve("/projects", "my-project"));
     expect(options.features).toEqual({
       tailwind: true,
       cms: "markdown",
