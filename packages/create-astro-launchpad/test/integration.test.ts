@@ -183,6 +183,9 @@ describe("built CLI", () => {
     ).resolves.toBeDefined();
     await expect(stat(join(destination, "Dockerfile"))).resolves.toBeDefined();
     await expect(
+      readFile(join(destination, ".dockerignore"), "utf8"),
+    ).resolves.toContain("node_modules");
+    await expect(
       stat(join(destination, "src/pages/blog/index.astro")),
     ).resolves.toBeDefined();
     await expect(
