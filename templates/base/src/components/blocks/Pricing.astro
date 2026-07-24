@@ -1,5 +1,5 @@
 ---
-import type { PricingPayload } from '../../types/blocks';
+import type { PricingPayload } from "../../types/blocks";
 
 type Props = PricingPayload;
 
@@ -11,22 +11,29 @@ const { title, description, items } = Astro.props;
   {description && <p>{description}</p>}
 
   <ul role="list">
-    {items.map((tier) => (
-      <li>
-        <article data-highlighted={tier.highlighted ? 'true' : undefined}>
-          <h3>{tier.planName}</h3>
-          <p class="price">{tier.price}</p>
-          {tier.description && <p class="tier-desc">{tier.description}</p>}
-          {tier.features.length > 0 && (
-            <ul role="list" class="features">
-              {tier.features.map((f) => <li>{f}</li>)}
-            </ul>
-          )}
-          <a href={tier.cta.href} data-variant={tier.cta.variant ?? 'primary'}>
-            {tier.cta.label}
-          </a>
-        </article>
-      </li>
-    ))}
+    {
+      items.map((tier) => (
+        <li>
+          <article data-highlighted={tier.highlighted ? "true" : undefined}>
+            <h3>{tier.planName}</h3>
+            <p class="price">{tier.price}</p>
+            {tier.description && <p class="tier-desc">{tier.description}</p>}
+            {tier.features.length > 0 && (
+              <ul role="list" class="features">
+                {tier.features.map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            )}
+            <a
+              href={tier.cta.href}
+              data-variant={tier.cta.variant ?? "primary"}
+            >
+              {tier.cta.label}
+            </a>
+          </article>
+        </li>
+      ))
+    }
   </ul>
 </section>

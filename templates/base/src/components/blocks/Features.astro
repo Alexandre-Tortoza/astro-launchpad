@@ -1,5 +1,5 @@
 ---
-import type { FeaturesPayload } from '../../types/blocks';
+import type { FeaturesPayload } from "../../types/blocks";
 
 type Props = FeaturesPayload;
 
@@ -13,17 +13,26 @@ const { title, description, items } = Astro.props;
   </header>
 
   <ul role="list">
-    {items.map((item) => (
-      <li>
-        {item.icon && <span aria-hidden="true" class="icon">{item.icon}</span>}
-        <h3>{item.title}</h3>
-        {item.description && <p>{item.description}</p>}
-        {item.link && (
-          <a href={item.link.href} data-variant={item.link.variant ?? 'secondary'}>
-            {item.link.label}
-          </a>
-        )}
-      </li>
-    ))}
+    {
+      items.map((item) => (
+        <li>
+          {item.icon && (
+            <span aria-hidden="true" class="icon">
+              {item.icon}
+            </span>
+          )}
+          <h3>{item.title}</h3>
+          {item.description && <p>{item.description}</p>}
+          {item.link && (
+            <a
+              href={item.link.href}
+              data-variant={item.link.variant ?? "secondary"}
+            >
+              {item.link.label}
+            </a>
+          )}
+        </li>
+      ))
+    }
   </ul>
 </section>

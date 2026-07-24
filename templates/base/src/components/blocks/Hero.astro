@@ -1,9 +1,17 @@
 ---
-import type { HeroPayload } from '../../types/blocks';
+import type { HeroPayload } from "../../types/blocks";
 
 type Props = HeroPayload;
 
-const { title, eyebrow, description, primaryCta, secondaryCta, image, trustText } = Astro.props;
+const {
+  title,
+  eyebrow,
+  description,
+  primaryCta,
+  secondaryCta,
+  image,
+  trustText,
+} = Astro.props;
 ---
 
 <section data-block="hero">
@@ -11,30 +19,40 @@ const { title, eyebrow, description, primaryCta, secondaryCta, image, trustText 
   <h1>{title}</h1>
   {description && <p class="description">{description}</p>}
 
-  {(primaryCta || secondaryCta) && (
-    <div class="cta-group">
-      {primaryCta && (
-        <a href={primaryCta.href} data-variant={primaryCta.variant ?? 'primary'}>
-          {primaryCta.label}
-        </a>
-      )}
-      {secondaryCta && (
-        <a href={secondaryCta.href} data-variant={secondaryCta.variant ?? 'secondary'}>
-          {secondaryCta.label}
-        </a>
-      )}
-    </div>
-  )}
+  {
+    (primaryCta || secondaryCta) && (
+      <div class="cta-group">
+        {primaryCta && (
+          <a
+            href={primaryCta.href}
+            data-variant={primaryCta.variant ?? "primary"}
+          >
+            {primaryCta.label}
+          </a>
+        )}
+        {secondaryCta && (
+          <a
+            href={secondaryCta.href}
+            data-variant={secondaryCta.variant ?? "secondary"}
+          >
+            {secondaryCta.label}
+          </a>
+        )}
+      </div>
+    )
+  }
 
-  {image && (
-    <img
-      src={image.src}
-      alt={image.alt}
-      width={image.width}
-      height={image.height}
-      loading="eager"
-    />
-  )}
+  {
+    image && (
+      <img
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        loading="eager"
+      />
+    )
+  }
 
   {trustText && <p class="trust">{trustText}</p>}
 </section>

@@ -1,5 +1,5 @@
 ---
-import type { TestimonialsPayload } from '../../types/blocks';
+import type { TestimonialsPayload } from "../../types/blocks";
 
 type Props = TestimonialsPayload;
 
@@ -10,27 +10,32 @@ const { title, items } = Astro.props;
   {title && <h2>{title}</h2>}
 
   <ul role="list">
-    {items.map((item) => (
-      <li>
-        <blockquote>
-          <p>{item.quote}</p>
-          <footer>
-            {item.avatar && (
-              <img
-                src={item.avatar.src}
-                alt={item.avatar.alt}
-                width={item.avatar.width ?? 48}
-                height={item.avatar.height ?? 48}
-                loading="lazy"
-              />
-            )}
-            <cite>
-              <strong>{item.author}</strong>
-              <span>{item.role}{item.company ? `, ${item.company}` : ''}</span>
-            </cite>
-          </footer>
-        </blockquote>
-      </li>
-    ))}
+    {
+      items.map((item) => (
+        <li>
+          <blockquote>
+            <p>{item.quote}</p>
+            <footer>
+              {item.avatar && (
+                <img
+                  src={item.avatar.src}
+                  alt={item.avatar.alt}
+                  width={item.avatar.width ?? 48}
+                  height={item.avatar.height ?? 48}
+                  loading="lazy"
+                />
+              )}
+              <cite>
+                <strong>{item.author}</strong>
+                <span>
+                  {item.role}
+                  {item.company ? `, ${item.company}` : ""}
+                </span>
+              </cite>
+            </footer>
+          </blockquote>
+        </li>
+      ))
+    }
   </ul>
 </section>

@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const ctaLinkSchema = z.object({
   label: z.string().min(1),
   href: z.string().min(1),
-  variant: z.enum(['primary', 'secondary', 'ghost']).optional(),
+  variant: z.enum(["primary", "secondary", "ghost"]).optional(),
 });
 
 const imageAssetSchema = z.object({
@@ -40,7 +40,7 @@ export const ctaBlockSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   cta: ctaLinkSchema,
-  backgroundStyle: z.enum(['default', 'brand', 'dark']).optional(),
+  backgroundStyle: z.enum(["default", "brand", "dark"]).optional(),
 });
 
 const faqItemSchema = z.object({
@@ -106,12 +106,18 @@ export const logoCloudSchema = z.object({
   items: z.array(logoItemSchema).min(1),
 });
 
-const footerLinkSchema = z.object({ label: z.string().min(1), href: z.string().min(1) });
+const footerLinkSchema = z.object({
+  label: z.string().min(1),
+  href: z.string().min(1),
+});
 const footerLinkGroupSchema = z.object({
   label: z.string().min(1),
   links: z.array(footerLinkSchema),
 });
-const socialLinkSchema = z.object({ platform: z.string().min(1), href: z.string().min(1) });
+const socialLinkSchema = z.object({
+  platform: z.string().min(1),
+  href: z.string().min(1),
+});
 
 export const footerSchema = z.object({
   linkGroups: z.array(footerLinkGroupSchema).optional(),

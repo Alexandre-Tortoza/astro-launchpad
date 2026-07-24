@@ -3,7 +3,7 @@
 export type CtaLink = {
   label: string;
   href: string;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: "primary" | "secondary" | "ghost";
 };
 
 export type ImageAsset = {
@@ -16,15 +16,15 @@ export type ImageAsset = {
 // Section envelope
 
 export type SectionType =
-  | 'hero'
-  | 'features'
-  | 'cta'
-  | 'faq'
-  | 'testimonials'
-  | 'pricing'
-  | 'stats'
-  | 'logo_cloud'
-  | 'footer';
+  | "hero"
+  | "features"
+  | "cta"
+  | "faq"
+  | "testimonials"
+  | "pricing"
+  | "stats"
+  | "logo_cloud"
+  | "footer";
 
 export type PageSection = {
   id: string;
@@ -62,7 +62,7 @@ export type CtaPayload = {
   title: string;
   description?: string;
   cta: CtaLink;
-  backgroundStyle?: 'default' | 'brand' | 'dark';
+  backgroundStyle?: "default" | "brand" | "dark";
 };
 
 export type FaqItem = {

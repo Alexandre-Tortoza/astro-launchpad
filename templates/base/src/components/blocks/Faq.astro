@@ -1,5 +1,5 @@
 ---
-import type { FaqPayload } from '../../types/blocks';
+import type { FaqPayload } from "../../types/blocks";
 
 type Props = FaqPayload;
 
@@ -10,10 +10,12 @@ const { title, description, items } = Astro.props;
   {title && <h2>{title}</h2>}
   {description && <p>{description}</p>}
 
-  {items.map((item) => (
-    <details>
-      <summary>{item.question}</summary>
-      <p>{item.answer}</p>
-    </details>
-  ))}
+  {
+    items.map((item) => (
+      <details>
+        <summary>{item.question}</summary>
+        <p>{item.answer}</p>
+      </details>
+    ))
+  }
 </section>

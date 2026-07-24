@@ -1,15 +1,15 @@
 ---
-import type { PageSection } from '../types/blocks';
-import { parseSection } from '../lib/blocks/validate';
-import Hero from './blocks/Hero.astro';
-import Features from './blocks/Features.astro';
-import Cta from './blocks/Cta.astro';
-import Faq from './blocks/Faq.astro';
-import Testimonials from './blocks/Testimonials.astro';
-import Pricing from './blocks/Pricing.astro';
-import Stats from './blocks/Stats.astro';
-import LogoCloud from './blocks/LogoCloud.astro';
-import Footer from './blocks/Footer.astro';
+import type { PageSection } from "../types/blocks";
+import { parseSection } from "../lib/blocks/validate";
+import Hero from "./blocks/Hero.astro";
+import Features from "./blocks/Features.astro";
+import Cta from "./blocks/Cta.astro";
+import Faq from "./blocks/Faq.astro";
+import Testimonials from "./blocks/Testimonials.astro";
+import Pricing from "./blocks/Pricing.astro";
+import Stats from "./blocks/Stats.astro";
+import LogoCloud from "./blocks/LogoCloud.astro";
+import Footer from "./blocks/Footer.astro";
 
 interface Props {
   section: PageSection;
@@ -19,21 +19,24 @@ const { section } = Astro.props;
 const parsed = parseSection(section);
 ---
 
-{!parsed && import.meta.env.DEV && (
-  <div
-    role="alert"
-    style="background:#fee2e2;border:1px solid #ef4444;color:#991b1b;padding:1rem;margin:0.5rem 0;font-family:monospace;font-size:0.875rem"
-  >
-    [launchpad] Invalid or unknown section — type: <strong>{section.type}</strong>, id: {section.id}
-  </div>
-)}
+{
+  !parsed && import.meta.env.DEV && (
+    <div
+      role="alert"
+      style="background:#fee2e2;border:1px solid #ef4444;color:#991b1b;padding:1rem;margin:0.5rem 0;font-family:monospace;font-size:0.875rem"
+    >
+      [launchpad] Invalid or unknown section — type:{" "}
+      <strong>{section.type}</strong>, id: {section.id}
+    </div>
+  )
+}
 
-{parsed?.type === 'hero' && <Hero {...parsed.payload} />}
-{parsed?.type === 'features' && <Features {...parsed.payload} />}
-{parsed?.type === 'cta' && <Cta {...parsed.payload} />}
-{parsed?.type === 'faq' && <Faq {...parsed.payload} />}
-{parsed?.type === 'testimonials' && <Testimonials {...parsed.payload} />}
-{parsed?.type === 'pricing' && <Pricing {...parsed.payload} />}
-{parsed?.type === 'stats' && <Stats {...parsed.payload} />}
-{parsed?.type === 'logo_cloud' && <LogoCloud {...parsed.payload} />}
-{parsed?.type === 'footer' && <Footer {...parsed.payload} />}
+{parsed?.type === "hero" && <Hero {...parsed.payload} />}
+{parsed?.type === "features" && <Features {...parsed.payload} />}
+{parsed?.type === "cta" && <Cta {...parsed.payload} />}
+{parsed?.type === "faq" && <Faq {...parsed.payload} />}
+{parsed?.type === "testimonials" && <Testimonials {...parsed.payload} />}
+{parsed?.type === "pricing" && <Pricing {...parsed.payload} />}
+{parsed?.type === "stats" && <Stats {...parsed.payload} />}
+{parsed?.type === "logo_cloud" && <LogoCloud {...parsed.payload} />}
+{parsed?.type === "footer" && <Footer {...parsed.payload} />}

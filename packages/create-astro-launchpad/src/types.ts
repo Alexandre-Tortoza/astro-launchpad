@@ -1,6 +1,13 @@
-export const PRESETS = ['saas', 'agency', 'local-business', 'portfolio', 'waitlist', 'event'] as const;
-export const CMS_OPTIONS = ['markdown', 'directus', 'none'] as const;
-export const PACKAGE_MANAGERS = ['pnpm', 'npm', 'yarn', 'bun'] as const;
+export const PRESETS = [
+  "saas",
+  "agency",
+  "local-business",
+  "portfolio",
+  "waitlist",
+  "event",
+] as const;
+export const CMS_OPTIONS = ["markdown", "directus", "none"] as const;
+export const PACKAGE_MANAGERS = ["pnpm", "npm", "yarn", "bun"] as const;
 
 export type Preset = (typeof PRESETS)[number];
 export type Cms = (typeof CMS_OPTIONS)[number];

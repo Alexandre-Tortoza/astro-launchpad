@@ -1,4 +1,4 @@
-import type { z } from 'zod';
+import type { z } from "zod";
 import type {
   PageSection,
   HeroPayload,
@@ -10,7 +10,7 @@ import type {
   StatsPayload,
   LogoCloudPayload,
   FooterPayload,
-} from '../../types/blocks';
+} from "../../types/blocks";
 import {
   heroSchema,
   featuresSchema,
@@ -21,18 +21,18 @@ import {
   statsSchema,
   logoCloudSchema,
   footerSchema,
-} from './schemas';
+} from "./schemas";
 
 type ParsedSection =
-  | { type: 'hero'; payload: HeroPayload }
-  | { type: 'features'; payload: FeaturesPayload }
-  | { type: 'cta'; payload: CtaPayload }
-  | { type: 'faq'; payload: FaqPayload }
-  | { type: 'testimonials'; payload: TestimonialsPayload }
-  | { type: 'pricing'; payload: PricingPayload }
-  | { type: 'stats'; payload: StatsPayload }
-  | { type: 'logo_cloud'; payload: LogoCloudPayload }
-  | { type: 'footer'; payload: FooterPayload };
+  | { type: "hero"; payload: HeroPayload }
+  | { type: "features"; payload: FeaturesPayload }
+  | { type: "cta"; payload: CtaPayload }
+  | { type: "faq"; payload: FaqPayload }
+  | { type: "testimonials"; payload: TestimonialsPayload }
+  | { type: "pricing"; payload: PricingPayload }
+  | { type: "stats"; payload: StatsPayload }
+  | { type: "logo_cloud"; payload: LogoCloudPayload }
+  | { type: "footer"; payload: FooterPayload };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const schemaMap: Record<string, z.ZodType<any>> = {
@@ -51,7 +51,9 @@ export function parseSection(section: PageSection): ParsedSection | null {
   const schema = schemaMap[section.type];
   if (!schema) {
     if (import.meta.env.DEV) {
-      console.error(`[launchpad] Unknown section type "${section.type}" (id: ${section.id})`);
+      console.error(
+        `[launchpad] Unknown section type "${section.type}" (id: ${section.id})`,
+      );
     }
     return null;
   }

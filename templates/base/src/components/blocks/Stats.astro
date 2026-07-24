@@ -1,5 +1,5 @@
 ---
-import type { StatsPayload } from '../../types/blocks';
+import type { StatsPayload } from "../../types/blocks";
 
 type Props = StatsPayload;
 
@@ -11,12 +11,14 @@ const { title, description, items } = Astro.props;
   {description && <p>{description}</p>}
 
   <dl>
-    {items.map((stat) => (
-      <div>
-        <dt class="label">{stat.label}</dt>
-        <dd class="value">{stat.value}</dd>
-        {stat.description && <dd class="stat-desc">{stat.description}</dd>}
-      </div>
-    ))}
+    {
+      items.map((stat) => (
+        <div>
+          <dt class="label">{stat.label}</dt>
+          <dd class="value">{stat.value}</dd>
+          {stat.description && <dd class="stat-desc">{stat.description}</dd>}
+        </div>
+      ))
+    }
   </dl>
 </section>

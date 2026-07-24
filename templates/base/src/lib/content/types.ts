@@ -1,4 +1,4 @@
-import type { PageSection } from '../../types/blocks';
+import type { PageSection } from "../../types/blocks";
 
 export type SeoMeta = {
   title?: string;

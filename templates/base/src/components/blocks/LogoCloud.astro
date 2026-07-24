@@ -1,5 +1,5 @@
 ---
-import type { LogoCloudPayload } from '../../types/blocks';
+import type { LogoCloudPayload } from "../../types/blocks";
 
 type Props = LogoCloudPayload;
 
@@ -11,16 +11,18 @@ const { title, description, items } = Astro.props;
   {description && <p>{description}</p>}
 
   <ul role="list">
-    {items.map((logo) => (
-      <li>
-        {logo.url ? (
-          <a href={logo.url} rel="noopener noreferrer">
+    {
+      items.map((logo) => (
+        <li>
+          {logo.url ? (
+            <a href={logo.url} rel="noopener noreferrer">
+              <img src={logo.src} alt={logo.alt} loading="lazy" />
+            </a>
+          ) : (
             <img src={logo.src} alt={logo.alt} loading="lazy" />
-          </a>
-        ) : (
-          <img src={logo.src} alt={logo.alt} loading="lazy" />
-        )}
-      </li>
-    ))}
+          )}
+        </li>
+      ))
+    }
   </ul>
 </section>

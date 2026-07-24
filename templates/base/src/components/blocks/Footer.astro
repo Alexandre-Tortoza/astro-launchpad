@@ -1,5 +1,5 @@
 ---
-import type { FooterPayload } from '../../types/blocks';
+import type { FooterPayload } from "../../types/blocks";
 
 type Props = FooterPayload;
 
@@ -7,48 +7,60 @@ const { linkGroups, socialLinks, copyright, newsletter } = Astro.props;
 ---
 
 <footer data-block="footer">
-  {linkGroups && linkGroups.length > 0 && (
-    <nav aria-label="Footer navigation">
-      {linkGroups.map((group) => (
-        <div>
-          <p>{group.label}</p>
-          <ul role="list">
-            {group.links.map((link) => (
-              <li><a href={link.href}>{link.label}</a></li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </nav>
-  )}
-
-  {socialLinks && socialLinks.length > 0 && (
-    <nav aria-label="Social links">
-      <ul role="list">
-        {socialLinks.map((link) => (
-          <li>
-            <a href={link.href} rel="noopener noreferrer" aria-label={link.platform}>
-              {link.platform}
-            </a>
-          </li>
+  {
+    linkGroups && linkGroups.length > 0 && (
+      <nav aria-label="Footer navigation">
+        {linkGroups.map((group) => (
+          <div>
+            <p>{group.label}</p>
+            <ul role="list">
+              {group.links.map((link) => (
+                <li>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
-    </nav>
-  )}
+      </nav>
+    )
+  }
 
-  {newsletter && (
-    <form data-newsletter>
-      <label for="newsletter-email">{newsletter.label}</label>
-      <input
-        id="newsletter-email"
-        type="email"
-        name="email"
-        placeholder={newsletter.placeholder ?? 'your@email.com'}
-        required
-      />
-      <button type="submit">Subscribe</button>
-    </form>
-  )}
+  {
+    socialLinks && socialLinks.length > 0 && (
+      <nav aria-label="Social links">
+        <ul role="list">
+          {socialLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                rel="noopener noreferrer"
+                aria-label={link.platform}
+              >
+                {link.platform}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+
+  {
+    newsletter && (
+      <form data-newsletter>
+        <label for="newsletter-email">{newsletter.label}</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          placeholder={newsletter.placeholder ?? "your@email.com"}
+          required
+        />
+        <button type="submit">Subscribe</button>
+      </form>
+    )
+  }
 
   {copyright && <p class="copyright">{copyright}</p>}
 </footer>
