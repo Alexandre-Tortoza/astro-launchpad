@@ -16,4 +16,5 @@ Describe known limitations, compatibility implications, or state `None`.
 - [ ] I updated user-facing documentation where necessary.
 - [ ] I updated `CHANGELOG.md` for user-visible changes.
 - [ ] I ran `pnpm check`.
+- [ ] I verified non-interactive behavior when the CLI is affected.
 - [ ] I did not include secrets, local configuration, or generated artifacts.

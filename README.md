@@ -2,7 +2,7 @@
 
 **Launch editable Astro landing pages at startup speed.**
 
-Astro Launchpad is an experimental open source starter and CLI for creating editable Astro landing pages with reusable blocks and a reproducible local setup.
+Astro Launchpad helps freelancers, small agencies, and startup teams launch editable Astro landing pages without rebuilding the same project foundation for every site.
 
 > Status: `0.0.x` foundation. The base template and scaffolding CLI are ready for experimentation. ai-kit is available as a scaffolded feature; presets and remaining feature selections are recorded as configuration.
 
