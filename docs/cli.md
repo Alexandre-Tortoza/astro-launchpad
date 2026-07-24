@@ -6,7 +6,7 @@ Create a project interactively:
 pnpm create astro-launchpad my-site
 ```
 
-The CLI prompts for the project name, preset, Tailwind, CMS, blog, Motion, Docker, AIkit, package manager, dependency installation, and Git initialization.
+The CLI prompts for the project name, preset, feature placeholders, package manager, dependency installation, and Git initialization.
 
 All selections can also be supplied as flags for unattended use:
 
@@ -20,4 +20,6 @@ pnpm create astro-launchpad my-site \
   --yes
 ```
 
-Use `--help` to list every option. Version one always copies the base template. It records the selected preset and feature placeholders in `astro-launchpad.json`; it does not yet add feature-pack source files or dependencies.
+Use `--help` to list every option. Version one always copies the base template and records selected presets and features in `astro-launchpad.json`. Feature packs are not yet supported end-to-end workflows, even when experimental scaffold files are present.
+
+Use `--version` to print the installed CLI version. Errors are written to standard error and return a non-zero exit code.
