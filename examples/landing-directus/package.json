@@ -1,0 +1,13 @@
+{
+  "name": "@astro-launchpad/example-landing-directus",
+  "version": "0.0.1",
+  "description": "Example: Astro Launchpad landing page with Directus CMS",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": ["astro", "launchpad", "example", "directus"],
+  "license": "MIT"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/preset-local-business",
+  "version": "0.0.1",
+  "description": "Local business website preset for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "local-business", "preset"],
+  "license": "MIT"
+}

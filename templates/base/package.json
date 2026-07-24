@@ -1,0 +1,13 @@
+{
+  "name": "@astro-launchpad/template-base",
+  "version": "0.0.1",
+  "description": "Base Astro template for Astro Launchpad",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": ["astro", "launchpad", "template"],
+  "license": "MIT"
+}

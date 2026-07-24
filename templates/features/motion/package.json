@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/feature-motion",
+  "version": "0.0.1",
+  "description": "Motion animation feature pack for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "motion", "animation", "feature"],
+  "license": "MIT"
+}

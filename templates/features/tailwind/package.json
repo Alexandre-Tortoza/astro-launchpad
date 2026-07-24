@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/feature-tailwind",
+  "version": "0.0.1",
+  "description": "Tailwind CSS feature pack for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "tailwind", "feature"],
+  "license": "MIT"
+}

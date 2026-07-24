@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/feature-blog",
+  "version": "0.0.1",
+  "description": "Blog feature pack for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "blog", "feature"],
+  "license": "MIT"
+}

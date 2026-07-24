@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/feature-ai-kit",
+  "version": "0.0.1",
+  "description": "AI-kit feature pack for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "ai", "ai-kit", "feature"],
+  "license": "MIT"
+}

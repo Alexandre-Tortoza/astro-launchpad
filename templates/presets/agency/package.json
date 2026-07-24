@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/preset-agency",
+  "version": "0.0.1",
+  "description": "Agency website preset for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "agency", "preset"],
+  "license": "MIT"
+}

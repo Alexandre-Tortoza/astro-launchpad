@@ -1,0 +1,13 @@
+{
+  "name": "@astro-launchpad/example-local-business",
+  "version": "0.0.1",
+  "description": "Example: Astro Launchpad local business website",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": ["astro", "launchpad", "example", "local-business"],
+  "license": "MIT"
+}

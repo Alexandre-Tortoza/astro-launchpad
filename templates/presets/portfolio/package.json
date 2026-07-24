@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/preset-portfolio",
+  "version": "0.0.1",
+  "description": "Portfolio website preset for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "portfolio", "preset"],
+  "license": "MIT"
+}

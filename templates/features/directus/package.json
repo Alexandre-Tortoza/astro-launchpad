@@ -1,0 +1,8 @@
+{
+  "name": "@astro-launchpad/feature-directus",
+  "version": "0.0.1",
+  "description": "Directus CMS feature pack for Astro Launchpad",
+  "private": true,
+  "keywords": ["astro", "launchpad", "directus", "cms", "feature"],
+  "license": "MIT"
+}
