@@ -1,11 +1,11 @@
 import rss from "@astrojs/rss";
-import { markdownProvider } from "../lib/content";
+import { contentProvider } from "../lib/content";
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext) {
   const [posts, siteSettings] = await Promise.all([
-    markdownProvider.getBlogPosts(),
-    markdownProvider.getSiteSettings(),
+    contentProvider.getBlogPosts(),
+    contentProvider.getSiteSettings(),
   ]);
 
   return rss({

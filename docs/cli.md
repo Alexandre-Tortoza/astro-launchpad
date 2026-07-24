@@ -44,6 +44,14 @@ All presets work with the default Markdown provider. The content lives in
 edited without changing components. SaaS and Agency also include content shapes
 supported by the Directus schema and adapter.
 
+## Feature packs
+
+`--tailwind`, `--blog`, `--motion`, `--docker`, `--ai-kit`, and
+`--cms directus` apply their corresponding files to the generated project.
+Tailwind and Blog also add their runtime dependencies to `package.json`. When
+Docker and Directus are both selected, the Directus Compose configuration is
+kept so `docker compose up` starts the CMS stack.
+
 Use `--version` to print the installed CLI version. Errors are written to standard error and return a non-zero exit code. Add `--debug` to include a stack trace when diagnosing an unexpected failure.
 
 ## Safe defaults
@@ -66,4 +74,8 @@ From the root of a generated project, run:
 npx create-astro-launchpad doctor
 ```
 
-The doctor checks the Node.js version, package manager, required Directus environment variables, Docker when selected, and whether Astro's default port is available.
+The doctor checks the Node.js version, package manager, Docker when selected,
+Astro's default port, and the generated build configuration. For Directus it
+also validates required environment variables, the service health endpoint, and
+the `pages`, `sections`, and `site_settings` collections. It only reports
+problems and never changes project files.

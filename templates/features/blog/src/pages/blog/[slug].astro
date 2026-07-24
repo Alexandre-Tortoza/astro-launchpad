@@ -1,16 +1,16 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { markdownProvider } from "../../lib/content";
+import { contentProvider } from "../../lib/content";
 
 export async function getStaticPaths() {
-  const posts = await markdownProvider.getBlogPosts();
+  const posts = await contentProvider.getBlogPosts();
   return posts.map((post) => ({ params: { slug: post.slug } }));
 }
 
 const { slug } = Astro.params;
 const [post, siteSettings] = await Promise.all([
-  markdownProvider.getBlogPost(slug),
-  markdownProvider.getSiteSettings(),
+  contentProvider.getBlogPost(slug),
+  contentProvider.getSiteSettings(),
 ]);
 
 if (!post) return Astro.redirect("/blog");

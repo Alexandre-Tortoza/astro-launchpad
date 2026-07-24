@@ -30,6 +30,23 @@ async function applyTemplateOverlay(
   }
 }
 
+async function addPackDependencies(
+  packageJson: Record<string, unknown>,
+  packDirectory: string,
+): Promise<void> {
+  const pack = JSON.parse(
+    await readFile(join(packDirectory, "package.json"), "utf8"),
+  ) as { dependencies?: Record<string, string> };
+  if (!pack.dependencies) return;
+
+  const dependencies = (packageJson.dependencies ?? {}) as Record<
+    string,
+    string
+  >;
+  Object.assign(dependencies, pack.dependencies);
+  packageJson.dependencies = dependencies;
+}
+
 export async function ensureEmptyDestination(
   destination: string,
 ): Promise<void> {
@@ -66,6 +83,15 @@ export async function scaffoldProject(
   packageJson.name = options.projectName;
   packageJson.private = true;
 
+  const featuresDirectory = join(templateDirectory, "..", "features");
+  for (const feature of [
+    options.features.tailwind && "tailwind",
+    options.features.blog && "blog",
+  ]) {
+    if (feature)
+      await addPackDependencies(packageJson, join(featuresDirectory, feature));
+  }
+
   if (options.features.cms === "directus") {
     const dependencies = (packageJson.dependencies ?? {}) as Record<
       string,
@@ -97,16 +123,39 @@ export async function scaffoldProject(
     options.destination,
   );
 
-  const featuresDirectory = join(templateDirectory, "..", "features");
-  if (options.features.cms === "directus") {
+  if (options.features.tailwind) {
     await applyTemplateOverlay(
-      join(featuresDirectory, "directus"),
+      join(featuresDirectory, "tailwind"),
+      options.destination,
+    );
+  }
+  if (options.features.blog) {
+    await applyTemplateOverlay(
+      join(featuresDirectory, "blog"),
+      options.destination,
+    );
+  }
+  if (options.features.motion) {
+    await applyTemplateOverlay(
+      join(featuresDirectory, "motion"),
+      options.destination,
+    );
+  }
+  if (options.features.docker) {
+    await applyTemplateOverlay(
+      join(featuresDirectory, "docker"),
       options.destination,
     );
   }
   if (options.features.aiKit) {
     await applyTemplateOverlay(
       join(featuresDirectory, "ai-kit"),
+      options.destination,
+    );
+  }
+  if (options.features.cms === "directus") {
+    await applyTemplateOverlay(
+      join(featuresDirectory, "directus"),
       options.destination,
     );
   }

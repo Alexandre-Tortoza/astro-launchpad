@@ -176,6 +176,16 @@ describe("built CLI", () => {
     await expect(
       stat(join(destination, "examples/saas-landing.md")),
     ).resolves.toBeDefined();
+    await expect(stat(join(destination, "Dockerfile"))).resolves.toBeDefined();
+    await expect(
+      stat(join(destination, "src/pages/blog/index.astro")),
+    ).resolves.toBeDefined();
+    await expect(
+      stat(join(destination, "src/components/motion/Fade.astro")),
+    ).resolves.toBeDefined();
+    await expect(
+      readFile(join(destination, "src/pages/blog/index.astro"), "utf8"),
+    ).resolves.toContain("contentProvider");
     await expect(stat(join(destination, "node_modules"))).rejects.toMatchObject(
       { code: "ENOENT" },
     );
@@ -185,6 +195,7 @@ describe("built CLI", () => {
     );
     expect(packageJson.name).toBe("client-site");
     expect(packageJson.private).toBe(true);
+    expect(packageJson.dependencies["@astrojs/rss"]).toBe("^4.0.0");
 
     const manifest = JSON.parse(
       await readFile(join(destination, "astro-launchpad.json"), "utf8"),
@@ -217,6 +228,13 @@ describe("built CLI", () => {
     expect(
       await readFile(join(destination, "pnpm-workspace.yaml"), "utf8"),
     ).toBe("allowBuilds:\n  esbuild: true\n  sharp: true\n");
+    await expect(
+      readFile(join(destination, "astro.config.mjs"), "utf8"),
+    ).resolves.toContain("@tailwindcss/vite");
+    const packageJson = JSON.parse(
+      await readFile(join(destination, "package.json"), "utf8"),
+    );
+    expect(packageJson.dependencies.tailwindcss).toBe("^4.0.0");
   });
 
   it("supports help and version without creating a project", async () => {

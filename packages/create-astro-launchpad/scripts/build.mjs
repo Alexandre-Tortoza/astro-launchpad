@@ -41,9 +41,7 @@ for (const pack of packs) {
   await cp(resolve(featuresSource, pack), resolve(featuresDestination, pack), {
     recursive: true,
     filter(source) {
-      return !["package.json", "node_modules", ".astro", "dist"].includes(
-        basename(source),
-      );
+      return !["node_modules", ".astro", "dist"].includes(basename(source));
     },
   });
 }

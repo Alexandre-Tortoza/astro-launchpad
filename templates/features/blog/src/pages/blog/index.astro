@@ -1,10 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { markdownProvider } from "../../lib/content";
+import { contentProvider } from "../../lib/content";
 
 const [posts, siteSettings] = await Promise.all([
-  markdownProvider.getBlogPosts(),
-  markdownProvider.getSiteSettings(),
+  contentProvider.getBlogPosts(),
+  contentProvider.getSiteSettings(),
 ]);
 ---
 
