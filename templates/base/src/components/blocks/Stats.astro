@@ -13,9 +13,9 @@ const { title, description, items } = Astro.props;
   <dl>
     {items.map((stat) => (
       <div>
-        <dd class="value">{stat.value}</dd>
         <dt class="label">{stat.label}</dt>
-        {stat.description && <p class="stat-desc">{stat.description}</p>}
+        <dd class="value">{stat.value}</dd>
+        {stat.description && <dd class="stat-desc">{stat.description}</dd>}
       </div>
     ))}
   </dl>

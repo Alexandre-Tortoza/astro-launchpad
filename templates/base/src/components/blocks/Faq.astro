@@ -10,12 +10,10 @@ const { title, description, items } = Astro.props;
   {title && <h2>{title}</h2>}
   {description && <p>{description}</p>}
 
-  <dl>
-    {items.map((item) => (
-      <details>
-        <summary><dt>{item.question}</dt></summary>
-        <dd>{item.answer}</dd>
-      </details>
-    ))}
-  </dl>
+  {items.map((item) => (
+    <details>
+      <summary>{item.question}</summary>
+      <p>{item.answer}</p>
+    </details>
+  ))}
 </section>
