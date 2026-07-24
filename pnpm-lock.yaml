@@ -92,7 +92,11 @@ importers:
 
   templates/features/blog: {}
 
-  templates/features/directus: {}
+  templates/features/directus:
+    dependencies:
+      "@directus/sdk":
+        specifier: ^17.0.0
+        version: 17.0.2
 
   templates/features/docker: {}
 
@@ -524,6 +528,13 @@ packages:
         optional: true
       conventional-commits-parser:
         optional: true
+
+  "@directus/sdk@17.0.2":
+    resolution:
+      {
+        integrity: sha512-gKfWH6oQKnHw6mUl5lM32PTjtWrmSF6f09/zfN/74FKGPD853srCwip6rGif2R0GfdcrPHXwGHc7vTMXNDlniw==,
+      }
+    engines: { node: ">=18.0.0" }
 
   "@emnapi/core@1.11.1":
     resolution:
@@ -4853,6 +4864,8 @@ snapshots:
       semver: 7.8.5
     optionalDependencies:
       conventional-commits-parser: 6.4.0
+
+  "@directus/sdk@17.0.2": {}
 
   "@emnapi/core@1.11.1":
     dependencies:
