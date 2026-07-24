@@ -5,7 +5,8 @@
   "description": "Launch editable Astro landing pages at startup speed.",
   "scripts": {
     "dev": "pnpm --filter @astro-launchpad/template-base dev",
-    "build": "pnpm --filter @astro-launchpad/ai-kit build && pnpm --filter create-astro-launchpad build && pnpm --filter @astro-launchpad/template-base build",
+    "build": "pnpm --filter @astro-launchpad/ai-kit build && pnpm --filter create-astro-launchpad build && pnpm --filter @astro-launchpad/template-base build && pnpm run build:presets",
+    "build:presets": "node scripts/build-presets.mjs",
     "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
