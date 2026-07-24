@@ -191,6 +191,9 @@ describe("built CLI", () => {
     await expect(
       readFile(join(destination, "src/pages/blog/index.astro"), "utf8"),
     ).resolves.toContain("contentProvider");
+    await expect(
+      readFile(join(destination, "docker-compose.yml"), "utf8"),
+    ).resolves.toContain("web:");
     await expect(stat(join(destination, "node_modules"))).rejects.toMatchObject(
       { code: "ENOENT" },
     );

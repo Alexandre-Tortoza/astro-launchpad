@@ -1,5 +1,22 @@
 # Docker
 
+## Directus stack
+
+Projects created with `--cms directus` run three services with `docker compose up`:
+
+- Site: `http://localhost:3000` by default (`PORT` changes the host port).
+- Directus: `http://localhost:8055` by default (`DIRECTUS_PORT` changes it).
+- PostgreSQL: available only to the Compose network.
+
+The site runs as an Astro SSR server and reads Directus through the internal
+`http://directus:8055` address. Set `DIRECTUS_TOKEN` in `.env` before starting
+the stack; create a static token in the Directus admin after its first startup.
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
 Astro Launchpad ships optional Docker support for local development and self-hosted deployments. Docker is never required — `pnpm dev` and `pnpm build` always work without it.
 
 ## Without CMS (static site)
