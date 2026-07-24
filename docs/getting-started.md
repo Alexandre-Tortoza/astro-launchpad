@@ -24,4 +24,7 @@ Use `--yes` to accept defaults. Add `--skip-install` or `--no-git` when your env
 npm create astro-launchpad@latest my-site -- --yes --skip-install --no-git
 ```
 
-The `0.0.x` CLI copies the base template and saves selected presets and features to `astro-launchpad.json`. Selected feature packs are not installed yet; see the [roadmap](../ROADMAP.md).
+The `0.0.x` CLI copies the base template and saves selected presets and features
+to `astro-launchpad.json`. Add `--ai-kit` to install ai-kit prompts, skills,
+schemas, and examples in the generated project. Other selected feature packs
+remain configuration-only; see the [roadmap](../ROADMAP.md).

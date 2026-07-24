@@ -4,7 +4,7 @@
 
 Astro Launchpad is an experimental open source starter and CLI for creating editable Astro landing pages with reusable blocks and a reproducible local setup.
 
-> Status: `0.0.x` foundation. The base template and scaffolding CLI are ready for experimentation; presets and feature packs are recorded as configuration only and are not installed yet.
+> Status: `0.0.x` foundation. The base template and scaffolding CLI are ready for experimentation. ai-kit is available as a scaffolded feature; presets and remaining feature selections are recorded as configuration.
 
 ## Quick start
 
@@ -27,15 +27,16 @@ The CLI copies the base template, normalizes its package name, writes `astro-lau
 - Astro base template with TypeScript and Zod validation
 - Reusable landing-page blocks: Hero, Features, CTA, FAQ, Testimonials, Pricing, Stats, LogoCloud, and Footer
 - Interactive and non-interactive project scaffolding
+- Optional ai-kit prompts, skills, JSON Schemas, and examples via `--ai-kit`
 - `--help`, `--version`, `--yes`, `--skip-install`, and `--no-git` CLI controls
 
 ## Current limitations
 
-The CLI accepts preset and feature selections so projects can retain their intended configuration. In `0.0.x`, selected features do not have a supported end-to-end workflow. Experimental scaffold files may be present while a feature is being developed, but they are not compatibility commitments until documented for `0.1.0`.
+The CLI accepts preset and feature selections so projects can retain their intended configuration. In `0.0.x`, ai-kit is the supported scaffolded feature. Other selected features do not yet have a supported end-to-end workflow, even when experimental files are present.
 
 ## Documentation
 
-Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md), [architecture](./docs/architecture.md), and [development](./docs/development.md).
+Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md), [ai-kit](./docs/ai.md), [architecture](./docs/architecture.md), and [development](./docs/development.md).
 
 ## Roadmap
 

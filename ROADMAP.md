@@ -11,7 +11,7 @@
 
 - Apply presets as real template transformations.
 - Add tested Tailwind, Markdown, and Blog feature packs.
-- Implement Directus, Docker, Motion, and AI kit only after each has a documented, testable use case.
+- Implement Directus, Docker, and Motion only after each has a documented, testable use case.
 - Add examples that exercise implemented features rather than placeholders.
 
 ## Later
