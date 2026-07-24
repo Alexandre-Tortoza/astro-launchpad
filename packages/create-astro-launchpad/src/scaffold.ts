@@ -4,7 +4,7 @@ import type { LaunchpadManifest, ProjectOptions } from "./types.js";
 
 const excludedTemplateDirectories = new Set(["node_modules", ".astro", "dist"]);
 
-async function applyFeaturePack(
+async function applyTemplateOverlay(
   packDirectory: string,
   destination: string,
 ): Promise<void> {
@@ -65,6 +65,15 @@ export async function scaffoldProject(
   >;
   packageJson.name = options.projectName;
   packageJson.private = true;
+
+  if (options.features.cms === "directus") {
+    const dependencies = (packageJson.dependencies ?? {}) as Record<
+      string,
+      string
+    >;
+    dependencies["@directus/sdk"] = "^17.0.0";
+    packageJson.dependencies = dependencies;
+  }
   await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 
   const manifest: LaunchpadManifest = {
@@ -83,15 +92,20 @@ export async function scaffoldProject(
     );
   }
 
+  await applyTemplateOverlay(
+    join(templateDirectory, "..", "presets", options.preset),
+    options.destination,
+  );
+
   const featuresDirectory = join(templateDirectory, "..", "features");
   if (options.features.cms === "directus") {
-    await applyFeaturePack(
+    await applyTemplateOverlay(
       join(featuresDirectory, "directus"),
       options.destination,
     );
   }
   if (options.features.aiKit) {
-    await applyFeaturePack(
+    await applyTemplateOverlay(
       join(featuresDirectory, "ai-kit"),
       options.destination,
     );
