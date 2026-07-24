@@ -84,10 +84,13 @@ function isPortFree(port: number): Promise<boolean> {
   });
 }
 
-function fetchHttpStatus(url: string): Promise<number> {
+function fetchHttpStatus(
+  url: string,
+  headers?: Record<string, string>,
+): Promise<number> {
   return new Promise((resolve) => {
     const requester = url.startsWith("https://") ? httpsRequest : httpRequest;
-    const req = requester(url, { timeout: 5000 }, (res) => {
+    const req = requester(url, { timeout: 5000, headers }, (res) => {
       res.resume();
       resolve(res.statusCode ?? 0);
     });
@@ -101,6 +104,30 @@ function fetchHttpStatus(url: string): Promise<number> {
 }
 
 const NODE_REQUIREMENT = "22.12.0";
+const DIRECTUS_ENVIRONMENT = [
+  "DIRECTUS_URL",
+  "DIRECTUS_TOKEN",
+  "DIRECTUS_SECRET",
+  "DB_USER",
+  "DB_PASSWORD",
+  "DB_DATABASE",
+] as const;
+
+export function missingDirectusEnvironment(
+  env: Record<string, string>,
+): string[] {
+  return DIRECTUS_ENVIRONMENT.filter((key) => !env[key]);
+}
+
+export function hasBuildScript(packageJson: unknown): boolean {
+  if (!packageJson || typeof packageJson !== "object") return false;
+  const scripts = (packageJson as { scripts?: unknown }).scripts;
+  return (
+    typeof scripts === "object" &&
+    scripts !== null &&
+    typeof (scripts as Record<string, unknown>).build === "string"
+  );
+}
 
 export async function runDoctor(cwd: string): Promise<void> {
   const manifestPath = join(cwd, "astro-launchpad.json");
@@ -157,14 +184,7 @@ export async function runDoctor(cwd: string): Promise<void> {
     } catch {
       // .env missing — will be caught by required-vars check below
     }
-    const required = [
-      "DIRECTUS_URL",
-      "DIRECTUS_SECRET",
-      "DB_USER",
-      "DB_PASSWORD",
-      "DB_DATABASE",
-    ];
-    const missing = required.filter((k) => !dotEnv[k]);
+    const missing = missingDirectusEnvironment(dotEnv);
     if (missing.length > 0) {
       issues.push({
         message: `Missing required environment variable(s): ${missing.join(", ")}.`,
@@ -182,6 +202,25 @@ export async function runDoctor(cwd: string): Promise<void> {
     });
   }
 
+  // Generated project build configuration
+  try {
+    await access(join(cwd, "astro.config.mjs"));
+    const packageJson = JSON.parse(
+      await readFile(join(cwd, "package.json"), "utf8"),
+    ) as unknown;
+    if (!hasBuildScript(packageJson)) {
+      issues.push({
+        message: 'package.json does not define a "build" script.',
+        fix: 'Add "build": "astro build" to package.json scripts.',
+      });
+    }
+  } catch {
+    issues.push({
+      message: "Astro build configuration is missing or invalid.",
+      fix: "Restore astro.config.mjs and a valid package.json from the project template.",
+    });
+  }
+
   // CMS connection (Directus)
   if (features.cms === "directus") {
     const directusUrl = dotEnv["DIRECTUS_URL"] ?? "http://localhost:8055";
@@ -191,6 +230,26 @@ export async function runDoctor(cwd: string): Promise<void> {
         message: `Cannot reach Directus at ${directusUrl}.`,
         fix: "Run `docker compose up -d` in the project directory.",
       });
+    } else {
+      const collections = ["pages", "sections", "site_settings"];
+      const token = dotEnv["DIRECTUS_TOKEN"];
+      const collectionStatuses = await Promise.all(
+        collections.map((collection) =>
+          fetchHttpStatus(`${directusUrl}/items/${collection}?limit=1`, {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          }),
+        ),
+      );
+      const missingCollections = collections.filter(
+        (_, index) =>
+          collectionStatuses[index] < 200 || collectionStatuses[index] >= 300,
+      );
+      if (missingCollections.length > 0) {
+        issues.push({
+          message: `Cannot verify Directus collection(s): ${missingCollections.join(", ")}.`,
+          fix: "Apply the bundled Directus schema and check DIRECTUS_TOKEN permissions.",
+        });
+      }
     }
   }
 

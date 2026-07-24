@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  hasBuildScript,
   inferPackageManager,
   meetsNodeRequirement,
+  missingDirectusEnvironment,
   parseDotEnv,
 } from "../src/doctor.js";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -62,6 +64,35 @@ describe("meetsNodeRequirement", () => {
 
   it("fails when patch is lower within same major.minor", () => {
     expect(meetsNodeRequirement("v22.12.0", "22.12.1")).toBe(false);
+  });
+});
+
+describe("Directus environment", () => {
+  it("reports the token alongside other missing Directus values", () => {
+    expect(
+      missingDirectusEnvironment({ DIRECTUS_URL: "http://localhost:8055" }),
+    ).toContain("DIRECTUS_TOKEN");
+  });
+
+  it("accepts a complete Directus environment", () => {
+    expect(
+      missingDirectusEnvironment({
+        DIRECTUS_URL: "http://localhost:8055",
+        DIRECTUS_TOKEN: "token",
+        DIRECTUS_SECRET: "secret",
+        DB_USER: "directus",
+        DB_PASSWORD: "password",
+        DB_DATABASE: "directus",
+      }),
+    ).toEqual([]);
+  });
+});
+
+describe("hasBuildScript", () => {
+  it("requires a string build script", () => {
+    expect(hasBuildScript({ scripts: { build: "astro build" } })).toBe(true);
+    expect(hasBuildScript({ scripts: {} })).toBe(false);
+    expect(hasBuildScript(null)).toBe(false);
   });
 });
 
