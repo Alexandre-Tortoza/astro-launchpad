@@ -1,6 +1,8 @@
 # Directus CMS
 
-Astro Launchpad ships a `DirectusContentProvider` that implements the same `ContentProvider` interface as the Markdown provider. Switching to Directus is a one-line change in your page imports — no component changes required.
+Astro Launchpad ships a `DirectusContentProvider` that implements the same
+`ContentProvider` interface as the Markdown provider. Creating a project with
+`--cms directus` selects it automatically; no component changes are required.
 
 ## Prerequisites
 
@@ -54,15 +56,16 @@ npm run dev
 
 ## Wiring up the provider
 
-The feature pack adds a `directusProvider` export to `src/lib/content/index.ts`. Use it in your pages:
+The feature pack sets `contentProvider` to `directusProvider` in
+`src/lib/content/index.ts`. Pages should keep importing `contentProvider`:
 
 ```astro
 ---
 // src/pages/index.astro
-import { directusProvider } from "../lib/content";
+import { contentProvider } from "../lib/content";
 import SectionRenderer from "../components/SectionRenderer.astro";
 
-const page = await directusProvider.getPage("home");
+const page = await contentProvider.getPage("home");
 const sections = page?.sections ?? [];
 ---
 
@@ -80,7 +83,7 @@ You can also import `getSiteSettings` for navigation:
 
 ```astro
 ---
-const settings = await directusProvider.getSiteSettings();
+const settings = await contentProvider.getSiteSettings();
 ---
 
 <nav>

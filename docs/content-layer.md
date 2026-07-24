@@ -10,8 +10,10 @@ The base template ships with two providers:
 - `MarkdownContentProvider` reads Astro content collections from local Markdown files.
 - `MockContentProvider` provides in-memory demo data for isolated tests.
 
-`markdownProvider` is the active provider in `src/pages/index.astro`. A future
-CMS provider must implement the same methods:
+`contentProvider` is the active provider in `src/pages/index.astro` and points
+to `markdownProvider` by default. The Directus feature pack replaces that export
+with `directusProvider`; page components stay unchanged. Every CMS provider must
+implement the same methods:
 
 ```ts
 interface ContentProvider {

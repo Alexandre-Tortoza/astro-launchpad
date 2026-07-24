@@ -41,6 +41,13 @@ Use `pnpm dev` to start the base template. Use `pnpm --filter create-astro-launc
 
 CLI changes must preserve both the interactive flow and the `--yes` non-interactive flow, or document an intentional limitation.
 
+### Adding a block
+
+Follow the [block guide](./docs/blocks.md): define the schema and types, register
+validation and rendering, update the content collection enum, and add valid
+Markdown demo content. Keep block components presentational and provider-agnostic.
+When the block is available to Directus, update its schema and seed data too.
+
 To add a top-level command, handle it in `src/index.ts` before option parsing, keep command-specific I/O in a focused module, add it to `helpText`, and test the compiled CLI's observable output and exit code.
 
 Husky formats and lints staged files. Commit messages must follow Conventional Commits and include a description:

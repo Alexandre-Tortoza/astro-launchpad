@@ -4,7 +4,9 @@
 
 Astro Launchpad helps freelancers, small agencies, and startup teams launch editable Astro landing pages without rebuilding the same project foundation for every site.
 
-> Status: `0.0.x` foundation. The base template and scaffolding CLI are ready for experimentation. ai-kit is available as a scaffolded feature; presets and remaining feature selections are recorded as configuration.
+> Status: `0.0.x` foundation. The base template, six content presets, and
+> scaffolding CLI are ready for experimentation. Optional features are supported
+> only where the CLI reference explicitly says they are applied.
 
 ## Requirements
 
@@ -52,13 +54,17 @@ The CLI copies the base template, normalizes its package name, writes `astro-lau
 ## Current limitations
 
 All six presets are applied as template overlays with Markdown demo content and
-local placeholder images. SaaS and Agency can use the Directus content provider.
-Some optional feature selections remain configuration-only unless explicitly
-documented in the [CLI reference](./docs/cli.md).
+local placeholder images. Tailwind, Blog, Motion, Docker, ai-kit, and Directus
+are applied when selected. SaaS and Agency can use the Directus content provider.
 
 ## Documentation
 
-Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md), [ai-kit](./docs/ai.md), [architecture](./docs/architecture.md), and [development](./docs/development.md).
+Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md),
+[blocks](./docs/blocks.md), [content](./docs/content-layer.md),
+[Markdown](./docs/cms-markdown.md), [Directus](./docs/cms-directus.md),
+[Docker](./docs/docker.md), [deployment](./docs/deployment.md),
+[client editing](./docs/client-guide.md), [ai-kit](./docs/ai.md),
+[architecture](./docs/architecture.md), and [development](./docs/development.md).
 
 ## Roadmap
 
