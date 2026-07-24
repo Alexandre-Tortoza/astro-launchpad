@@ -10,5 +10,8 @@
     "cms",
     "feature"
   ],
-  "license": "AGPL-3.0-only"
+  "license": "AGPL-3.0-only",
+  "peerDependencies": {
+    "@directus/sdk": "^17.0.0"
+  }
 }
