@@ -175,8 +175,8 @@ function directusServices(
       DIRECTUS_URL: http://directus:8055
       DIRECTUS_TOKEN: ${"${DIRECTUS_TOKEN:-}"}
 ${volumeLines}    depends_on:
-      directus:
-        condition: service_healthy
+      directus-init:
+        condition: service_completed_successfully
     restart: unless-stopped
 
   postgres:
@@ -193,6 +193,55 @@ ${volumeLines}    depends_on:
       timeout: 5s
       retries: 10
     restart: unless-stopped
+
+  directus-schema:
+    image: directus/directus:11.13.1
+    command: ["/bin/sh", "-ec", "npx directus bootstrap && npx directus schema apply /directus/project/schema/snapshot.json --yes"]
+    environment:
+      SECRET: ${"${DIRECTUS_SECRET:?Set DIRECTUS_SECRET in .env}"}
+      DB_CLIENT: pg
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: ${"${DB_DATABASE:-directus}"}
+      DB_USER: ${"${DB_USER:-directus}"}
+      DB_PASSWORD: ${"${DB_PASSWORD:?Set DB_PASSWORD in .env}"}
+      ADMIN_EMAIL: ${"${DIRECTUS_ADMIN_EMAIL:?Set DIRECTUS_ADMIN_EMAIL in .env}"}
+      ADMIN_PASSWORD: ${"${DIRECTUS_ADMIN_PASSWORD:?Set DIRECTUS_ADMIN_PASSWORD in .env}"}
+    volumes:
+      - ./schema:/directus/project/schema:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  directus-policy:
+    image: postgres:16.8-alpine
+    environment:
+      PGHOST: postgres
+      PGUSER: ${"${DB_USER:-directus}"}
+      PGDATABASE: ${"${DB_DATABASE:-directus}"}
+      PGPASSWORD: ${"${DB_PASSWORD:?Set DB_PASSWORD in .env}"}
+      DIRECTUS_ADMIN_EMAIL: ${"${DIRECTUS_ADMIN_EMAIL:?Set DIRECTUS_ADMIN_EMAIL in .env}"}
+      DIRECTUS_TOKEN: ${"${DIRECTUS_TOKEN:?Set DIRECTUS_TOKEN in .env}"}
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        psql -v ON_ERROR_STOP=1 -v token="$$DIRECTUS_TOKEN" -v admin_email="$$DIRECTUS_ADMIN_EMAIL" <<'SQL'
+        UPDATE directus_users SET token = :'token' WHERE email = :'admin_email';
+        INSERT INTO directus_access (id, "user", policy)
+        SELECT gen_random_uuid(), u.id, p.id
+        FROM directus_users u CROSS JOIN directus_policies p
+        WHERE u.email = :'admin_email' AND p.name = 'Administrator'
+          AND NOT EXISTS (
+            SELECT 1 FROM directus_access a
+            WHERE a."user" = u.id AND a.policy = p.id
+          );
+        SQL
+    depends_on:
+      directus-schema:
+        condition: service_completed_successfully
+    restart: "no"
 
   directus:
     image: directus/directus:11.13.1
@@ -213,14 +262,27 @@ ${volumeLines}    depends_on:
       - directus_uploads:/directus/uploads
       - directus_extensions:/directus/extensions
     depends_on:
-      postgres:
-        condition: service_healthy
+      directus-policy:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8055/server/health"]
       interval: 10s
       timeout: 5s
       retries: 15
     restart: unless-stopped
+
+  directus-init:
+    build:
+      context: .
+      target: dev
+    command: ./node_modules/.bin/tsx seed/seed.ts
+    environment:
+      DIRECTUS_URL: http://directus:8055
+      DIRECTUS_TOKEN: ${"${DIRECTUS_TOKEN:?Set DIRECTUS_TOKEN in .env}"}
+    depends_on:
+      directus:
+        condition: service_healthy
+    restart: "no"
 
 volumes:
   postgres_data:

@@ -25,7 +25,7 @@ cannot change an already generated sitemap.
 
 ## Directus and PostgreSQL
 
-Directus projects are SSR applications. Run `pnpm cms:setup` once locally, then
+Directus projects are SSR applications. Compose initializes a new database, then
 use `docker compose -f compose.prod.yml up -d --build` on a VPS, or publish the
 same Dockerfile to a container platform. In production, use a managed
 PostgreSQL database where possible.
@@ -39,8 +39,8 @@ CORS to your deployed site URL and create regular database and upload backups.
 1. Set production environment variables and secrets.
 2. Run `pnpm check` and `pnpm launch:check`.
 3. Configure the domain, HTTPS, `PUBLIC_SITE_URL`, and CMS CORS origins.
-4. For a new production Directus database, run
-   `COMPOSE_FILE=compose.prod.yml pnpm cms:setup`, then replace its initial
-   administrator token with a restricted read-only service token.
+4. Start `compose.prod.yml` once to initialize a new Directus database, then
+   replace its initial administrator token with a restricted read-only service
+   token.
 5. Verify pages, forms, sitemap, robots file, and social metadata.
 6. Confirm CMS backups and credential rotation ownership before handoff.

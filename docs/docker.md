@@ -22,16 +22,10 @@ pnpm docker:dev
 The site is available at `http://localhost:4321` unless `PORT` is set. Source
 files are mounted into the container and Astro updates the browser on changes.
 
-With Directus selected, this command also starts PostgreSQL and Directus. Run
-the one-time bootstrap after dependencies are installed:
-
-```bash
-pnpm cms:setup
-docker compose up --build
-```
-
-`cms:setup` waits for Directus, applies the bundled schema, creates the local
-runtime token, and seeds demo content. It can be rerun after a clean database.
+With Directus selected, this command also starts PostgreSQL and Directus. The
+schema, Directus 11 policy repair, server token, and idempotent demo seed run as
+Compose initialization jobs before the Astro server starts. No separate CMS
+command is required.
 
 ## Production
 
@@ -55,7 +49,7 @@ service.
 
 ```bash
 docker compose down -v
-pnpm cms:setup
+docker compose up --build
 ```
 
 Never use `down -v` against a production project: it removes the PostgreSQL and

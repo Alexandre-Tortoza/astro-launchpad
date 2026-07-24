@@ -201,7 +201,7 @@ export async function scaffoldProject(
     const randomSecret = () => randomBytes(32).toString("hex");
     await writeFile(
       join(options.destination, ".env"),
-      `PUBLIC_SITE_URL=http://localhost:3000\nPUBLIC_SITE_NAME=${options.projectName}\nPORT=3000\nDIRECTUS_PORT=8055\nDIRECTUS_PUBLIC_URL=http://localhost:8055\nDB_USER=directus\nDB_DATABASE=directus\nDB_PASSWORD=${randomSecret()}\nDIRECTUS_SECRET=${randomSecret()}\nDIRECTUS_ADMIN_EMAIL=admin@example.com\nDIRECTUS_ADMIN_PASSWORD=${randomSecret()}\nDIRECTUS_TOKEN=\n`,
+      `PUBLIC_SITE_URL=http://localhost:3000\nPUBLIC_SITE_NAME=${options.projectName}\nPORT=3000\nDIRECTUS_PORT=8055\nDIRECTUS_PUBLIC_URL=http://localhost:8055\nDB_USER=directus\nDB_DATABASE=directus\nDB_PASSWORD=${randomSecret()}\nDIRECTUS_SECRET=${randomSecret()}\nDIRECTUS_ADMIN_EMAIL=admin@example.com\nDIRECTUS_ADMIN_PASSWORD=${randomSecret()}\nDIRECTUS_TOKEN=${randomSecret()}\n`,
     );
   }
 

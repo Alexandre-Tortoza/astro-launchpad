@@ -7,7 +7,6 @@ No manual access-token creation is required for local development.
 ## Quick start
 
 ```bash
-pnpm cms:setup
 pnpm docker:dev
 ```
 
@@ -15,10 +14,9 @@ Open `http://localhost:8055` and sign in with the generated values from `.env`.
 The Astro site uses the internal Docker address for Directus, so `DIRECTUS_URL`
 is never exposed to browser code.
 
-`cms:setup` starts the CMS dependencies, waits for health, applies
-`schema/snapshot.json`, configures a static server token, and runs the seed. The
-seed verifies system permissions before it changes content and reports a clear
-error when an administrator policy must be repaired.
+Compose starts schema, policy, and seed jobs before the Astro server. They apply
+`schema/snapshot.json`, configure the static server token, repair Directus 11
+administrator access, and run the idempotent seed automatically.
 
 ## Environment
 

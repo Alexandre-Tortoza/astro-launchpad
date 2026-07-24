@@ -138,6 +138,12 @@ describe("built CLI", () => {
       await expect(
         readFile(join(destination, ".dockerignore"), "utf8"),
       ).resolves.toContain(".env");
+      await expect(
+        readFile(join(destination, "compose.yml"), "utf8"),
+      ).resolves.toContain("directus-init:");
+      await expect(
+        readFile(join(destination, ".env"), "utf8"),
+      ).resolves.toMatch(/^DIRECTUS_TOKEN=.+$/m);
     },
   );
 

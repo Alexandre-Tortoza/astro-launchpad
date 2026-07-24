@@ -38,12 +38,12 @@ The CLI copies the base template, normalizes its package name, writes `astro-lau
 For a Docker-backed CMS project, select Directus during the prompts, then run:
 
 ```bash
-pnpm cms:setup
 pnpm docker:dev
 ```
 
-This starts a hot-reloading Astro container, Directus, and PostgreSQL, applies
-the schema, and seeds the local CMS. Production uses the separately optimized
+This starts a hot-reloading Astro container, Directus, and PostgreSQL. Compose
+automatically applies the schema, repairs Directus access, creates the local
+server token, and seeds the CMS. Production uses the separately optimized
 `compose.prod.yml` stack.
 
 ## What's included
