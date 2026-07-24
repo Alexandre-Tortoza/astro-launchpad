@@ -1,0 +1,22 @@
+---
+import type { StatsPayload } from '../../types/blocks';
+
+type Props = StatsPayload;
+
+const { title, description, items } = Astro.props;
+---
+
+<section data-block="stats">
+  {title && <h2>{title}</h2>}
+  {description && <p>{description}</p>}
+
+  <dl>
+    {items.map((stat) => (
+      <div>
+        <dd class="value">{stat.value}</dd>
+        <dt class="label">{stat.label}</dt>
+        {stat.description && <p class="stat-desc">{stat.description}</p>}
+      </div>
+    ))}
+  </dl>
+</section>

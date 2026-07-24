@@ -1,0 +1,21 @@
+---
+import type { FaqPayload } from '../../types/blocks';
+
+type Props = FaqPayload;
+
+const { title, description, items } = Astro.props;
+---
+
+<section data-block="faq">
+  {title && <h2>{title}</h2>}
+  {description && <p>{description}</p>}
+
+  <dl>
+    {items.map((item) => (
+      <details>
+        <summary><dt>{item.question}</dt></summary>
+        <dd>{item.answer}</dd>
+      </details>
+    ))}
+  </dl>
+</section>

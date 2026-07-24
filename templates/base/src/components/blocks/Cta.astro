@@ -1,0 +1,13 @@
+---
+import type { CtaPayload } from '../../types/blocks';
+
+type Props = CtaPayload;
+
+const { title, description, cta, backgroundStyle } = Astro.props;
+---
+
+<section data-block="cta" data-style={backgroundStyle ?? 'default'}>
+  <h2>{title}</h2>
+  {description && <p>{description}</p>}
+  <a href={cta.href} data-variant={cta.variant ?? 'primary'}>{cta.label}</a>
+</section>
