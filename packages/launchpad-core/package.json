@@ -6,12 +6,18 @@
   "exports": {
     ".": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run"
   },
-  "keywords": ["astro", "launchpad", "content-layer"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "content-layer"
+  ],
+  "license": "AGPL-3.0-only"
 }

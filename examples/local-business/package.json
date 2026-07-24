@@ -8,6 +8,11 @@
     "build": "astro build",
     "preview": "astro preview"
   },
-  "keywords": ["astro", "launchpad", "example", "local-business"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "example",
+    "local-business"
+  ],
+  "license": "AGPL-3.0-only"
 }

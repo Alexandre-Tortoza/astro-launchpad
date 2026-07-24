@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Directus CMS feature pack for Astro Launchpad",
   "private": true,
-  "keywords": ["astro", "launchpad", "directus", "cms", "feature"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "directus",
+    "cms",
+    "feature"
+  ],
+  "license": "AGPL-3.0-only"
 }

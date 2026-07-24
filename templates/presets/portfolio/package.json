@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "Portfolio website preset for Astro Launchpad",
   "private": true,
-  "keywords": ["astro", "launchpad", "portfolio", "preset"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "portfolio",
+    "preset"
+  ],
+  "license": "AGPL-3.0-only"
 }

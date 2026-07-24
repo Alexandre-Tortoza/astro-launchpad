@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Markdown content feature pack for Astro Launchpad",
   "private": true,
-  "keywords": ["astro", "launchpad", "markdown", "content", "feature"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "markdown",
+    "content",
+    "feature"
+  ],
+  "license": "AGPL-3.0-only"
 }

@@ -6,12 +6,23 @@
   "exports": {
     ".": "./dist/index.js"
   },
-  "files": ["dist", "prompts", "skills", "schemas"],
+  "files": [
+    "dist",
+    "prompts",
+    "skills",
+    "schemas"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run"
   },
-  "keywords": ["astro", "launchpad", "ai", "prompts", "skills"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "ai",
+    "prompts",
+    "skills"
+  ],
+  "license": "AGPL-3.0-only"
 }

@@ -8,12 +8,21 @@
     "./blocks": "./dist/blocks/index.js",
     "./layout": "./dist/layout/index.js"
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run"
   },
-  "keywords": ["astro", "launchpad", "ui", "components", "blocks"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "ui",
+    "components",
+    "blocks"
+  ],
+  "license": "AGPL-3.0-only"
 }

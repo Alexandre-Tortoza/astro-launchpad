@@ -8,12 +8,20 @@
     "./markdown": "./dist/markdown/index.js",
     "./directus": "./dist/directus/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run"
   },
-  "keywords": ["astro", "launchpad", "cms", "directus", "markdown"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "cms",
+    "directus",
+    "markdown"
+  ],
+  "license": "AGPL-3.0-only"
 }

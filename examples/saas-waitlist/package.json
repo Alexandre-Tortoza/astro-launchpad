@@ -8,6 +8,12 @@
     "build": "astro build",
     "preview": "astro preview"
   },
-  "keywords": ["astro", "launchpad", "example", "saas", "waitlist"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "example",
+    "saas",
+    "waitlist"
+  ],
+  "license": "AGPL-3.0-only"
 }

@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Motion animation feature pack for Astro Launchpad",
   "private": true,
-  "keywords": ["astro", "launchpad", "motion", "animation", "feature"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "motion",
+    "animation",
+    "feature"
+  ],
+  "license": "AGPL-3.0-only"
 }

@@ -8,6 +8,11 @@
     "build": "astro build",
     "preview": "astro preview"
   },
-  "keywords": ["astro", "launchpad", "example", "directus"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "example",
+    "directus"
+  ],
+  "license": "AGPL-3.0-only"
 }

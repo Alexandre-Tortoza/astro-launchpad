@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "Blog feature pack for Astro Launchpad",
   "private": true,
-  "keywords": ["astro", "launchpad", "blog", "feature"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "blog",
+    "feature"
+  ],
+  "license": "AGPL-3.0-only"
 }
