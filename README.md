@@ -6,6 +6,17 @@ Astro Launchpad is an experimental open source starter and CLI for creating edit
 
 > Status: `0.0.x` foundation. The base template and scaffolding CLI are ready for experimentation. ai-kit is available as a scaffolded feature; presets and remaining feature selections are recorded as configuration.
 
+## Requirements
+
+- Node.js 22 or later
+- npm, or pnpm 11.3.0 or later
+
+Git is optional. The CLI can initialize a repository when Git is available, or you can pass `--no-git`.
+
+## Compatibility
+
+The CLI is continuously tested on Node.js 22 and 24 with Linux, macOS, and Windows. It supports Node.js 22 or later.
+
 ## Quick start
 
 ```bash
@@ -14,7 +25,7 @@ cd my-site
 pnpm dev
 ```
 
-Or with npm:
+With npm:
 
 ```bash
 npm create astro-launchpad@latest my-site
@@ -29,6 +40,14 @@ The CLI copies the base template, normalizes its package name, writes `astro-lau
 - Interactive and non-interactive project scaffolding
 - Optional ai-kit prompts, skills, JSON Schemas, and examples via `--ai-kit`
 - `--help`, `--version`, `--yes`, `--skip-install`, and `--no-git` CLI controls
+
+## Troubleshooting
+
+- **Node version error:** run `node --version` and upgrade to Node.js 22 or later.
+- **Destination is not empty:** choose a new directory, or remove the existing files yourself. The CLI never overwrites a non-empty directory.
+- **Skip setup commands:** add `--skip-install --no-git` to create files without installing dependencies or initializing Git.
+- **Need all options:** run `npm create astro-launchpad@latest -- --help`, or read the [CLI reference](./docs/cli.md).
+- **Undo a generated project:** remove its directory. The CLI does not modify files outside the selected destination.
 
 ## Current limitations
 
