@@ -1,0 +1,412 @@
+{
+  "site_settings": {
+    "site_name": "Astro Launchpad",
+    "tagline": "Launch editable landing pages at startup speed",
+    "default_seo_title": "Astro Launchpad",
+    "default_seo_description": "An open source starter and CLI for fast, editable landing pages with Astro, CMS adapters, reusable blocks, and AI-assisted workflows.",
+    "default_seo_og_image": null
+  },
+
+  "navigation_items": [
+    {
+      "id": "11100000-0000-0000-0000-000000000001",
+      "sort": 1,
+      "group": "nav",
+      "label": "Docs",
+      "href": "/docs",
+      "platform": null
+    },
+    {
+      "id": "11100000-0000-0000-0000-000000000002",
+      "sort": 2,
+      "group": "nav",
+      "label": "GitHub",
+      "href": "https://github.com/",
+      "platform": null
+    },
+    {
+      "id": "11100000-0000-0000-0000-000000000003",
+      "sort": 3,
+      "group": "social",
+      "label": "GitHub",
+      "href": "https://github.com/",
+      "platform": "GitHub"
+    },
+    {
+      "id": "11100000-0000-0000-0000-000000000004",
+      "sort": 4,
+      "group": "social",
+      "label": "Twitter",
+      "href": "https://twitter.com/",
+      "platform": "Twitter"
+    }
+  ],
+
+  "authors": [
+    {
+      "id": "22200000-0000-0000-0000-000000000001",
+      "status": "published",
+      "name": "Alex Launchpad",
+      "slug": "alex-launchpad",
+      "bio": "Open source developer and Astro enthusiast.",
+      "avatar": null
+    }
+  ],
+
+  "categories": [
+    {
+      "id": "33300000-0000-0000-0000-000000000001",
+      "name": "Tutorials",
+      "slug": "tutorials"
+    },
+    {
+      "id": "33300000-0000-0000-0000-000000000002",
+      "name": "Announcements",
+      "slug": "announcements"
+    }
+  ],
+
+  "tags": [
+    {
+      "id": "44400000-0000-0000-0000-000000000001",
+      "name": "Astro",
+      "slug": "astro"
+    },
+    {
+      "id": "44400000-0000-0000-0000-000000000002",
+      "name": "Directus",
+      "slug": "directus"
+    },
+    {
+      "id": "44400000-0000-0000-0000-000000000003",
+      "name": "CMS",
+      "slug": "cms"
+    }
+  ],
+
+  "pages": [
+    {
+      "id": "55500000-0000-0000-0000-000000000001",
+      "status": "published",
+      "slug": "home",
+      "title": "Astro Launchpad — Block Showcase",
+      "seo_title": "Astro Launchpad",
+      "seo_description": "An open source starter and CLI for fast, editable landing pages with Astro, CMS adapters, reusable blocks, and AI-assisted workflows.",
+      "seo_og_image": null
+    }
+  ],
+
+  "sections": [
+    {
+      "id": "66600000-0000-0000-0000-000000000001",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "hero",
+      "type": "hero",
+      "order": 1,
+      "payload": {
+        "eyebrow": "Astro Launchpad",
+        "title": "Launch editable landing pages at startup speed",
+        "description": "An open source starter and CLI for fast, editable landing pages with Astro, CMS adapters, reusable blocks, and AI-assisted workflows.",
+        "primaryCta": {
+          "label": "Get started",
+          "href": "/docs",
+          "variant": "primary"
+        },
+        "secondaryCta": {
+          "label": "View on GitHub",
+          "href": "https://github.com/",
+          "variant": "secondary"
+        },
+        "trustText": "Free and open source. AGPL-3.0 license."
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000002",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "logo-cloud",
+      "type": "logo_cloud",
+      "order": 2,
+      "payload": {
+        "title": "Trusted by teams using",
+        "items": [
+          { "src": "/placeholder-logo.svg", "alt": "Astro" },
+          { "src": "/placeholder-logo.svg", "alt": "Directus" },
+          { "src": "/placeholder-logo.svg", "alt": "Tailwind CSS" },
+          { "src": "/placeholder-logo.svg", "alt": "Docker" }
+        ]
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000003",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "features",
+      "type": "features",
+      "order": 3,
+      "payload": {
+        "title": "Everything you need to launch fast",
+        "description": "Batteries included, but nothing forced on you.",
+        "items": [
+          {
+            "icon": "⚡",
+            "title": "CLI scaffolding",
+            "description": "Generate a complete site with one command. Choose your stack interactively."
+          },
+          {
+            "icon": "🧩",
+            "title": "Reusable blocks",
+            "description": "Hero, Features, Pricing, FAQ and more — typed, validated, and ready to use."
+          },
+          {
+            "icon": "📦",
+            "title": "CMS-agnostic content layer",
+            "description": "Swap between Markdown and Directus without touching your components."
+          },
+          {
+            "icon": "🐳",
+            "title": "Docker included",
+            "description": "Run your full stack locally with a single `docker compose up`."
+          },
+          {
+            "icon": "🤖",
+            "title": "AI-kit",
+            "description": "Prompts, skills, and schemas to accelerate content, SEO, and review."
+          },
+          {
+            "icon": "🎨",
+            "title": "Design tokens",
+            "description": "Control colors, typography, spacing, and motion from a single config."
+          }
+        ]
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000004",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "stats",
+      "type": "stats",
+      "order": 4,
+      "payload": {
+        "title": "Built for real projects",
+        "items": [
+          { "value": "< 5 min", "label": "Time to first page" },
+          {
+            "value": "100",
+            "label": "Lighthouse score target",
+            "description": "Performance by default"
+          },
+          { "value": "9", "label": "Core blocks included" },
+          { "value": "6", "label": "Preset templates" }
+        ]
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000005",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "testimonials",
+      "type": "testimonials",
+      "order": 5,
+      "payload": {
+        "title": "What developers say",
+        "items": [
+          {
+            "quote": "Astro Launchpad cut our site setup from two days to under an hour. The CMS abstraction is a game changer.",
+            "author": "Ana Souza",
+            "role": "Freelance Developer",
+            "company": "Independent"
+          },
+          {
+            "quote": "We use it as a base for every client project. The blocks are clean and the Docker setup just works.",
+            "author": "Lucas Ferreira",
+            "role": "Lead Engineer",
+            "company": "Pixel Studio"
+          },
+          {
+            "quote": "Love that I can switch between Markdown and Directus without rewriting a single component.",
+            "author": "Marina Costa",
+            "role": "Full-stack Developer"
+          }
+        ]
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000006",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "pricing",
+      "type": "pricing",
+      "order": 6,
+      "payload": {
+        "title": "Simple, honest pricing",
+        "description": "Astro Launchpad is free and open source. These tiers are for illustration.",
+        "items": [
+          {
+            "planName": "Community",
+            "price": "Free",
+            "description": "Perfect for personal projects and open source work.",
+            "features": [
+              "All core blocks",
+              "Markdown adapter",
+              "AGPL-3.0 license",
+              "Community support"
+            ],
+            "cta": {
+              "label": "Get started free",
+              "href": "/docs",
+              "variant": "secondary"
+            },
+            "highlighted": false
+          },
+          {
+            "planName": "Pro",
+            "price": "$49 / mo",
+            "description": "For agencies and teams shipping multiple client sites.",
+            "features": [
+              "Everything in Community",
+              "Directus + Sanity adapters",
+              "All presets",
+              "Priority support",
+              "AI-kit included"
+            ],
+            "cta": {
+              "label": "Start free trial",
+              "href": "#",
+              "variant": "primary"
+            },
+            "highlighted": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000007",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "faq",
+      "type": "faq",
+      "order": 7,
+      "payload": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "question": "Do I need a CMS to use Astro Launchpad?",
+            "answer": "No. You can use plain Markdown files as your content source. A CMS (Directus, Sanity, etc.) is entirely optional and added via a feature pack."
+          },
+          {
+            "question": "Can I use Tailwind CSS?",
+            "answer": "Yes. Tailwind is a feature pack you opt into during project generation. The base template uses semantic HTML and CSS variables."
+          },
+          {
+            "question": "Is this locked to any hosting provider?",
+            "answer": "No. Astro Launchpad generates a standard Astro project. You can deploy anywhere Astro supports — Vercel, Netlify, Cloudflare, Docker, and more."
+          },
+          {
+            "question": "What is AI-kit?",
+            "answer": "AI-kit is an optional set of Markdown prompts, skill files, and JSON schemas that help you generate copy, review SEO, model CMS content, and document your project for AI coding agents."
+          }
+        ]
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000008",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "cta",
+      "type": "cta",
+      "order": 8,
+      "payload": {
+        "title": "Ready to launch?",
+        "description": "Scaffold your first Astro Launchpad site in under a minute.",
+        "cta": {
+          "label": "pnpm create astro-launchpad",
+          "href": "#",
+          "variant": "primary"
+        },
+        "backgroundStyle": "brand"
+      }
+    },
+    {
+      "id": "66600000-0000-0000-0000-000000000009",
+      "status": "published",
+      "page_id": "55500000-0000-0000-0000-000000000001",
+      "section_id": "footer",
+      "type": "footer",
+      "order": 9,
+      "payload": {
+        "linkGroups": [
+          {
+            "label": "Product",
+            "links": [
+              { "label": "Getting started", "href": "/docs/getting-started" },
+              { "label": "Documentation", "href": "/docs" },
+              { "label": "Roadmap", "href": "/roadmap" }
+            ]
+          },
+          {
+            "label": "Community",
+            "links": [
+              { "label": "GitHub", "href": "https://github.com/" },
+              { "label": "Contributing", "href": "/docs/contributing" },
+              { "label": "Code of Conduct", "href": "/docs/code-of-conduct" }
+            ]
+          }
+        ],
+        "socialLinks": [
+          { "platform": "GitHub", "href": "https://github.com/" },
+          { "platform": "Twitter", "href": "https://twitter.com/" }
+        ],
+        "copyright": "© Astro Launchpad. AGPL-3.0 License."
+      }
+    }
+  ],
+
+  "blog_posts": [
+    {
+      "id": "77700000-0000-0000-0000-000000000001",
+      "status": "published",
+      "slug": "getting-started-with-astro-launchpad",
+      "title": "Getting Started with Astro Launchpad",
+      "date_published": "2025-01-15T09:00:00.000Z",
+      "author_id": "22200000-0000-0000-0000-000000000001",
+      "excerpt": "Learn how to scaffold your first Astro Launchpad site in under five minutes using the CLI.",
+      "content": "# Getting Started with Astro Launchpad\n\nAstro Launchpad is a CLI-first starter for building editable landing pages with Astro. In this guide, you'll scaffold a project, explore the block system, and connect it to Directus.\n\n## Prerequisites\n\n- Node.js 22+\n- pnpm 11+\n\n## Create a new project\n\n```bash\npnpm create astro-launchpad@latest my-site\n```\n\nFollow the interactive prompts to choose a preset and CMS.\n\n## Project structure\n\nAfter scaffolding, you'll have:\n\n- `src/lib/content/` — content provider interface and implementations\n- `src/lib/blocks/` — Zod schemas for block validation\n- `src/components/blocks/` — Astro block components\n- `src/content/` — your Markdown content files\n\n## Next steps\n\nSwitch to Directus by updating the import in your page to use `directusProvider` instead of `markdownProvider`.",
+      "cover_image": null,
+      "categories": ["33300000-0000-0000-0000-000000000001"],
+      "tags": [
+        "44400000-0000-0000-0000-000000000001",
+        "44400000-0000-0000-0000-000000000003"
+      ]
+    },
+    {
+      "id": "77700000-0000-0000-0000-000000000002",
+      "status": "published",
+      "slug": "connecting-directus-to-your-astro-site",
+      "title": "Connecting Directus to Your Astro Site",
+      "date_published": "2025-02-01T09:00:00.000Z",
+      "author_id": "22200000-0000-0000-0000-000000000001",
+      "excerpt": "A step-by-step guide to applying the Directus schema, seeding content, and wiring up the DirectusContentProvider.",
+      "content": "# Connecting Directus to Your Astro Site\n\nThe Directus feature pack ships with a schema snapshot, a seed script, and a typed `DirectusContentProvider`. Here's how to wire everything together.\n\n## 1. Start Directus\n\n```bash\ndocker compose up -d\n```\n\nDirectus will be available at http://localhost:8055.\n\n## 2. Apply the schema\n\n```bash\nnpx directus schema apply ./schema/snapshot.json\n```\n\n## 3. Create a static API token\n\nIn the Directus admin (Settings → Access Tokens), create a token with read access to all content collections.\n\n## 4. Set environment variables\n\n```bash\n# .env\nDIRECTUS_URL=http://localhost:8055\nDIRECTUS_TOKEN=your-token-here\n```\n\n## 5. Seed content\n\n```bash\nnpx tsx seed/seed.ts\n```\n\n## 6. Use the provider\n\nIn your Astro page, swap the import:\n\n```ts\nimport { directusProvider } from '../lib/content';\nconst page = await directusProvider.getPage('home');\n```",
+      "cover_image": null,
+      "categories": ["33300000-0000-0000-0000-000000000001"],
+      "tags": [
+        "44400000-0000-0000-0000-000000000001",
+        "44400000-0000-0000-0000-000000000002",
+        "44400000-0000-0000-0000-000000000003"
+      ]
+    }
+  ],
+
+  "redirects": [
+    {
+      "id": "88800000-0000-0000-0000-000000000001",
+      "status": "active",
+      "from_path": "/old-home",
+      "to_path": "/",
+      "status_code": 301
+    }
+  ]
+}
