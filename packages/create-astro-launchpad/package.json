@@ -6,11 +6,13 @@
   "bin": {
     "create-astro-launchpad": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "dev": "tsc --watch",
-    "test": "vitest run"
+    "test": "pnpm run build && vitest run"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0"
@@ -18,8 +20,14 @@
   "devDependencies": {
     "@types/node": "^22.10.1",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.9"
+    "vitest": "^3.2.6"
   },
-  "keywords": ["astro", "cli", "starter", "launchpad", "create"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "cli",
+    "starter",
+    "launchpad",
+    "create"
+  ],
+  "license": "AGPL-3.0-only"
 }
