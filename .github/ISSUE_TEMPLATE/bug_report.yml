@@ -1,0 +1,33 @@
+name: Bug report
+description: Report reproducible incorrect behavior.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping improve Astro Launchpad. Do not include secrets or private project content.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: CLI or template version, plus Node.js and package-manager versions.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Exact commands and minimal steps to reproduce the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true

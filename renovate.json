@@ -1,0 +1,23 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "timezone": "America/Sao_Paulo",
+  "schedule": ["before 5am on Monday"],
+  "minimumReleaseAge": "3 days",
+  "prConcurrentLimit": 5,
+  "automerge": false,
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions"
+    },
+    {
+      "matchDepTypes": ["dependencies"],
+      "groupName": "production dependencies"
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "development dependencies"
+    }
+  ]
+}
