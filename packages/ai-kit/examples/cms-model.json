@@ -1,0 +1,38 @@
+{
+  "contentTypes": [
+    {
+      "name": "Page",
+      "fields": ["title", "seo", "sections"],
+      "validation": "sections use typed blocks matching page.schema.json"
+    },
+    {
+      "name": "BlogPost",
+      "fields": [
+        "title",
+        "date",
+        "excerpt",
+        "author",
+        "tags",
+        "coverImage",
+        "body"
+      ],
+      "validation": "frontmatter fields match blog-post.schema.json"
+    },
+    {
+      "name": "SiteSettings",
+      "fields": ["siteName", "tagline", "nav", "socialLinks", "defaultSeo"],
+      "validation": "fields match site-settings.schema.json"
+    }
+  ],
+  "adapter": {
+    "interface": "ContentProvider",
+    "methods": [
+      "getPage",
+      "getPages",
+      "getBlogPost",
+      "getBlogPosts",
+      "getSiteSettings"
+    ],
+    "rule": "Map CMS records to Launchpad types in the adapter; components receive only mapped content."
+  }
+}

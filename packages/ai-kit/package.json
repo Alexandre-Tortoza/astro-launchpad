@@ -4,13 +4,17 @@
   "description": "AI prompts, skills, and schemas for Astro Launchpad development workflows",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "files": [
     "dist",
     "prompts",
     "skills",
-    "schemas"
+    "schemas",
+    "examples"
   ],
   "scripts": {
     "build": "tsc",

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://astro-launchpad.dev/schemas/site-settings.schema.json",
+  "title": "Astro Launchpad site settings",
+  "type": "object",
+  "required": ["siteName", "nav"],
+  "additionalProperties": false,
+  "properties": {
+    "siteName": { "type": "string", "minLength": 1 },
+    "tagline": { "type": "string", "minLength": 1 },
+    "nav": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/navLink" }
+    },
+    "socialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform", "href"],
+        "additionalProperties": false,
+        "properties": {
+          "platform": { "type": "string", "minLength": 1 },
+          "href": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "defaultSeo": { "$ref": "#/$defs/seo" }
+  },
+  "$defs": {
+    "navLink": {
+      "type": "object",
+      "required": ["label", "href"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "href": { "type": "string", "minLength": 1 }
+      }
+    },
+    "seo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "ogImage": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

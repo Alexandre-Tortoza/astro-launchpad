@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://astro-launchpad.dev/schemas/page.schema.json",
+  "title": "Astro Launchpad page",
+  "type": "object",
+  "required": ["title", "sections"],
+  "additionalProperties": false,
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "seo": { "$ref": "#/$defs/seo" },
+    "sections": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/section" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "seo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "ogImage": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "ctaLink": {
+      "type": "object",
+      "required": ["label", "href"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "$ref": "#/$defs/nonEmptyString" },
+        "href": { "$ref": "#/$defs/nonEmptyString" },
+        "variant": { "enum": ["primary", "secondary", "ghost"] }
+      }
+    },
+    "footerLink": {
+      "type": "object",
+      "required": ["label", "href"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "$ref": "#/$defs/nonEmptyString" },
+        "href": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "image": {
+      "type": "object",
+      "required": ["src", "alt"],
+      "additionalProperties": false,
+      "properties": {
+        "src": { "$ref": "#/$defs/nonEmptyString" },
+        "alt": { "type": "string" },
+        "width": { "type": "number" },
+        "height": { "type": "number" }
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": ["id", "type", "order", "payload"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "type": {
+          "enum": [
+            "hero",
+            "features",
+            "cta",
+            "faq",
+            "testimonials",
+            "pricing",
+            "stats",
+            "logo_cloud",
+            "footer"
+          ]
+        },
+        "order": { "type": "number" },
+        "payload": { "type": "object" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "hero" } } },
+          "then": { "properties": { "payload": { "$ref": "#/$defs/hero" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "features" } } },
+          "then": {
+            "properties": { "payload": { "$ref": "#/$defs/features" } }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "cta" } } },
+          "then": { "properties": { "payload": { "$ref": "#/$defs/cta" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "faq" } } },
+          "then": { "properties": { "payload": { "$ref": "#/$defs/faq" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "testimonials" } } },
+          "then": {
+            "properties": { "payload": { "$ref": "#/$defs/testimonials" } }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "pricing" } } },
+          "then": { "properties": { "payload": { "$ref": "#/$defs/pricing" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "stats" } } },
+          "then": { "properties": { "payload": { "$ref": "#/$defs/stats" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "logo_cloud" } } },
+          "then": {
+            "properties": { "payload": { "$ref": "#/$defs/logoCloud" } }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "footer" } } },
+          "then": { "properties": { "payload": { "$ref": "#/$defs/footer" } } }
+        }
+      ]
+    },
+    "hero": {
+      "type": "object",
+      "required": ["title"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "eyebrow": { "type": "string" },
+        "description": { "type": "string" },
+        "primaryCta": { "$ref": "#/$defs/ctaLink" },
+        "secondaryCta": { "$ref": "#/$defs/ctaLink" },
+        "image": { "$ref": "#/$defs/image" },
+        "trustText": { "type": "string" }
+      }
+    },
+    "features": {
+      "type": "object",
+      "required": ["title", "items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["title"],
+            "additionalProperties": false,
+            "properties": {
+              "title": { "$ref": "#/$defs/nonEmptyString" },
+              "icon": { "type": "string" },
+              "description": { "type": "string" },
+              "link": { "$ref": "#/$defs/ctaLink" }
+            }
+          }
+        }
+      }
+    },
+    "cta": {
+      "type": "object",
+      "required": ["title", "cta"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "type": "string" },
+        "cta": { "$ref": "#/$defs/ctaLink" },
+        "backgroundStyle": { "enum": ["default", "brand", "dark"] }
+      }
+    },
+    "faq": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["question", "answer"],
+            "additionalProperties": false,
+            "properties": {
+              "question": { "$ref": "#/$defs/nonEmptyString" },
+              "answer": { "$ref": "#/$defs/nonEmptyString" }
+            }
+          }
+        }
+      }
+    },
+    "testimonials": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["quote", "author", "role"],
+            "additionalProperties": false,
+            "properties": {
+              "quote": { "$ref": "#/$defs/nonEmptyString" },
+              "author": { "$ref": "#/$defs/nonEmptyString" },
+              "role": { "$ref": "#/$defs/nonEmptyString" },
+              "company": { "type": "string" },
+              "avatar": { "$ref": "#/$defs/image" }
+            }
+          }
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["planName", "price", "features", "cta"],
+            "additionalProperties": false,
+            "properties": {
+              "planName": { "$ref": "#/$defs/nonEmptyString" },
+              "price": { "$ref": "#/$defs/nonEmptyString" },
+              "description": { "type": "string" },
+              "features": { "type": "array", "items": { "type": "string" } },
+              "cta": { "$ref": "#/$defs/ctaLink" },
+              "highlighted": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "$ref": "#/$defs/nonEmptyString" },
+              "value": { "$ref": "#/$defs/nonEmptyString" },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "logoCloud": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["src", "alt"],
+            "additionalProperties": false,
+            "properties": {
+              "src": { "$ref": "#/$defs/nonEmptyString" },
+              "alt": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "footer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "linkGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "links"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "$ref": "#/$defs/nonEmptyString" },
+              "links": {
+                "type": "array",
+                "items": { "$ref": "#/$defs/footerLink" }
+              }
+            }
+          }
+        },
+        "socialLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["platform", "href"],
+            "additionalProperties": false,
+            "properties": {
+              "platform": { "$ref": "#/$defs/nonEmptyString" },
+              "href": { "$ref": "#/$defs/nonEmptyString" }
+            }
+          }
+        },
+        "copyright": { "type": "string" },
+        "newsletter": {
+          "type": "object",
+          "required": ["label"],
+          "additionalProperties": false,
+          "properties": {
+            "label": { "$ref": "#/$defs/nonEmptyString" },
+            "placeholder": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "siteName": "Signal Studio",
+  "tagline": "Evidence for product decisions.",
+  "nav": [
+    { "label": "Product", "href": "/#product" },
+    { "label": "Pricing", "href": "/#pricing" },
+    { "label": "Journal", "href": "/journal" }
+  ],
+  "socialLinks": [
+    { "platform": "GitHub", "href": "https://github.com/example/signal-studio" }
+  ],
+  "defaultSeo": {
+    "title": "Signal Studio",
+    "description": "A research workspace for product teams.",
+    "ogImage": "/images/og-default.png"
+  }
+}

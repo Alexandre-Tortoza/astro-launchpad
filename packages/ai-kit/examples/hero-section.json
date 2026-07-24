@@ -1,0 +1,21 @@
+{
+  "id": "hero",
+  "type": "hero",
+  "order": 1,
+  "payload": {
+    "eyebrow": "Signal Studio",
+    "title": "Turn customer interviews into clear product decisions",
+    "description": "A research workspace for teams that need evidence, not more tabs.",
+    "primaryCta": {
+      "label": "Start a research project",
+      "href": "/signup",
+      "variant": "primary"
+    },
+    "secondaryCta": {
+      "label": "See how it works",
+      "href": "#how-it-works",
+      "variant": "secondary"
+    },
+    "trustText": "Built for product teams running continuous discovery."
+  }
+}
