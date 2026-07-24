@@ -1,0 +1,17 @@
+{
+  "name": "create-astro-launchpad",
+  "version": "0.0.1",
+  "description": "CLI to scaffold Astro Launchpad projects",
+  "type": "module",
+  "bin": {
+    "create-astro-launchpad": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "keywords": ["astro", "cli", "starter", "launchpad", "create"],
+  "license": "MIT"
+}

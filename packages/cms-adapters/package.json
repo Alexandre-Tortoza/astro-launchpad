@@ -1,0 +1,19 @@
+{
+  "name": "@astro-launchpad/cms-adapters",
+  "version": "0.0.1",
+  "description": "CMS adapter interfaces and implementations for Astro Launchpad",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./markdown": "./dist/markdown/index.js",
+    "./directus": "./dist/directus/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "keywords": ["astro", "launchpad", "cms", "directus", "markdown"],
+  "license": "MIT"
+}

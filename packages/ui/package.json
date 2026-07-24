@@ -1,0 +1,19 @@
+{
+  "name": "@astro-launchpad/ui",
+  "version": "0.0.1",
+  "description": "Shared Astro UI components and reusable blocks for Astro Launchpad",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./blocks": "./dist/blocks/index.js",
+    "./layout": "./dist/layout/index.js"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "keywords": ["astro", "launchpad", "ui", "components", "blocks"],
+  "license": "MIT"
+}
