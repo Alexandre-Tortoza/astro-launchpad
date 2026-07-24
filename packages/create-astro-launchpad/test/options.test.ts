@@ -25,6 +25,8 @@ describe("CLI options", () => {
       "npm",
       "--skip-install",
       "--no-git",
+      "--dry-run",
+      "--debug",
     ]);
 
     expect(flags).toMatchObject({
@@ -40,6 +42,8 @@ describe("CLI options", () => {
       packageManager: "npm",
       install: false,
       initializeGit: false,
+      dryRun: true,
+      debug: true,
     });
   });
 

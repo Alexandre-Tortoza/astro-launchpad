@@ -18,6 +18,8 @@ export interface CliFlags {
   yes: boolean;
   help: boolean;
   version: boolean;
+  dryRun: boolean;
+  debug: boolean;
 }
 
 const valueFlags = new Set(["name", "preset", "cms", "package-manager"]);
@@ -44,7 +46,13 @@ function assertChoice<T extends readonly string[]>(
 }
 
 export function parseCliArguments(arguments_: string[]): CliFlags {
-  const flags: CliFlags = { yes: false, help: false, version: false };
+  const flags: CliFlags = {
+    yes: false,
+    help: false,
+    version: false,
+    dryRun: false,
+    debug: false,
+  };
 
   for (let index = 0; index < arguments_.length; index += 1) {
     const argument = arguments_[index];
@@ -69,6 +77,14 @@ export function parseCliArguments(arguments_: string[]): CliFlags {
     }
     if (argument === "--skip-install") {
       flags.install = false;
+      continue;
+    }
+    if (argument === "--dry-run") {
+      flags.dryRun = true;
+      continue;
+    }
+    if (argument === "--debug") {
+      flags.debug = true;
       continue;
     }
 
@@ -160,5 +176,7 @@ Options:
   --install, --skip-install       Install dependencies or skip installation
   --git, --no-git                 Initialize Git or skip initialization
   -y, --yes                       Use defaults for values not provided
+  --dry-run                       Show the project plan without writing files
+  --debug                         Show a stack trace when a command fails
   -h, --help                      Show this help message
   -v, --version                   Show the installed version`;

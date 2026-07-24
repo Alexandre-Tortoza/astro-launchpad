@@ -164,6 +164,32 @@ describe("built CLI", () => {
     expect(version.output).toMatch(/\d+\.\d+\.\d+/);
   });
 
+  it("shows the project plan without writing files when dry-running", async () => {
+    const temporaryDirectory = await mkdtemp(
+      join(tmpdir(), "create-astro-launchpad-"),
+    );
+    temporaryDirectories.push(temporaryDirectory);
+    const destination = join(temporaryDirectory, "site");
+
+    const result = await expectSuccessfulCli(
+      [
+        destination,
+        "--package-manager",
+        "npm",
+        "--skip-install",
+        "--no-git",
+        "--yes",
+        "--dry-run",
+      ],
+      temporaryDirectory,
+    );
+
+    expect(result.output).toContain("Dry run: no files will be created.");
+    expect(result.output).toContain(`Destination: ${destination}`);
+    expect(result.output).toContain("Install dependencies: skipped");
+    await expect(stat(destination)).rejects.toMatchObject({ code: "ENOENT" });
+  });
+
   it("creates projects in paths containing spaces", async () => {
     const temporaryDirectory = await mkdtemp(
       join(tmpdir(), "create astro launchpad-"),
@@ -195,9 +221,15 @@ describe("built CLI", () => {
       ["site", "another-site", "--yes"],
       temporaryDirectory,
     );
+    const debug = await runCli(
+      ["site", "--unknown-option", "--debug", "--yes"],
+      temporaryDirectory,
+    );
 
     expect(unknownOption.exitCode).not.toBe(0);
     expect(unknownOption.output).toContain("Unknown option: --unknown-option");
+    expect(unknownOption.output).toContain("create-astro-launchpad --help");
+    expect(debug.output).toContain("Error: Unknown option: --unknown-option");
     expect(multipleDirectories.exitCode).not.toBe(0);
     expect(multipleDirectories.output).toContain(
       "Only one destination directory can be specified.",

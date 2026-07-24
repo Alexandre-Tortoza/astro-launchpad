@@ -9,6 +9,12 @@ import { developmentCommand, installCommand, runCommand } from "./process.js";
 import { scaffoldProject } from "./scaffold.js";
 import { runDoctor } from "./doctor.js";
 
+function errorMessage(error: unknown, debug: boolean): string {
+  const message = error instanceof Error ? error.message : String(error);
+  const details = debug && error instanceof Error ? `\n\n${error.stack}` : "";
+  return `${message}\n\nNext step: run create-astro-launchpad --help for available options.${details}`;
+}
+
 export async function run(
   arguments_: string[],
   currentDirectory = process.cwd(),
@@ -31,6 +37,19 @@ export async function run(
   }
 
   const options = await collectOptions(flags, currentDirectory);
+  if (flags.dryRun) {
+    const install = installCommand(options.packageManager);
+    p.log.info(
+      `Dry run: no files will be created.\n\n` +
+        `Destination: ${options.destination}\n` +
+        `Project name: ${options.projectName}\n` +
+        `Preset: ${options.preset}\n` +
+        `CMS: ${options.features.cms}\n` +
+        `Install dependencies: ${options.install ? `${install.command} ${install.arguments.join(" ")}` : "skipped"}\n` +
+        `Initialize Git: ${options.initializeGit ? "yes" : "no"}`,
+    );
+    return;
+  }
   const templateDirectory = join(
     dirname(fileURLToPath(moduleUrl)),
     "template",
@@ -71,7 +90,7 @@ export async function run(
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   run(process.argv.slice(2)).catch((error: unknown) => {
-    p.log.error(error instanceof Error ? error.message : String(error));
+    console.error(errorMessage(error, process.argv.includes("--debug")));
     process.exitCode = 1;
   });
 }
