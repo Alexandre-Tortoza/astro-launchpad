@@ -106,12 +106,14 @@ function staticDevCompose(packageManager: PackageManager): string {
     volumes:
       - .:/app
       - web_node_modules:/app/node_modules
+      - web_astro:/app/.astro
     environment:
       HOST: 0.0.0.0
       PORT: "4321"
 
 volumes:
   web_node_modules:
+  web_astro:
 `;
 }
 
@@ -151,6 +153,7 @@ function directusServices(
     : `    volumes:
       - .:/app
       - web_node_modules:/app/node_modules
+      - web_astro:/app/.astro
     command: sh -c '${manager.run("dev", "--host 0.0.0.0")}'
 `;
 
@@ -223,7 +226,7 @@ volumes:
   postgres_data:
   directus_uploads:
   directus_extensions:
-${production ? "" : "  web_node_modules:\n"}`;
+${production ? "" : "  web_node_modules:\n  web_astro:\n"}`;
 }
 
 export async function writeDockerConfiguration(

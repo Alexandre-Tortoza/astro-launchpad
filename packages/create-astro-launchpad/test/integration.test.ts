@@ -312,6 +312,9 @@ describe("built CLI", () => {
       expect(dockerfile).toContain(`COPY package.json ${lockfile} ./`);
       expect(dockerfile).toContain(`RUN ${installCommand}`);
       await expect(
+        readFile(join(destination, "compose.dev.yml"), "utf8"),
+      ).resolves.toContain("web_astro:/app/.astro");
+      await expect(
         stat(join(destination, "compose.dev.yml")),
       ).resolves.toBeDefined();
       await expect(
