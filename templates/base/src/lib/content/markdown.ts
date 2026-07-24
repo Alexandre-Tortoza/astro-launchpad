@@ -43,9 +43,11 @@ export class MarkdownContentProvider implements ContentProvider {
     return post ? toBlogPost(post) : null;
   }
 
-  async getBlogPosts(): Promise<BlogPost[]> {
+  async getBlogPosts(opts?: { includeDrafts?: boolean }): Promise<BlogPost[]> {
+    const showDrafts = opts?.includeDrafts ?? import.meta.env.DEV;
     const posts = await getCollection("blog");
     return posts
+      .filter((entry) => showDrafts || entry.data.status === "published")
       .map(toBlogPost)
       .sort((left, right) => right.date.localeCompare(left.date));
   }

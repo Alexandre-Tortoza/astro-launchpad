@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Blog feature pack for Astro Launchpad",
   "private": true,
+  "dependencies": {
+    "@astrojs/rss": "^4.0.0"
+  },
   "keywords": [
     "astro",
     "launchpad",

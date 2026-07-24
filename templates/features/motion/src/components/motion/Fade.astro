@@ -1,0 +1,54 @@
+---
+interface Props {
+  delay?: number;
+  duration?: number;
+  class?: string;
+}
+
+const { delay = 0, duration = 400, class: className = "" } = Astro.props;
+const style = [
+  `--motion-fade-delay: ${delay}ms`,
+  `--motion-fade-duration: ${duration}ms`,
+].join("; ");
+---
+
+<div class={`motion-fade ${className}`} style={style} data-motion="fade">
+  <slot />
+</div>
+
+<style>
+  .motion-fade {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity var(--motion-fade-duration, 400ms)
+        var(--motion-easing-default, ease) var(--motion-fade-delay, 0ms),
+      transform var(--motion-fade-duration, 400ms)
+        var(--motion-easing-default, ease) var(--motion-fade-delay, 0ms);
+  }
+
+  .motion-fade.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-fade {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { observeIntersection, prefersReducedMotion } from "../../lib/motion";
+
+  if (!prefersReducedMotion()) {
+    observeIntersection(document.querySelectorAll("[data-motion='fade']"));
+  } else {
+    for (const el of document.querySelectorAll("[data-motion='fade']")) {
+      el.classList.add("is-visible");
+    }
+  }
+</script>

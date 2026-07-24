@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+import type { SeoMeta, SiteSettings } from "../lib/content";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  siteSettings?: SiteSettings;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalUrl,
+  noindex = false,
+  siteSettings,
+} = Astro.props;
+
+const siteName = siteSettings?.siteName ?? "Astro Launchpad";
+const defaultDescription =
+  siteSettings?.defaultSeo?.description ??
+  "Launch editable landing pages at startup speed.";
+const defaultOgImage = siteSettings?.defaultSeo?.ogImage;
+
+const pageTitle = title ? `${title} | ${siteName}` : siteName;
+const pageDescription = description ?? defaultDescription;
+const pageOgImage = ogImage ?? defaultOgImage;
+const canonical = canonicalUrl ?? Astro.url.href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{pageTitle}</title>
+    {pageDescription && <meta name="description" content={pageDescription} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    {
+      pageDescription && (
+        <meta property="og:description" content={pageDescription} />
+      )
+    }
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={siteName} />
+    {pageOgImage && <meta property="og:image" content={pageOgImage} />}
+
+    <!-- Twitter Card -->
+    <meta
+      name="twitter:card"
+      content={pageOgImage ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={pageTitle} />
+    {
+      pageDescription && (
+        <meta name="twitter:description" content={pageDescription} />
+      )
+    }
+    {pageOgImage && <meta name="twitter:image" content={pageOgImage} />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -296,7 +296,7 @@ export class MockContentProvider implements ContentProvider {
     return null;
   }
 
-  async getBlogPosts(): Promise<BlogPost[]> {
+  async getBlogPosts(_opts?: { includeDrafts?: boolean }): Promise<BlogPost[]> {
     return [];
   }
 

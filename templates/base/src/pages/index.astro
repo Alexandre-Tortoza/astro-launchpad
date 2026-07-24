@@ -1,18 +1,21 @@
 ---
+import Layout from "../layouts/Layout.astro";
 import SectionRenderer from "../components/SectionRenderer.astro";
 import { markdownProvider } from "../lib/content";
 
-const page = await markdownProvider.getPage("home");
+const [page, siteSettings] = await Promise.all([
+  markdownProvider.getPage("home"),
+  markdownProvider.getSiteSettings(),
+]);
+
 const sections = page?.sections ?? [];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{page?.seo?.title ?? page?.title ?? "Astro Launchpad"}</title>
-  </head>
-  <body>
-    {sections.map((section) => <SectionRenderer section={section} />)}
-  </body>
-</html>
+<Layout
+  title={page?.seo?.title}
+  description={page?.seo?.description}
+  ogImage={page?.seo?.ogImage}
+  siteSettings={siteSettings}
+>
+  {sections.map((section) => <SectionRenderer section={section} />)}
+</Layout>

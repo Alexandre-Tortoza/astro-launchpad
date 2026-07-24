@@ -42,6 +42,7 @@ const blog = defineCollection({
     author: z.string().min(1).optional(),
     tags: z.array(z.string().min(1)).optional(),
     coverImage: z.string().min(1).optional(),
+    status: z.enum(["draft", "published"]).default("published"),
   }),
 });
 

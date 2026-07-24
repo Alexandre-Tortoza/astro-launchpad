@@ -1,0 +1,40 @@
+/* Shared motion utilities — applied globally when the motion feature pack is active */
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-slide-left {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition:
+      opacity var(--motion-duration-base) var(--motion-easing-default),
+      transform var(--motion-duration-base) var(--motion-easing-default);
+  }
+
+  .motion-slide-right {
+    opacity: 0;
+    transform: translateX(24px);
+    transition:
+      opacity var(--motion-duration-base) var(--motion-easing-default),
+      transform var(--motion-duration-base) var(--motion-easing-default);
+  }
+
+  .motion-slide-left.is-visible,
+  .motion-slide-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .motion-stagger > * {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--motion-duration-base) var(--motion-easing-default),
+      transform var(--motion-duration-base) var(--motion-easing-default);
+  }
+
+  .motion-stagger.is-visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0ms; }
+  .motion-stagger.is-visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 75ms; }
+  .motion-stagger.is-visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 150ms; }
+  .motion-stagger.is-visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 225ms; }
+  .motion-stagger.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 300ms; }
+  .motion-stagger.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 375ms; }
+}

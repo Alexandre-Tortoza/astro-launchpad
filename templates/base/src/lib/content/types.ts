@@ -41,6 +41,6 @@ export interface ContentProvider {
   getPage(slug: string): Promise<Page | null>;
   getPages(): Promise<Page[]>;
   getBlogPost(slug: string): Promise<BlogPost | null>;
-  getBlogPosts(): Promise<BlogPost[]>;
+  getBlogPosts(opts?: { includeDrafts?: boolean }): Promise<BlogPost[]>;
   getSiteSettings(): Promise<SiteSettings>;
 }
