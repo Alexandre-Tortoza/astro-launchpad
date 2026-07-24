@@ -30,21 +30,26 @@ async function applyTemplateOverlay(
   }
 }
 
-async function addPackDependencies(
+interface PackPackageJson {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  scripts?: Record<string, string>;
+}
+
+async function mergePackPackageJson(
   packageJson: Record<string, unknown>,
   packDirectory: string,
 ): Promise<void> {
   const pack = JSON.parse(
     await readFile(join(packDirectory, "package.json"), "utf8"),
-  ) as { dependencies?: Record<string, string> };
-  if (!pack.dependencies) return;
+  ) as PackPackageJson;
 
-  const dependencies = (packageJson.dependencies ?? {}) as Record<
-    string,
-    string
-  >;
-  Object.assign(dependencies, pack.dependencies);
-  packageJson.dependencies = dependencies;
+  for (const field of ["dependencies", "devDependencies", "scripts"] as const) {
+    if (!pack[field]) continue;
+    const values = (packageJson[field] ?? {}) as Record<string, string>;
+    Object.assign(values, pack[field]);
+    packageJson[field] = values;
+  }
 }
 
 export async function ensureEmptyDestination(
@@ -87,18 +92,10 @@ export async function scaffoldProject(
   for (const feature of [
     options.features.tailwind && "tailwind",
     options.features.blog && "blog",
+    options.features.cms === "directus" && "directus",
   ]) {
     if (feature)
-      await addPackDependencies(packageJson, join(featuresDirectory, feature));
-  }
-
-  if (options.features.cms === "directus") {
-    const dependencies = (packageJson.dependencies ?? {}) as Record<
-      string,
-      string
-    >;
-    dependencies["@directus/sdk"] = "^17.0.0";
-    packageJson.dependencies = dependencies;
+      await mergePackPackageJson(packageJson, join(featuresDirectory, feature));
   }
   await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 

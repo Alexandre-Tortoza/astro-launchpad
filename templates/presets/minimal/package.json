@@ -1,0 +1,13 @@
+{
+  "name": "@astro-launchpad/preset-minimal",
+  "version": "0.0.1",
+  "description": "Minimal Astro Launchpad preset",
+  "private": true,
+  "keywords": [
+    "astro",
+    "launchpad",
+    "minimal",
+    "preset"
+  ],
+  "license": "AGPL-3.0-only"
+}

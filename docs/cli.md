@@ -32,6 +32,7 @@ copies prompts, skills, schemas, and examples into the generated project.
 
 | Preset           | Demo use case                    |
 | ---------------- | -------------------------------- |
+| `minimal`        | Base template without an overlay |
 | `saas`           | Operations software landing page |
 | `agency`         | Independent creative studio      |
 | `local-business` | Neighborhood bakery              |

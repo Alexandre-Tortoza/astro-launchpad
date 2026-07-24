@@ -165,7 +165,7 @@ Commands:
 
 Options:
   --name <name>                   Project package name
-  --preset <preset>               saas, agency, local-business, portfolio, waitlist, event
+  --preset <preset>               minimal, saas, agency, local-business, portfolio, waitlist, event
   --tailwind, --no-tailwind       Enable or disable Tailwind placeholder
   --cms <cms>                     markdown, directus, none
   --blog, --no-blog               Enable or disable blog placeholder

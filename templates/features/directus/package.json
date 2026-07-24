@@ -3,6 +3,17 @@
   "version": "0.0.1",
   "description": "Directus CMS feature pack for Astro Launchpad",
   "private": true,
+  "dependencies": {
+    "@directus/sdk": "^17.0.0"
+  },
+  "devDependencies": {
+    "@directus/cli": "^9.14.3",
+    "tsx": "^4.20.0"
+  },
+  "scripts": {
+    "cms:seed": "tsx seed/seed.ts",
+    "cms:snapshot": "directus schema snapshot ./schema/snapshot.json"
+  },
   "keywords": [
     "astro",
     "launchpad",
@@ -10,8 +21,5 @@
     "cms",
     "feature"
   ],
-  "license": "AGPL-3.0-only",
-  "peerDependencies": {
-    "@directus/sdk": "^17.0.0"
-  }
+  "license": "AGPL-3.0-only"
 }

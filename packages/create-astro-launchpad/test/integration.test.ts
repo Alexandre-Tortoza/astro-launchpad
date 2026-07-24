@@ -66,6 +66,7 @@ describe("built CLI", () => {
     temporaryDirectories.push(temporaryDirectory);
 
     const presets = [
+      ["minimal", "Astro Launchpad"],
       ["saas", "CloudPilot"],
       ["agency", "Northstar Studio"],
       ["local-business", "Juniper Bakery"],
@@ -91,9 +92,11 @@ describe("built CLI", () => {
       await expect(
         readFile(join(destination, "src/content/pages/home.md"), "utf8"),
       ).resolves.toContain(`title: ${siteName}`);
-      await expect(
-        stat(join(destination, "public/preset-hero.svg")),
-      ).resolves.toBeDefined();
+      if (preset !== "minimal") {
+        await expect(
+          stat(join(destination, "public/preset-hero.svg")),
+        ).resolves.toBeDefined();
+      }
     }
   });
 
@@ -127,6 +130,7 @@ describe("built CLI", () => {
         await readFile(join(destination, "package.json"), "utf8"),
       );
       expect(packageJson.dependencies["@directus/sdk"]).toBe("^17.0.0");
+      expect(packageJson.scripts["cms:seed"]).toBe("tsx seed/seed.ts");
     },
   );
 
@@ -235,6 +239,12 @@ describe("built CLI", () => {
       await readFile(join(destination, "package.json"), "utf8"),
     );
     expect(packageJson.dependencies.tailwindcss).toBe("^4.0.0");
+    expect(packageJson.scripts).toMatchObject({
+      lint: "eslint .",
+      typecheck: "astro sync && tsc --noEmit",
+      format: "prettier --write .",
+      "launchpad:doctor": "npx create-astro-launchpad doctor",
+    });
   });
 
   it("supports help and version without creating a project", async () => {
