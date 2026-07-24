@@ -7,12 +7,17 @@ import { helpText, parseCliArguments } from "./options.js";
 import { collectOptions } from "./prompts.js";
 import { developmentCommand, installCommand, runCommand } from "./process.js";
 import { scaffoldProject } from "./scaffold.js";
+import { runDoctor } from "./doctor.js";
 
 export async function run(
   arguments_: string[],
   currentDirectory = process.cwd(),
   moduleUrl = import.meta.url,
 ): Promise<void> {
+  if (arguments_[0] === "doctor") {
+    await runDoctor(currentDirectory);
+    return;
+  }
   const flags = parseCliArguments(arguments_);
   if (flags.version) {
     const require = createRequire(moduleUrl);

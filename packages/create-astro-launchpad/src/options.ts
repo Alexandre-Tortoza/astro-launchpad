@@ -144,6 +144,9 @@ export function defaultsFromFlags(
 
 export const helpText = `Usage: create-astro-launchpad [directory] [options]
 
+Commands:
+  doctor                          Check environment health for a scaffolded project
+
 Options:
   --name <name>                   Project package name
   --preset <preset>               saas, agency, local-business, portfolio, waitlist, event
