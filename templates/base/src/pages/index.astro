@@ -1,8 +1,8 @@
 ---
-import SectionRenderer from '../components/SectionRenderer.astro';
-import { mockProvider } from '../lib/content';
+import SectionRenderer from "../components/SectionRenderer.astro";
+import { markdownProvider } from "../lib/content";
 
-const page = await mockProvider.getPage('home');
+const page = await markdownProvider.getPage("home");
 const sections = page?.sections ?? [];
 ---
 
@@ -10,7 +10,7 @@ const sections = page?.sections ?? [];
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{page?.seo?.title ?? page?.title ?? 'Astro Launchpad'}</title>
+    <title>{page?.seo?.title ?? page?.title ?? "Astro Launchpad"}</title>
   </head>
   <body>
     {sections.map((section) => <SectionRenderer section={section} />)}
