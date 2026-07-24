@@ -7,7 +7,7 @@ Astro Launchpad is a pnpm monorepo. The `templates/base` workspace is the source
 1. The CLI parses command-line flags or collects interactive answers.
 2. It validates that the destination is empty.
 3. The build embeds a clean copy of `templates/base` and the AGPL-3.0 license in the CLI package.
-4. The CLI copies that template, updates `package.json`, writes `astro-launchpad.json` with the selected configuration, and applies supported feature assets.
+4. Unless `--dry-run` was requested, the CLI copies that template, updates `package.json`, writes `astro-launchpad.json` with the selected configuration, and applies supported feature assets.
 5. It optionally installs dependencies and initializes Git.
 
 The CLI owns terminal interaction, filesystem writes, and child processes. Template components and content validation remain isolated in `templates/base`.

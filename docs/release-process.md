@@ -2,6 +2,8 @@
 
 Releases are published from version tags only. Do not publish from a development machine.
 
+Before the first release, reserve `create-astro-launchpad` in npm and configure npm trusted publishing for this repository's release workflow. In GitHub, protect `main` and `v*` tags, require CI before merge, and require review for workflow changes.
+
 1. Update `CHANGELOG.md` and the CLI package version.
 2. Run `pnpm check`, `pnpm pack:check`, and `pnpm audit`.
 3. Create a semver tag with `npm version <version> --workspace create-astro-launchpad` and push it as `v<version>`.

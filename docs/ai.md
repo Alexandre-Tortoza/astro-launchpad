@@ -41,3 +41,7 @@ valid reference data, not product claims to reuse unchanged.
 The skills explain Launchpad, content modeling, SEO, accessibility, CMS
 modeling, and Codex-specific repository practices. Read the relevant skill
 before asking an agent to create or review content.
+
+## Responsible agent use
+
+Treat agent output as a proposed change, not proof that a change is correct. Before accepting it, review the relevant diff and surrounding code, run the applicable checks, and confirm that documentation and tests cover user-visible behavior. Do not provide agents with credentials or local configuration, and do not grant permission-bypass flags by default.
