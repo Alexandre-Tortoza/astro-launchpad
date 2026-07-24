@@ -15,3 +15,4 @@ import { MarkdownContentProvider } from "./markdown";
 
 export const mockProvider = new MockContentProvider();
 export const markdownProvider = new MarkdownContentProvider();
+export const contentProvider = markdownProvider;

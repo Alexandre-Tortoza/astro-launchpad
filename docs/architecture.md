@@ -24,4 +24,7 @@ The CLI requires Node.js 22 or later. CI exercises Node.js 22 and 24 on Linux, m
 
 ## Current boundaries
 
-In `0.0.x`, ai-kit is a supported scaffolded feature. Presets and other feature selections must not be described as installed functionality until their files, dependencies, tests, and documentation are complete.
+Presets are template overlays applied after the base template. They provide
+Markdown demo content, site settings, and local placeholder assets. The Directus
+feature pack replaces the default content provider and adds its SDK dependency;
+SaaS and Agency use block shapes supported by that adapter.

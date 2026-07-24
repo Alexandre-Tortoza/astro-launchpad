@@ -18,3 +18,4 @@ import { DirectusContentProvider } from "./directus";
 export const mockProvider = new MockContentProvider();
 export const markdownProvider = new MarkdownContentProvider();
 export const directusProvider = new DirectusContentProvider();
+export const contentProvider = directusProvider;

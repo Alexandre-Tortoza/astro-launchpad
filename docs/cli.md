@@ -22,10 +22,27 @@ pnpm create astro-launchpad my-site \
   --yes
 ```
 
-Use `--help` to list every option. The CLI always copies the base template and
-records selected presets and features in `astro-launchpad.json`. `--ai-kit`
-copies ai-kit prompts, skills, schemas, and examples into the generated project.
-Other feature selections remain configuration-only unless explicitly documented.
+Use `--help` to list every option. The CLI applies the selected preset over the
+base template, including its Markdown demo content and local SVG placeholder
+assets, then records the selection in `astro-launchpad.json`. SaaS and Agency
+can also use the Directus content provider with `--cms directus`. `--ai-kit`
+copies prompts, skills, schemas, and examples into the generated project.
+
+## Presets
+
+| Preset           | Demo use case                    |
+| ---------------- | -------------------------------- |
+| `saas`           | Operations software landing page |
+| `agency`         | Independent creative studio      |
+| `local-business` | Neighborhood bakery              |
+| `portfolio`      | Independent product designer     |
+| `waitlist`       | Early-access product launch      |
+| `event`          | Design and technology gathering  |
+
+All presets work with the default Markdown provider. The content lives in
+`src/content/pages/home.md` and `src/content/settings/site.md`, so it can be
+edited without changing components. SaaS and Agency also include content shapes
+supported by the Directus schema and adapter.
 
 Use `--version` to print the installed CLI version. Errors are written to standard error and return a non-zero exit code. Add `--debug` to include a stack trace when diagnosing an unexpected failure.
 

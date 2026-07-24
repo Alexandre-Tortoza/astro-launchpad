@@ -59,6 +59,77 @@ afterEach(async () => {
 });
 
 describe("built CLI", () => {
+  it("applies coherent Markdown content and placeholder assets for every preset", async () => {
+    const temporaryDirectory = await mkdtemp(
+      join(tmpdir(), "create-astro-launchpad-presets-"),
+    );
+    temporaryDirectories.push(temporaryDirectory);
+
+    const presets = [
+      ["saas", "CloudPilot"],
+      ["agency", "Northstar Studio"],
+      ["local-business", "Juniper Bakery"],
+      ["portfolio", "Elena Park"],
+      ["waitlist", "Relay"],
+      ["event", "Future Form"],
+    ] as const;
+
+    for (const [preset, siteName] of presets) {
+      const destination = join(temporaryDirectory, preset);
+      await expectSuccessfulCli(
+        [
+          destination,
+          "--preset",
+          preset,
+          "--yes",
+          "--skip-install",
+          "--no-git",
+        ],
+        temporaryDirectory,
+      );
+
+      await expect(
+        readFile(join(destination, "src/content/pages/home.md"), "utf8"),
+      ).resolves.toContain(`title: ${siteName}`);
+      await expect(
+        stat(join(destination, "public/preset-hero.svg")),
+      ).resolves.toBeDefined();
+    }
+  });
+
+  it.each(["saas", "agency"])(
+    "connects the %s preset to the Directus content provider",
+    async (preset) => {
+      const temporaryDirectory = await mkdtemp(
+        join(tmpdir(), "create-astro-launchpad-directus-"),
+      );
+      temporaryDirectories.push(temporaryDirectory);
+      const destination = join(temporaryDirectory, preset);
+
+      await expectSuccessfulCli(
+        [
+          destination,
+          "--preset",
+          preset,
+          "--cms",
+          "directus",
+          "--yes",
+          "--skip-install",
+          "--no-git",
+        ],
+        temporaryDirectory,
+      );
+
+      await expect(
+        readFile(join(destination, "src/lib/content/index.ts"), "utf8"),
+      ).resolves.toContain("contentProvider = directusProvider");
+      const packageJson = JSON.parse(
+        await readFile(join(destination, "package.json"), "utf8"),
+      );
+      expect(packageJson.dependencies["@directus/sdk"]).toBe("^17.0.0");
+    },
+  );
+
   it("copies the base template and persists requested placeholders", async () => {
     const temporaryDirectory = await mkdtemp(
       join(tmpdir(), "create-astro-launchpad-"),

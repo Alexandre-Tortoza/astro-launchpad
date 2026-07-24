@@ -51,7 +51,10 @@ The CLI copies the base template, normalizes its package name, writes `astro-lau
 
 ## Current limitations
 
-The CLI accepts preset and feature selections so projects can retain their intended configuration. In `0.0.x`, ai-kit is the supported scaffolded feature. Other selected features do not yet have a supported end-to-end workflow, even when experimental files are present.
+All six presets are applied as template overlays with Markdown demo content and
+local placeholder images. SaaS and Agency can use the Directus content provider.
+Some optional feature selections remain configuration-only unless explicitly
+documented in the [CLI reference](./docs/cli.md).
 
 ## Documentation
 

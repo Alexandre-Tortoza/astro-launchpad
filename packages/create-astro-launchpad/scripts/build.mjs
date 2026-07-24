@@ -31,6 +31,8 @@ await cp(licenseSource, resolve(templateDestination, "LICENSE"));
 
 const featuresSource = resolve(repositoryDirectory, "templates/features");
 const featuresDestination = resolve(outputDirectory, "template/features");
+const presetsSource = resolve(repositoryDirectory, "templates/presets");
+const presetsDestination = resolve(outputDirectory, "template/presets");
 const aiKitSource = resolve(repositoryDirectory, "packages/ai-kit");
 await rm(featuresDestination, { recursive: true, force: true });
 await mkdir(featuresDestination, { recursive: true });
@@ -45,6 +47,16 @@ for (const pack of packs) {
     },
   });
 }
+
+await rm(presetsDestination, { recursive: true, force: true });
+await cp(presetsSource, presetsDestination, {
+  recursive: true,
+  filter(source) {
+    return !["package.json", "node_modules", ".astro", "dist"].includes(
+      basename(source),
+    );
+  },
+});
 
 const aiKitDestination = resolve(featuresDestination, "ai-kit");
 for (const directory of ["prompts", "skills", "schemas", "examples"]) {

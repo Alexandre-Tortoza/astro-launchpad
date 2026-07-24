@@ -1,11 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SectionRenderer from "../components/SectionRenderer.astro";
-import { markdownProvider } from "../lib/content";
+import { contentProvider } from "../lib/content";
 
 const [page, siteSettings] = await Promise.all([
-  markdownProvider.getPage("home"),
-  markdownProvider.getSiteSettings(),
+  contentProvider.getPage("home"),
+  contentProvider.getSiteSettings(),
 ]);
 
 const sections = page?.sections ?? [];
