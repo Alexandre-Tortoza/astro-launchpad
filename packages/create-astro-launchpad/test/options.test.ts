@@ -48,6 +48,21 @@ describe("CLI options", () => {
     expect(parseCliArguments(["-v"]).version).toBe(true);
   });
 
+  it("rejects malformed and unsupported options", () => {
+    expect(() => parseCliArguments(["--preset"])).toThrow(
+      "--preset requires a value.",
+    );
+    expect(() => parseCliArguments(["--preset", "unknown"])).toThrow(
+      "Invalid value for --preset: unknown.",
+    );
+    expect(() => parseCliArguments(["--no-preset"])).toThrow(
+      "--no-preset is not supported.",
+    );
+    expect(() => parseCliArguments(["--unknown"])).toThrow(
+      "Unknown option: --unknown",
+    );
+  });
+
   it("uses normalized defaults for unattended creation", () => {
     const options = defaultsFromFlags(
       parseCliArguments(["--name", "My Project", "--yes"]),
