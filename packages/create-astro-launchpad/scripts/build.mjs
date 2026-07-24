@@ -31,6 +31,7 @@ await cp(licenseSource, resolve(templateDestination, "LICENSE"));
 
 const featuresSource = resolve(repositoryDirectory, "templates/features");
 const featuresDestination = resolve(outputDirectory, "template/features");
+const aiKitSource = resolve(repositoryDirectory, "packages/ai-kit");
 await rm(featuresDestination, { recursive: true, force: true });
 await mkdir(featuresDestination, { recursive: true });
 const packs = await readdir(featuresSource);
@@ -43,4 +44,13 @@ for (const pack of packs) {
       );
     },
   });
+}
+
+const aiKitDestination = resolve(featuresDestination, "ai-kit");
+for (const directory of ["prompts", "skills", "schemas", "examples"]) {
+  await cp(
+    resolve(aiKitSource, directory),
+    resolve(aiKitDestination, directory),
+    { recursive: true },
+  );
 }

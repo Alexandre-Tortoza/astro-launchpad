@@ -90,4 +90,10 @@ export async function scaffoldProject(
       options.destination,
     );
   }
+  if (options.features.aiKit) {
+    await applyFeaturePack(
+      join(featuresDirectory, "ai-kit"),
+      options.destination,
+    );
+  }
 }

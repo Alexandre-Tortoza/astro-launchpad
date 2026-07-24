@@ -68,7 +68,7 @@ const homePageSections: PageSection[] = [
         },
         {
           icon: "🤖",
-          title: "AI-kit",
+          title: "ai-kit",
           description:
             "Prompts, skills, and schemas to accelerate content, SEO, and review.",
         },
@@ -160,7 +160,7 @@ const homePageSections: PageSection[] = [
             "Directus + Sanity adapters",
             "All presets",
             "Priority support",
-            "AI-kit included",
+            "ai-kit included",
           ],
           cta: { label: "Start free trial", href: "#", variant: "primary" },
           highlighted: true,
@@ -191,9 +191,9 @@ const homePageSections: PageSection[] = [
             "No. Astro Launchpad generates a standard Astro project. You can deploy anywhere Astro supports — Vercel, Netlify, Cloudflare, Docker, and more.",
         },
         {
-          question: "What is AI-kit?",
+          question: "What is ai-kit?",
           answer:
-            "AI-kit is an optional set of Markdown prompts, skill files, and JSON schemas that help you generate copy, review SEO, model CMS content, and document your project for AI coding agents.",
+            "ai-kit is an optional set of Markdown prompts, skill files, and JSON schemas that help you generate copy, review SEO, model CMS content, and document your project for AI coding agents.",
         },
       ],
     },

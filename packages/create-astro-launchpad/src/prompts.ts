@@ -106,7 +106,7 @@ export async function collectOptions(
     flags.docker ??
     (await askBoolean("Add Docker placeholder?", defaults.docker));
   const aiKit =
-    flags.aiKit ?? (await askBoolean("Add AIkit placeholder?", defaults.aiKit));
+    flags.aiKit ?? (await askBoolean("Add ai-kit?", defaults.aiKit));
   const packageManager = flags.packageManager
     ? flags.packageManager
     : requireAnswer(

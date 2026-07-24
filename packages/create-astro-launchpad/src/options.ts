@@ -152,7 +152,7 @@ Options:
   --blog, --no-blog               Enable or disable blog placeholder
   --motion, --no-motion           Enable or disable Motion placeholder
   --docker, --no-docker           Enable or disable Docker placeholder
-  --ai-kit, --no-ai-kit           Enable or disable AIkit placeholder
+  --ai-kit, --no-ai-kit           Enable or disable ai-kit assets
   --package-manager <manager>     pnpm, npm, yarn, bun
   --install, --skip-install       Install dependencies or skip installation
   --git, --no-git                 Initialize Git or skip initialization

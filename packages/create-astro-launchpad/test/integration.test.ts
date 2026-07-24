@@ -73,6 +73,18 @@ describe("built CLI", () => {
       stat(join(destination, "src/pages/index.astro")),
     ).resolves.toBeDefined();
     await expect(stat(join(destination, "LICENSE"))).resolves.toBeDefined();
+    await expect(
+      stat(join(destination, "prompts/generate-landing.md")),
+    ).resolves.toBeDefined();
+    await expect(
+      stat(join(destination, "skills/codex.md")),
+    ).resolves.toBeDefined();
+    await expect(
+      stat(join(destination, "schemas/page.schema.json")),
+    ).resolves.toBeDefined();
+    await expect(
+      stat(join(destination, "examples/saas-landing.md")),
+    ).resolves.toBeDefined();
     await expect(stat(join(destination, "node_modules"))).rejects.toMatchObject(
       { code: "ENOENT" },
     );
