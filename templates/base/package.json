@@ -9,12 +9,16 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.0.0",
+    "astro": "^7.0.10",
     "zod": "^3.23.0"
   },
   "devDependencies": {
     "typescript": "^5.5.0"
   },
-  "keywords": ["astro", "launchpad", "template"],
-  "license": "MIT"
+  "keywords": [
+    "astro",
+    "launchpad",
+    "template"
+  ],
+  "license": "AGPL-3.0-only"
 }

@@ -5,14 +5,34 @@
   "description": "Launch editable Astro landing pages at startup speed.",
   "scripts": {
     "dev": "pnpm --filter @astro-launchpad/template-base dev",
-    "build": "pnpm --filter './packages/**' build",
-    "test": "pnpm --filter './packages/**' test",
-    "lint": "pnpm --filter './packages/**' lint",
-    "format": "prettier --write ."
+    "build": "pnpm --filter create-astro-launchpad build && pnpm --filter @astro-launchpad/template-base build",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "typecheck": "pnpm --filter create-astro-launchpad exec tsc --noEmit && pnpm --filter @astro-launchpad/template-base exec astro sync && pnpm --filter @astro-launchpad/template-base exec tsc --noEmit",
+    "test": "pnpm --filter create-astro-launchpad test",
+    "test:integration": "pnpm --filter create-astro-launchpad build && pnpm --filter create-astro-launchpad exec vitest run test/integration.test.ts",
+    "pack:check": "pnpm --filter create-astro-launchpad build && node scripts/pack-check.mjs",
+    "audit": "pnpm audit",
+    "prepare": "husky"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=22",
     "pnpm": ">=11"
   },
-  "packageManager": "pnpm@11.3.0"
+  "packageManager": "pnpm@11.3.0",
+  "license": "AGPL-3.0-only",
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript-eslint": "^8.65.0"
+  }
 }
