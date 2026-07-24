@@ -7,12 +7,11 @@
     "@directus/sdk": "^17.0.0"
   },
   "devDependencies": {
-    "@directus/cli": "^9.14.3",
     "tsx": "^4.20.0"
   },
   "scripts": {
     "cms:seed": "tsx seed/seed.ts",
-    "cms:snapshot": "directus schema snapshot ./schema/snapshot.json"
+    "cms:snapshot": "tsx seed/snapshot.ts"
   },
   "keywords": [
     "astro",

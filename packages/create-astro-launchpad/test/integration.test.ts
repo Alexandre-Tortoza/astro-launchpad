@@ -131,6 +131,7 @@ describe("built CLI", () => {
       );
       expect(packageJson.dependencies["@directus/sdk"]).toBe("^17.0.0");
       expect(packageJson.scripts["cms:seed"]).toBe("tsx seed/seed.ts");
+      expect(packageJson.scripts["cms:snapshot"]).toBe("tsx seed/snapshot.ts");
     },
   );
 
