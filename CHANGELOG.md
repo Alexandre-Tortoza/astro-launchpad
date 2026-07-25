@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+## [0.0.2] - 2026-07-25
+
+### Fixed
+
+- CLI now works when run via `npm create` or `npx` without a pre-installed `node_modules`. The build now bundles `@clack/prompts` into a single self-contained `dist/index.js` using esbuild instead of plain TypeScript compilation.
+
 ## [0.0.1] - 2026-07-25
 
 ### Added

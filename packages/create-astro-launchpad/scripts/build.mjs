@@ -1,7 +1,9 @@
 import { cp, mkdir, readdir, rm } from "node:fs/promises";
+import { builtinModules } from "node:module";
 import { fileURLToPath } from "node:url";
 import { basename, dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
+import { build } from "esbuild";
 
 const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryDirectory = resolve(packageDirectory, "../..");
@@ -10,7 +12,7 @@ const templateSource = resolve(repositoryDirectory, "templates/base");
 const templateDestination = resolve(outputDirectory, "template/base");
 const licenseSource = resolve(repositoryDirectory, "LICENSE");
 
-const tsc = spawnSync("tsc", {
+const tsc = spawnSync("tsc", ["--noEmit"], {
   cwd: packageDirectory,
   stdio: "inherit",
   shell: process.platform === "win32",
@@ -19,7 +21,19 @@ if (tsc.status !== 0) {
   process.exit(tsc.status ?? 1);
 }
 
-await rm(templateDestination, { recursive: true, force: true });
+await rm(outputDirectory, { recursive: true, force: true });
+await mkdir(outputDirectory, { recursive: true });
+
+await build({
+  entryPoints: [resolve(packageDirectory, "src/index.ts")],
+  bundle: true,
+  platform: "node",
+  format: "esm",
+  target: ["node22"],
+  outfile: resolve(outputDirectory, "index.js"),
+  external: [...builtinModules, ...builtinModules.map((m) => `node:${m}`)],
+});
+
 await mkdir(dirname(templateDestination), { recursive: true });
 await cp(templateSource, templateDestination, {
   recursive: true,
@@ -34,7 +48,6 @@ const featuresDestination = resolve(outputDirectory, "template/features");
 const presetsSource = resolve(repositoryDirectory, "templates/presets");
 const presetsDestination = resolve(outputDirectory, "template/presets");
 const aiKitSource = resolve(repositoryDirectory, "packages/ai-kit");
-await rm(featuresDestination, { recursive: true, force: true });
 await mkdir(featuresDestination, { recursive: true });
 const packs = await readdir(featuresSource);
 for (const pack of packs) {
