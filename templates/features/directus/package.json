@@ -4,10 +4,10 @@
   "description": "Directus CMS feature pack for Astro Launchpad",
   "private": true,
   "dependencies": {
-    "@directus/sdk": "^17.0.0"
+    "@directus/sdk": "^23.0.0"
   },
   "devDependencies": {
-    "tsx": "^4.20.0"
+    "tsx": "^4.23.1"
   },
   "scripts": {
     "cms:setup": "bash scripts/setup-directus.sh",

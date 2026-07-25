@@ -129,7 +129,7 @@ describe("built CLI", () => {
       const packageJson = JSON.parse(
         await readFile(join(destination, "package.json"), "utf8"),
       );
-      expect(packageJson.dependencies["@directus/sdk"]).toBe("^17.0.0");
+      expect(packageJson.dependencies["@directus/sdk"]).toBe("^23.0.0");
       expect(packageJson.scripts["cms:setup"]).toBe(
         "bash scripts/setup-directus.sh",
       );
@@ -231,7 +231,7 @@ describe("built CLI", () => {
     );
     expect(packageJson.name).toBe("client-site");
     expect(packageJson.private).toBe(true);
-    expect(packageJson.dependencies["@astrojs/rss"]).toBe("^4.0.0");
+    expect(packageJson.dependencies["@astrojs/rss"]).toBe("^4.0.19");
 
     const manifest = JSON.parse(
       await readFile(join(destination, "astro-launchpad.json"), "utf8"),
@@ -270,7 +270,7 @@ describe("built CLI", () => {
     const packageJson = JSON.parse(
       await readFile(join(destination, "package.json"), "utf8"),
     );
-    expect(packageJson.dependencies.tailwindcss).toBe("^4.0.0");
+    expect(packageJson.dependencies.tailwindcss).toBe("^4.3.3");
     expect(packageJson.scripts).toMatchObject({
       lint: "eslint .",
       typecheck: "astro sync && tsc --noEmit",

@@ -1,4 +1,4 @@
-import type { z } from "zod";
+import { z } from "zod";
 import type {
   PageSection,
   HeroPayload,
@@ -63,7 +63,7 @@ export function parseSection(section: PageSection): ParsedSection | null {
     if (import.meta.env.DEV) {
       console.error(
         `[launchpad] Invalid payload for section "${section.id}" (type: ${section.type}):`,
-        result.error.format(),
+        z.treeifyError(result.error),
       );
     }
     return null;
