@@ -44,7 +44,7 @@ function packageManagerConfig(
 function dockerBase(packageManager: PackageManager): string {
   const bunInstall =
     packageManager === "bun" ? " && npm install --global bun" : "";
-  return `FROM node:22-alpine AS base
+  return `FROM node:24-alpine AS base
 WORKDIR /app
 RUN corepack enable${bunInstall}
 `;
@@ -63,7 +63,7 @@ COPY --from=builder /app/package.json ./package.json
 EXPOSE 4321
 CMD ["node", "./dist/server/entry.mjs"]
 `
-    : `FROM nginx:1.27-alpine AS runner
+    : `FROM nginx:1.31-alpine AS runner
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
@@ -180,7 +180,7 @@ ${volumeLines}    depends_on:
     restart: unless-stopped
 
   postgres:
-    image: postgres:16.8-alpine
+    image: postgres:17-alpine
     environment:
       POSTGRES_USER: ${"${DB_USER:-directus}"}
       POSTGRES_PASSWORD: ${"${DB_PASSWORD:?Set DB_PASSWORD in .env}"}
@@ -195,8 +195,8 @@ ${volumeLines}    depends_on:
     restart: unless-stopped
 
   directus-schema:
-    image: directus/directus:11.13.1
-    command: ["/bin/sh", "-ec", "npx directus bootstrap && npx directus schema apply /directus/project/schema/snapshot.json --yes"]
+    image: directus/directus:12.1.1
+    command: ["/bin/sh", "-ec", "node /directus/cli.js bootstrap && node /directus/cli.js schema apply /directus/project/schema/snapshot.json --yes"]
     environment:
       SECRET: ${"${DIRECTUS_SECRET:?Set DIRECTUS_SECRET in .env}"}
       DB_CLIENT: pg
@@ -215,7 +215,7 @@ ${volumeLines}    depends_on:
     restart: "no"
 
   directus-policy:
-    image: postgres:16.8-alpine
+    image: postgres:17-alpine
     environment:
       PGHOST: postgres
       PGUSER: ${"${DB_USER:-directus}"}
@@ -244,7 +244,7 @@ ${volumeLines}    depends_on:
     restart: "no"
 
   directus:
-    image: directus/directus:11.13.1
+    image: directus/directus:12.1.1
     ports:
       - "${directusPort}"
     environment:
