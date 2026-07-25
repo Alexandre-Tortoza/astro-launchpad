@@ -41,6 +41,8 @@ jobs:
         run: npm install --global npm@latest
       - name: Publish the tested artifact
         working-directory: packages/create-astro-launchpad
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish ./create-astro-launchpad-*.tgz --access public
       - name: Create GitHub release
         env:

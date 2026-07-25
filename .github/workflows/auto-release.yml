@@ -87,6 +87,8 @@ jobs:
       - name: Publish to npm
         if: steps.guard.outputs.skip != 'true'
         working-directory: packages/create-astro-launchpad
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish ./create-astro-launchpad-*.tgz --access public
 
       - name: Commit version bump, tag, and push
