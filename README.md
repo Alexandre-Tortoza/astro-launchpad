@@ -1,24 +1,19 @@
 # Astro Launchpad
 
-**Launch editable Astro landing pages at startup speed.**
+**Launch production-ready Astro landing pages without rebuilding the same foundation every time.**
 
-Astro Launchpad helps freelancers, small agencies, and startup teams launch editable Astro landing pages without rebuilding the same project foundation for every site.
-
-> Status: `v0.0.1` — CLI, seven presets, Markdown/Directus 12/Strapi 5, Docker,
-> blog, motion, and ai-kit are all shipped and tested.
-
-## Requirements
-
-- Node.js 22 or later
-- npm, or pnpm 11 or later
-
-Git is optional. The CLI can initialize a repository when Git is available, or you can pass `--no-git`.
-
-## Compatibility
-
-The CLI is continuously tested on Node.js 22 and 24 with Linux, macOS, and Windows. It supports Node.js 22 or later.
+Astro Launchpad is an interactive CLI for freelancers, agencies, and startup teams
+that need fast, editable, and deployable landing pages.
 
 ## Quick start
+
+```bash
+npm create astro-launchpad@latest my-site
+cd my-site
+npm run dev
+```
+
+Using pnpm:
 
 ```bash
 pnpm create astro-launchpad my-site
@@ -26,37 +21,49 @@ cd my-site
 pnpm dev
 ```
 
-With npm:
+## What the CLI generates
 
-```bash
-npm create astro-launchpad@latest my-site
-```
+The CLI asks you to choose:
 
-The CLI copies the base template, normalizes its package name, writes `astro-launchpad.json`, and can install dependencies and initialize Git.
+- A landing-page preset
+- A content provider: Markdown, Directus, or Strapi
+- Tailwind CSS
+- Blog support with RSS
+- Motion effects
+- Docker environments
+- AI development resources
 
-For a Docker-backed CMS project, select Directus or Strapi during the prompts, then run:
+It then generates a complete, runnable project with your selections applied,
+optionally installs dependencies, and initializes Git.
 
-```bash
-pnpm docker:dev
-```
+## What can you build?
 
-This starts a hot-reloading Astro container, the CMS, and PostgreSQL. For
-Directus, Compose automatically applies the schema and seeds the CMS. For
-Strapi, the app bootstraps the admin user, API token, permissions, and seed
-content on first start. Production uses the separately optimized `compose.prod.yml` stack.
+- SaaS product pages
+- Agency and studio websites
+- Local business websites
+- Portfolios
+- Product waitlists
+- Event pages
+- Custom landing pages
 
-## What's included
+## Choose how content is managed
 
-- Astro base template with TypeScript and Zod 4 validation
-- Nine reusable landing-page blocks: Hero, Features, CTA, FAQ, Testimonials, Pricing, Stats, LogoCloud, and Footer
-- Seven content presets: minimal, saas, agency, local-business, portfolio, waitlist, event
-- Interactive and non-interactive project scaffolding
-- Content providers: Markdown (static), Directus 12 (Docker), Strapi 5 (Docker)
-- Optional Tailwind CSS, Blog (RSS + listing), Motion (CSS-only animations), Docker, and ai-kit feature packs
-- `launchpad:doctor` environment and CMS connectivity checker
-- `--help`, `--version`, `--yes`, `--skip-install`, and `--no-git` CLI controls
+### Markdown
 
-### CMS feature matrix
+Best for static sites managed by developers. Content lives in `.md` files alongside
+the code. No database or Docker required.
+
+### Directus
+
+Best for projects where clients need a visual admin interface to edit pages,
+navigation, settings, and blog posts. Runs locally with Docker and seeds example
+content automatically on first start.
+
+### Strapi
+
+Best for teams that prefer a structured headless CMS with a customizable content
+administration experience. Runs locally with Docker and bootstraps the full schema,
+permissions, and seed data on first start.
 
 | Feature                    | Markdown | Directus 12 | Strapi 5    |
 | -------------------------- | -------- | ----------- | ----------- |
@@ -68,31 +75,87 @@ content on first start. Production uses the separately optimized `compose.prod.y
 | Admin UI                   | —        | :8055/admin | :1337/admin |
 | Auto-seeded on first start | —        | ✓           | ✓           |
 
+## Start with Docker
+
+When Directus or Strapi is selected, one command starts the full stack:
+
+```bash
+pnpm docker:dev
+```
+
+This starts Astro, the selected CMS, and PostgreSQL with hot reloading.
+On first boot, the CMS applies its schema, creates the admin user, provisions
+the API token, and seeds example content automatically.
+
+Production uses the separately optimized `compose.prod.yml` stack.
+
+## What you get
+
+- A complete landing page ready to customize
+- Nine reusable sections: Hero, Features, CTA, FAQ, Testimonials, Pricing, Stats, LogoCloud, and Footer
+- Seven starting presets: minimal, saas, agency, local-business, portfolio, waitlist, event
+- Optional visual CMS with Directus or Strapi
+- Development and production Docker environments
+- Blog pages with RSS feed
+- Environment and CMS connectivity diagnostics (`launchpad:doctor`)
+- AI prompts, skills, and JSON schemas for content and code workflows
+
+## Requirements
+
+- Node.js 22 or later
+- npm, or pnpm 11 or later
+
+Git is optional. The CLI can initialize a repository when Git is available, or
+you can pass `--no-git`.
+
+The CLI is continuously tested on Linux, macOS, and Windows with Node.js 22 and 24.
+
 ## Troubleshooting
 
 - **Node version error:** run `node --version` and upgrade to Node.js 22 or later.
 - **Destination is not empty:** choose a new directory, or remove the existing files yourself. The CLI never overwrites a non-empty directory.
 - **Skip setup commands:** add `--skip-install --no-git` to create files without installing dependencies or initializing Git.
-- **Need all options:** run `npm create astro-launchpad@latest -- --help`, or read the [CLI reference](./docs/cli.md).
+- **Need all options:** run `npm create astro-launchpad@latest my-site -- --help`, or read the [CLI reference](./docs/cli.md).
 - **Undo a generated project:** remove its directory. The CLI does not modify files outside the selected destination.
 
 ## Documentation
 
-Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md),
-[blocks](./docs/blocks.md), [content](./docs/content-layer.md),
-[Markdown](./docs/cms-markdown.md), [Directus](./docs/cms-directus.md),
-[Strapi](./docs/cms-strapi.md), [Docker](./docs/docker.md),
-[deployment](./docs/deployment.md), [client editing](./docs/client-guide.md),
-[ai-kit](./docs/ai.md), [architecture](./docs/architecture.md),
-[security](./docs/security.md), and [development](./docs/development.md).
+### Using Astro Launchpad
+
+- [Getting started](./docs/getting-started.md)
+- [CLI reference](./docs/cli.md)
+- [Available blocks](./docs/blocks.md)
+- [Content layer](./docs/content-layer.md)
+- [Docker](./docs/docker.md)
+- [Deployment](./docs/deployment.md)
+- [Client editing guide](./docs/client-guide.md)
+
+### Content providers
+
+- [Markdown](./docs/cms-markdown.md)
+- [Directus](./docs/cms-directus.md)
+- [Strapi](./docs/cms-strapi.md)
+
+### Project
+
+- [Architecture](./docs/architecture.md)
+- [Security](./docs/security.md)
+- [Development](./docs/development.md)
+- [AI kit](./docs/ai.md)
+
+## Project status
+
+Astro Launchpad is under active development and tested on Linux, macOS, and Windows
+with Node.js 22 and 24. See [CHANGELOG.md](./CHANGELOG.md) for released features.
+
+## Contributing
+
+Contributions are welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening
+a pull request.
 
 ## Roadmap
 
 See [ROADMAP.md](./ROADMAP.md).
-
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
