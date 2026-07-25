@@ -9,6 +9,18 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alexandre-Tortoza/astro-launchpad.git",
+    "directory": "packages/create-astro-launchpad"
+  },
+  "homepage": "https://github.com/Alexandre-Tortoza/astro-launchpad#readme",
+  "bugs": {
+    "url": "https://github.com/Alexandre-Tortoza/astro-launchpad/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "dev": "tsc --watch",

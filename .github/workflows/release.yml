@@ -35,11 +35,11 @@ jobs:
       - name: Smoke test the packed CLI
         working-directory: packages/create-astro-launchpad
         run: npm install --global ./create-astro-launchpad-*.tgz && create-astro-launchpad --version && create-astro-launchpad --help
+      - name: Update npm for trusted publishing
+        run: npm install --global npm@latest
       - name: Publish the tested artifact
         working-directory: packages/create-astro-launchpad
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish ./create-astro-launchpad-*.tgz --access public --provenance
+        run: npm publish ./create-astro-launchpad-*.tgz --access public
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
