@@ -7,11 +7,15 @@ export const PRESETS = [
   "waitlist",
   "event",
 ] as const;
-export const CMS_OPTIONS = ["markdown", "directus", "none"] as const;
+export const CMS_OPTIONS = ["markdown", "directus", "strapi", "none"] as const;
 export const PACKAGE_MANAGERS = ["pnpm", "npm", "yarn", "bun"] as const;
 
 export type Preset = (typeof PRESETS)[number];
 export type Cms = (typeof CMS_OPTIONS)[number];
+
+export function isServerCms(cms: Cms): boolean {
+  return cms === "directus" || cms === "strapi";
+}
 export type PackageManager = (typeof PACKAGE_MANAGERS)[number];
 
 export interface ProjectFeatures {

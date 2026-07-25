@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "redirects",
+  "info": {
+    "singularName": "redirect",
+    "pluralName": "redirects",
+    "displayName": "Redirect"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "from_path": {
+      "type": "string",
+      "required": true
+    },
+    "to_path": {
+      "type": "string",
+      "required": true
+    },
+    "status_code": {
+      "type": "integer",
+      "required": true,
+      "default": 301
+    }
+  }
+}

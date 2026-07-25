@@ -3,6 +3,7 @@ import { randomBytes } from "node:crypto";
 import { basename, join } from "node:path";
 import { writeDockerConfiguration } from "./docker.js";
 import type { LaunchpadManifest, ProjectOptions } from "./types.js";
+import { isServerCms } from "./types.js";
 
 const excludedTemplateDirectories = new Set(["node_modules", ".astro", "dist"]);
 
@@ -73,7 +74,7 @@ async function writeAstroConfiguration(
   destination: string,
   options: ProjectOptions,
 ): Promise<void> {
-  if (options.features.cms !== "directus") return;
+  if (!isServerCms(options.features.cms)) return;
   const tailwind = options.features.tailwind
     ? 'import tailwindcss from "@tailwindcss/vite";\n'
     : "";
@@ -127,6 +128,7 @@ export async function scaffoldProject(
     options.features.tailwind && "tailwind",
     options.features.blog && "blog",
     options.features.cms === "directus" && "directus",
+    options.features.cms === "strapi" && "strapi",
   ]) {
     if (feature)
       await mergePackPackageJson(packageJson, join(featuresDirectory, feature));
@@ -134,7 +136,7 @@ export async function scaffoldProject(
   const scripts = (packageJson.scripts ?? {}) as Record<string, string>;
   const run = packageRunCommand(options.packageManager);
   scripts.check = `${run} lint && ${run} typecheck && ${run} build`;
-  if (options.features.docker || options.features.cms === "directus") {
+  if (options.features.docker || isServerCms(options.features.cms)) {
     scripts["docker:dev"] = "docker compose -f compose.dev.yml up --build";
     scripts["docker:prod"] = "docker compose -f compose.prod.yml up --build";
   }
@@ -202,6 +204,43 @@ export async function scaffoldProject(
     await writeFile(
       join(options.destination, ".env"),
       `PUBLIC_SITE_URL=http://localhost:3000\nPUBLIC_SITE_NAME=${options.projectName}\nPORT=3000\nDIRECTUS_URL=http://localhost:8055\nDIRECTUS_PORT=8055\nDIRECTUS_PUBLIC_URL=http://localhost:8055\nDB_USER=directus\nDB_DATABASE=directus\nDB_PASSWORD=${randomSecret()}\nDIRECTUS_SECRET=${randomSecret()}\nDIRECTUS_ADMIN_EMAIL=admin@example.com\nDIRECTUS_ADMIN_PASSWORD=${randomSecret()}\nDIRECTUS_TOKEN=${randomSecret()}\n`,
+    );
+  }
+
+  if (options.features.cms === "strapi") {
+    await applyTemplateOverlay(
+      join(featuresDirectory, "strapi"),
+      options.destination,
+    );
+
+    const randomSecret = () => randomBytes(32).toString("hex");
+    const randomBase64 = () => randomBytes(16).toString("base64");
+    await writeFile(
+      join(options.destination, ".env"),
+      [
+        `PUBLIC_SITE_URL=http://localhost:3000`,
+        `PUBLIC_SITE_NAME=${options.projectName}`,
+        `PORT=3000`,
+        `APP_KEYS=${[1, 2, 3, 4].map(() => randomBase64()).join(",")}`,
+        `API_TOKEN_SALT=${randomSecret()}`,
+        `ADMIN_JWT_SECRET=${randomSecret()}`,
+        `TRANSFER_TOKEN_SALT=${randomSecret()}`,
+        `JWT_SECRET=${randomSecret()}`,
+        `ENCRYPTION_KEY=${randomSecret()}`,
+        `DB_CLIENT=postgres`,
+        `DB_HOST=localhost`,
+        `DB_PORT=5432`,
+        `DB_NAME=strapi`,
+        `DB_USER=strapi`,
+        `DB_PASSWORD=${randomSecret()}`,
+        `STRAPI_URL=http://localhost:1337`,
+        `STRAPI_PORT=1337`,
+        `STRAPI_PUBLIC_URL=http://localhost:1337`,
+        `STRAPI_ADMIN_EMAIL=admin@example.com`,
+        `STRAPI_ADMIN_PASSWORD=Aa1-${randomSecret().slice(0, 12)}`,
+        `STRAPI_TOKEN=${randomSecret()}`,
+        ``,
+      ].join("\n"),
     );
   }
 

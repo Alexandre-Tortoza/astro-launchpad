@@ -1,0 +1,14 @@
+{
+  "name": "@astro-launchpad/feature-strapi",
+  "version": "0.0.1",
+  "description": "Strapi 5 CMS feature pack for Astro Launchpad",
+  "private": true,
+  "keywords": [
+    "astro",
+    "launchpad",
+    "strapi",
+    "cms",
+    "feature"
+  ],
+  "license": "AGPL-3.0-only"
+}

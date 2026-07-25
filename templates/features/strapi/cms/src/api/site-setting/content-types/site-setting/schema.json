@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Setting"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "site_name": {
+      "type": "string",
+      "required": true,
+      "default": "My Site"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "default_seo_title": {
+      "type": "string"
+    },
+    "default_seo_description": {
+      "type": "text"
+    },
+    "default_seo_og_image": {
+      "type": "string"
+    }
+  }
+}

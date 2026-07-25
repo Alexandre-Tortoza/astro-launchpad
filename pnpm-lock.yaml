@@ -138,6 +138,8 @@ importers:
 
   templates/features/motion: {}
 
+  templates/features/strapi: {}
+
   templates/features/tailwind:
     dependencies:
       '@tailwindcss/vite':

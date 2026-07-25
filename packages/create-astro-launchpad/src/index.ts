@@ -4,6 +4,7 @@ import { join, dirname } from "node:path";
 import { createRequire } from "node:module";
 import * as p from "@clack/prompts";
 import { helpText, parseCliArguments } from "./options.js";
+import { isServerCms } from "./types.js";
 import { collectOptions } from "./prompts.js";
 import { developmentCommand, installCommand, runCommand } from "./process.js";
 import { scaffoldProject } from "./scaffold.js";
@@ -89,10 +90,9 @@ export async function run(
       : options.packageManager === "bun"
         ? "bun run"
         : options.packageManager;
-  const nextSteps =
-    options.features.cms === "directus"
-      ? `cd ${options.destination}\n  ${runScript} docker:dev`
-      : `cd ${options.destination}\n  ${developmentCommand(options.packageManager)}`;
+  const nextSteps = isServerCms(options.features.cms)
+    ? `cd ${options.destination}\n  ${runScript} docker:dev`
+    : `cd ${options.destination}\n  ${developmentCommand(options.packageManager)}`;
   p.outro(
     `Project created in ${options.destination}\n\nNext steps:\n  ${nextSteps}`,
   );

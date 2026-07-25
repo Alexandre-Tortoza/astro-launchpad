@@ -1,0 +1,29 @@
+{
+  "name": "cms",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi/strapi": "5.51.0",
+    "@strapi/plugin-i18n": "5.51.0",
+    "@strapi/plugin-users-permissions": "5.51.0",
+    "better-sqlite3": "9.4.3",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "astro-launchpad-cms"
+  }
+}

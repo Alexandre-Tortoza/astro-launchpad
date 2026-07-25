@@ -175,7 +175,7 @@ Options:
   --name <name>                   Project package name
   --preset <preset>               minimal, saas, agency, local-business, portfolio, waitlist, event
   --tailwind, --no-tailwind       Enable or disable Tailwind placeholder
-  --cms <cms>                     markdown, directus, none
+  --cms <cms>                     markdown, directus, strapi, none
   --blog, --no-blog               Enable or disable blog placeholder
   --motion, --no-motion           Enable or disable Motion placeholder
   --docker, --no-docker           Enable or disable Docker placeholder

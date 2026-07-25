@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_shared_sections",
+  "info": {
+    "displayName": "Section",
+    "description": "A page content section with a typed payload"
+  },
+  "options": {},
+  "attributes": {
+    "section_id": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "hero",
+        "features",
+        "cta",
+        "faq",
+        "testimonials",
+        "pricing",
+        "stats",
+        "logo_cloud",
+        "footer"
+      ],
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "payload": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

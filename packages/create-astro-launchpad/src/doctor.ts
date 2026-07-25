@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { spawn } from "node:child_process";
 import * as p from "@clack/prompts";
 import type { LaunchpadManifest, PackageManager } from "./types.js";
+import { isServerCms } from "./types.js";
 
 interface Issue {
   message: string;
@@ -104,6 +105,21 @@ function fetchHttpStatus(
 }
 
 const NODE_REQUIREMENT = "22.12.0";
+const STRAPI_ENVIRONMENT = [
+  "STRAPI_TOKEN",
+  "APP_KEYS",
+  "API_TOKEN_SALT",
+  "ADMIN_JWT_SECRET",
+  "JWT_SECRET",
+  "DB_PASSWORD",
+] as const;
+
+export function missingStrapiEnvironment(
+  env: Record<string, string>,
+): string[] {
+  return STRAPI_ENVIRONMENT.filter((key) => !env[key]);
+}
+
 const DIRECTUS_ENVIRONMENT = [
   "DIRECTUS_URL",
   "DIRECTUS_TOKEN",
@@ -166,7 +182,7 @@ export async function runDoctor(cwd: string): Promise<void> {
   }
 
   // Docker
-  if (features.docker || features.cms === "directus") {
+  if (features.docker || isServerCms(features.cms)) {
     const dockerOk = await isDockerRunning();
     if (!dockerOk) {
       issues.push({
@@ -176,7 +192,7 @@ export async function runDoctor(cwd: string): Promise<void> {
     }
   }
 
-  // Env vars (Directus)
+  // Env vars (CMS)
   let dotEnv: Record<string, string> = {};
   if (features.cms === "directus") {
     try {
@@ -185,6 +201,20 @@ export async function runDoctor(cwd: string): Promise<void> {
       // .env missing — will be caught by required-vars check below
     }
     const missing = missingDirectusEnvironment(dotEnv);
+    if (missing.length > 0) {
+      issues.push({
+        message: `Missing required environment variable(s): ${missing.join(", ")}.`,
+        fix: "Copy .env.example to .env and fill in the missing values.",
+      });
+    }
+  }
+  if (features.cms === "strapi") {
+    try {
+      dotEnv = parseDotEnv(await readFile(join(cwd, ".env"), "utf8"));
+    } catch {
+      // .env missing — will be caught by required-vars check below
+    }
+    const missing = missingStrapiEnvironment(dotEnv);
     if (missing.length > 0) {
       issues.push({
         message: `Missing required environment variable(s): ${missing.join(", ")}.`,
@@ -248,6 +278,30 @@ export async function runDoctor(cwd: string): Promise<void> {
         issues.push({
           message: `Cannot verify Directus collection(s): ${missingCollections.join(", ")}.`,
           fix: "Apply the bundled Directus schema and check DIRECTUS_TOKEN permissions.",
+        });
+      }
+    }
+  }
+
+  // CMS connection (Strapi)
+  if (features.cms === "strapi") {
+    const strapiUrl = dotEnv["STRAPI_URL"] ?? "http://localhost:1337";
+    const healthStatus = await fetchHttpStatus(`${strapiUrl}/_health`);
+    if (healthStatus !== 204) {
+      issues.push({
+        message: `Cannot reach Strapi at ${strapiUrl} (got ${healthStatus}, expected 204).`,
+        fix: "Run `docker compose up -d` in the project directory.",
+      });
+    } else {
+      const token = dotEnv["STRAPI_TOKEN"];
+      const pagesStatus = await fetchHttpStatus(
+        `${strapiUrl}/api/pages?pagination[limit]=1`,
+        token ? { Authorization: `Bearer ${token}` } : {},
+      );
+      if (pagesStatus < 200 || pagesStatus >= 300) {
+        issues.push({
+          message: `Cannot query Strapi /api/pages (got ${pagesStatus}).`,
+          fix: "Check STRAPI_TOKEN has read-only API access.",
         });
       }
     }

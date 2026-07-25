@@ -326,6 +326,63 @@ describe("built CLI", () => {
     },
   );
 
+  it.each(["saas", "agency"])(
+    "connects the %s preset to the Strapi content provider",
+    async (preset) => {
+      const temporaryDirectory = await mkdtemp(
+        join(tmpdir(), "create-astro-launchpad-strapi-"),
+      );
+      temporaryDirectories.push(temporaryDirectory);
+      const destination = join(temporaryDirectory, preset);
+
+      await expectSuccessfulCli(
+        [
+          destination,
+          "--preset",
+          preset,
+          "--cms",
+          "strapi",
+          "--yes",
+          "--skip-install",
+          "--no-git",
+        ],
+        temporaryDirectory,
+      );
+
+      await expect(
+        readFile(join(destination, "src/lib/content/index.ts"), "utf8"),
+      ).resolves.toContain("process.env.STRAPI_TOKEN");
+      const packageJson = JSON.parse(
+        await readFile(join(destination, "package.json"), "utf8"),
+      );
+      expect(packageJson.dependencies["@directus/sdk"]).toBeUndefined();
+      await expect(
+        readFile(join(destination, ".dockerignore"), "utf8"),
+      ).resolves.toContain("cms");
+      await expect(
+        readFile(join(destination, "compose.yml"), "utf8"),
+      ).resolves.toContain("strapi:");
+      await expect(
+        readFile(join(destination, "compose.yml"), "utf8"),
+      ).resolves.toContain("/_health");
+      await expect(
+        readFile(join(destination, ".env"), "utf8"),
+      ).resolves.toMatch(/^STRAPI_TOKEN=.+$/m);
+      await expect(
+        readFile(join(destination, ".env"), "utf8"),
+      ).resolves.toMatch(/^APP_KEYS=.+$/m);
+      await expect(
+        readFile(join(destination, "astro.config.mjs"), "utf8"),
+      ).resolves.toContain('output: "server"');
+      await expect(
+        stat(join(destination, "cms/src/index.ts")),
+      ).resolves.toBeDefined();
+      await expect(
+        stat(join(destination, "cms/seed/data.json")),
+      ).resolves.toBeDefined();
+    },
+  );
+
   it("supports help and version without creating a project", async () => {
     const temporaryDirectory = await mkdtemp(
       join(tmpdir(), "create-astro-launchpad-"),

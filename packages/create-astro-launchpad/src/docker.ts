@@ -1,6 +1,7 @@
 import { rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { PackageManager, ProjectOptions } from "./types.js";
+import { isServerCms } from "./types.js";
 
 interface PackageManagerConfig {
   lockfile: string;
@@ -291,24 +292,125 @@ volumes:
 ${production ? "" : "  web_node_modules:\n  web_astro:\n"}`;
 }
 
+function strapiServices(
+  packageManager: PackageManager,
+  production: boolean,
+): string {
+  const manager = packageManagerConfig(packageManager);
+  const webPort = production ? "${PORT:-3000}:4321" : "${PORT:-4321}:4321";
+  const volumeLines = production
+    ? ""
+    : `    volumes:
+      - .:/app
+      - web_node_modules:/app/node_modules
+      - web_astro:/app/.astro
+    command: sh -c '${manager.run("dev", "--host 0.0.0.0")}'
+`;
+
+  return `services:
+  web:
+    build:
+      context: .
+      target: ${production ? "runner" : "dev"}
+      args:
+        ASTRO_OUTPUT: server
+        PUBLIC_SITE_URL: ${"${PUBLIC_SITE_URL:-http://localhost:3000}"}
+    ports:
+      - "${webPort}"
+    environment:
+      HOST: 0.0.0.0
+      PORT: "4321"
+      ASTRO_OUTPUT: server
+      PUBLIC_SITE_URL: ${"${PUBLIC_SITE_URL:-http://localhost:3000}"}
+      STRAPI_URL: http://strapi:1337
+      STRAPI_TOKEN: ${"${STRAPI_TOKEN:-}"}
+${volumeLines}    depends_on:
+      strapi:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${"${DB_USER:-strapi}"}
+      POSTGRES_PASSWORD: ${"${DB_PASSWORD:?Set DB_PASSWORD in .env}"}
+      POSTGRES_DB: ${"${DB_NAME:-strapi}"}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${"${DB_USER:-strapi}"}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  strapi:
+    build:
+      context: ./cms
+      target: ${production ? "runner" : "dev"}
+    ports:
+      - "${"${STRAPI_PORT:-1337}"}:1337"
+    environment:
+      NODE_ENV: ${production ? "production" : "development"}
+      APP_KEYS: ${"${APP_KEYS:?Set APP_KEYS in .env}"}
+      API_TOKEN_SALT: ${"${API_TOKEN_SALT:?Set API_TOKEN_SALT in .env}"}
+      ADMIN_JWT_SECRET: ${"${ADMIN_JWT_SECRET:?Set ADMIN_JWT_SECRET in .env}"}
+      TRANSFER_TOKEN_SALT: ${"${TRANSFER_TOKEN_SALT:?Set TRANSFER_TOKEN_SALT in .env}"}
+      JWT_SECRET: ${"${JWT_SECRET:?Set JWT_SECRET in .env}"}
+      ENCRYPTION_KEY: ${"${ENCRYPTION_KEY:?Set ENCRYPTION_KEY in .env}"}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: "5432"
+      DATABASE_NAME: ${"${DB_NAME:-strapi}"}
+      DATABASE_USERNAME: ${"${DB_USER:-strapi}"}
+      DATABASE_PASSWORD: ${"${DB_PASSWORD:?Set DB_PASSWORD in .env}"}
+      STRAPI_ADMIN_EMAIL: ${"${STRAPI_ADMIN_EMAIL:?Set STRAPI_ADMIN_EMAIL in .env}"}
+      STRAPI_ADMIN_PASSWORD: ${"${STRAPI_ADMIN_PASSWORD:?Set STRAPI_ADMIN_PASSWORD in .env}"}
+      STRAPI_TOKEN: ${"${STRAPI_TOKEN:?Set STRAPI_TOKEN in .env}"}
+      PUBLIC_URL: ${"${STRAPI_PUBLIC_URL:-http://localhost:1337}"}
+    volumes:
+      - strapi_uploads:/opt/app/public/uploads
+      ${production ? "" : "- ./cms:/opt/app\n      - strapi_node_modules:/opt/app/node_modules"}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:1337/_health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  strapi_uploads:
+${production ? "" : "  web_node_modules:\n  web_astro:\n  strapi_node_modules:\n"}`;
+}
+
 export async function writeDockerConfiguration(
   destination: string,
   options: ProjectOptions,
 ): Promise<void> {
-  const isDirectus = options.features.cms === "directus";
-  if (!options.features.docker && !isDirectus) return;
+  const { cms } = options.features;
+  const isDirectus = cms === "directus";
+  const isStrapi = cms === "strapi";
+  if (!options.features.docker && !isServerCms(cms)) return;
 
   await writeFile(
     join(destination, "Dockerfile"),
-    dockerfile(options.packageManager, isDirectus),
+    dockerfile(options.packageManager, isServerCms(cms)),
   );
+  const dockerignoreExtra = isStrapi ? "cms\n" : "";
   await writeFile(
     join(destination, ".dockerignore"),
-    "node_modules\n.astro\ndist\n.git\n.env\n.env.*\n!.env.example\n.pnpm-store\n",
+    `node_modules\n.astro\ndist\n.git\n.env\n.env.*\n!.env.example\n.pnpm-store\n${dockerignoreExtra}`,
   );
   const developmentCompose = isDirectus
     ? directusServices(options.packageManager, false)
-    : staticDevCompose(options.packageManager);
+    : isStrapi
+      ? strapiServices(options.packageManager, false)
+      : staticDevCompose(options.packageManager);
   await writeFile(join(destination, "compose.dev.yml"), developmentCompose);
   // `docker compose up` is the safe local-development default.
   await writeFile(join(destination, "compose.yml"), developmentCompose);
@@ -316,7 +418,9 @@ export async function writeDockerConfiguration(
     join(destination, "compose.prod.yml"),
     isDirectus
       ? directusServices(options.packageManager, true)
-      : staticProdCompose(),
+      : isStrapi
+        ? strapiServices(options.packageManager, true)
+        : staticProdCompose(),
   );
   await rm(join(destination, "docker-compose.yml"), { force: true });
 }
