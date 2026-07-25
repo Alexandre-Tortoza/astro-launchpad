@@ -1,18 +1,18 @@
 # Directus setup
 
 Docker Compose is the local bootstrap entrypoint. Its initialization jobs apply
-the schema snapshot, create the local server token, repair Directus 11 access,
-and seed content. Do not ask an editor to manually create a token or run a CMS
-setup command as part of the normal development flow.
+the schema snapshot, create the local server token, and seed content. Do not ask
+an editor to manually create a token or run a CMS setup command as part of the
+normal development flow.
 
 The Astro provider runs only on the server and reads `DIRECTUS_URL` and
 `DIRECTUS_TOKEN` from `process.env`. Do not change them to `import.meta.env` or
 prefix either value with `PUBLIC_`.
 
-Directus 11 administrator access is policy based. If the seed reports that the
-token cannot read system permissions, repair the administrator's direct access
-policy in Directus, restart the stack, and rerun Compose. Schema snapshots must
-not contain generated administrator user IDs.
+Directus 12 uses policy-based access control. If the seed reports that the token
+cannot read system permissions, verify the administrator's direct access policy in
+Directus, restart the stack, and rerun Compose. Schema snapshots must not contain
+generated administrator user IDs.
 
 Treat `.env` as local or deployment-secret material. Production must use unique
 Directus, database, and administrator secrets, and should replace the initial

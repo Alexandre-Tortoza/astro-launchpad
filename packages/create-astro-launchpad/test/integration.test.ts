@@ -130,9 +130,6 @@ describe("built CLI", () => {
         await readFile(join(destination, "package.json"), "utf8"),
       );
       expect(packageJson.dependencies["@directus/sdk"]).toBe("^23.0.0");
-      expect(packageJson.scripts["cms:setup"]).toBe(
-        "bash scripts/setup-directus.sh",
-      );
       expect(packageJson.scripts["cms:seed"]).toBe("tsx seed/seed.ts");
       expect(packageJson.scripts["cms:snapshot"]).toBe("tsx seed/snapshot.ts");
       await expect(
