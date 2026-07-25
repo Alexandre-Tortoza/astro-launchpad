@@ -187,6 +187,12 @@ export async function scaffoldProject(
       join(featuresDirectory, "docker"),
       options.destination,
     );
+    if (!isServerCms(options.features.cms)) {
+      await writeFile(
+        join(options.destination, ".env"),
+        `PUBLIC_SITE_URL=http://localhost:3000\nPUBLIC_SITE_NAME=${options.projectName}\nPORT=3000\n`,
+      );
+    }
   }
   if (options.features.aiKit) {
     await applyTemplateOverlay(
