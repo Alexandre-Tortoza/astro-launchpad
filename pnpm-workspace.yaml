@@ -3,7 +3,6 @@ packages:
   - "templates/base"
   - "templates/features/*"
   - "templates/presets/*"
-  - "examples/*"
 allowBuilds:
   esbuild: true
   sharp: true

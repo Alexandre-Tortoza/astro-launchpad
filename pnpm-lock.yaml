@@ -43,16 +43,6 @@ importers:
         specifier: ^8.65.0
         version: 8.65.0(eslint@10.8.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
 
-  examples/agency-site: {}
-
-  examples/landing-directus: {}
-
-  examples/landing-markdown: {}
-
-  examples/local-business: {}
-
-  examples/saas-waitlist: {}
-
   packages/ai-kit: {}
 
   packages/cms-adapters: {}
