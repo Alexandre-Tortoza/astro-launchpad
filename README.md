@@ -4,14 +4,13 @@
 
 Astro Launchpad helps freelancers, small agencies, and startup teams launch editable Astro landing pages without rebuilding the same project foundation for every site.
 
-> Status: `0.0.x` foundation. The base template, six content presets, and
-> scaffolding CLI are ready for experimentation. Optional features are supported
-> only where the CLI reference explicitly says they are applied.
+> Status: `v0.0.1` — CLI, seven presets, Markdown/Directus 12/Strapi 5, Docker,
+> blog, motion, and ai-kit are all shipped and tested.
 
 ## Requirements
 
 - Node.js 22 or later
-- npm, or pnpm 11.3.0 or later
+- npm, or pnpm 11 or later
 
 Git is optional. The CLI can initialize a repository when Git is available, or you can pass `--no-git`.
 
@@ -35,24 +34,39 @@ npm create astro-launchpad@latest my-site
 
 The CLI copies the base template, normalizes its package name, writes `astro-launchpad.json`, and can install dependencies and initialize Git.
 
-For a Docker-backed CMS project, select Directus during the prompts, then run:
+For a Docker-backed CMS project, select Directus or Strapi during the prompts, then run:
 
 ```bash
 pnpm docker:dev
 ```
 
-This starts a hot-reloading Astro container, Directus, and PostgreSQL. Compose
-automatically applies the schema, repairs Directus access, creates the local
-server token, and seeds the CMS. Production uses the separately optimized
-`compose.prod.yml` stack.
+This starts a hot-reloading Astro container, the CMS, and PostgreSQL. For
+Directus, Compose automatically applies the schema and seeds the CMS. For
+Strapi, the app bootstraps the admin user, API token, permissions, and seed
+content on first start. Production uses the separately optimized `compose.prod.yml` stack.
 
 ## What's included
 
-- Astro base template with TypeScript and Zod validation
-- Reusable landing-page blocks: Hero, Features, CTA, FAQ, Testimonials, Pricing, Stats, LogoCloud, and Footer
+- Astro base template with TypeScript and Zod 4 validation
+- Nine reusable landing-page blocks: Hero, Features, CTA, FAQ, Testimonials, Pricing, Stats, LogoCloud, and Footer
+- Seven content presets: minimal, saas, agency, local-business, portfolio, waitlist, event
 - Interactive and non-interactive project scaffolding
-- Optional ai-kit prompts, skills, JSON Schemas, and examples via `--ai-kit`
+- Content providers: Markdown (static), Directus 12 (Docker), Strapi 5 (Docker)
+- Optional Tailwind CSS, Blog (RSS + listing), Motion (CSS-only animations), Docker, and ai-kit feature packs
+- `launchpad:doctor` environment and CMS connectivity checker
 - `--help`, `--version`, `--yes`, `--skip-install`, and `--no-git` CLI controls
+
+### CMS feature matrix
+
+| Feature                    | Markdown | Directus 12 | Strapi 5    |
+| -------------------------- | -------- | ----------- | ----------- |
+| Pages with sections        | ✓        | ✓           | ✓           |
+| Blog posts                 | ✓        | ✓           | ✓           |
+| Site settings              | ✓        | ✓           | ✓           |
+| Navigation items           | —        | ✓           | ✓           |
+| Docker compose stack       | —        | ✓           | ✓           |
+| Admin UI                   | —        | :8055/admin | :1337/admin |
+| Auto-seeded on first start | —        | ✓           | ✓           |
 
 ## Troubleshooting
 
@@ -62,21 +76,15 @@ server token, and seeds the CMS. Production uses the separately optimized
 - **Need all options:** run `npm create astro-launchpad@latest -- --help`, or read the [CLI reference](./docs/cli.md).
 - **Undo a generated project:** remove its directory. The CLI does not modify files outside the selected destination.
 
-## Current limitations
-
-All six presets are applied as template overlays with Markdown demo content and
-local placeholder images. Tailwind, Blog, Motion, Docker, ai-kit, and Directus
-are applied when selected. SaaS and Agency can use the Directus content provider.
-
 ## Documentation
 
 Read [Getting started](./docs/getting-started.md), [CLI usage](./docs/cli.md),
 [blocks](./docs/blocks.md), [content](./docs/content-layer.md),
 [Markdown](./docs/cms-markdown.md), [Directus](./docs/cms-directus.md),
-[Docker](./docs/docker.md), [deployment](./docs/deployment.md),
-[client editing](./docs/client-guide.md), [ai-kit](./docs/ai.md),
-[architecture](./docs/architecture.md), [security](./docs/security.md), and
-[development](./docs/development.md).
+[Strapi](./docs/cms-strapi.md), [Docker](./docs/docker.md),
+[deployment](./docs/deployment.md), [client editing](./docs/client-guide.md),
+[ai-kit](./docs/ai.md), [architecture](./docs/architecture.md),
+[security](./docs/security.md), and [development](./docs/development.md).
 
 ## Roadmap
 

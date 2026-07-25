@@ -1,18 +1,21 @@
 # Roadmap
 
-## 0.0.x: Public foundation
+## 0.0.x: Public foundation ✓
 
-- Maintain a reliable base Astro template and reusable blocks.
-- Publish `create-astro-launchpad` with a tested package flow.
-- Document contribution, security, releases, and supported environments.
-- Keep preset and feature selections explicit in generated configuration.
+- ✓ Reliable base Astro template with nine reusable blocks and Zod 4 validation.
+- ✓ `create-astro-launchpad` CLI with seven presets and six optional feature packs.
+- ✓ Markdown, Directus 12, and Strapi 5 content providers — each Docker-automated and seeded.
+- ✓ Tested package release flow with automated GitHub Actions publish.
+- ✓ Documented contribution, security, releases, and supported environments.
+- ✓ Preset and feature selections explicit in generated `astro-launchpad.json`.
 
-## 0.1.0: Functional composition
+## 0.1.0: Production hardening
 
-- Apply presets as real template transformations.
-- Add tested Tailwind, Markdown, and Blog feature packs.
-- Implement Directus, Docker, and Motion only after each has a documented, testable use case.
-- Add examples that exercise implemented features rather than placeholders.
+- More presets and content-type schemas driven by real project feedback.
+- Strapi and Directus cloud-hosted options (no Docker required).
+- End-to-end deploy guides for Vercel, Netlify, Cloudflare, and Fly.io.
+- Visual regression tests for the nine blocks.
+- Plugin/extension system for third-party feature packs.
 
 ## Later
 
