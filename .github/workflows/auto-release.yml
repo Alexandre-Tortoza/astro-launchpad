@@ -1,0 +1,111 @@
+name: Auto Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Skip if HEAD is already tagged
+        id: guard
+        run: |
+          if git tag --points-at HEAD | grep -qE "^v[0-9]"; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.guard.outputs.skip != 'true'
+        with:
+          version: 11.17.0
+
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.skip != 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        if: steps.guard.outputs.skip != 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine version bump from conventional commits
+        id: bump
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            LOG=$(git log --pretty=format:"%s%n%b")
+          else
+            LOG=$(git log --pretty=format:"%s%n%b" "${LAST_TAG}..HEAD")
+          fi
+          if echo "$LOG" | grep -qE "BREAKING CHANGE|^[a-z]+(\(.+\))?!:"; then
+            echo "bump=major" >> "$GITHUB_OUTPUT"
+          elif echo "$LOG" | grep -qE "^feat(\(.+\))?:"; then
+            echo "bump=minor" >> "$GITHUB_OUTPUT"
+          else
+            echo "bump=patch" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check, build, and audit
+        if: steps.guard.outputs.skip != 'true'
+        run: pnpm check && pnpm build && pnpm audit
+
+      - name: Bump version in package.json
+        id: version
+        if: steps.guard.outputs.skip != 'true'
+        working-directory: packages/create-astro-launchpad
+        run: |
+          npm version ${{ steps.bump.outputs.bump }} --no-git-tag-version
+          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Pack and smoke test
+        if: steps.guard.outputs.skip != 'true'
+        working-directory: packages/create-astro-launchpad
+        run: |
+          npm pack
+          npm install --global ./create-astro-launchpad-*.tgz
+          create-astro-launchpad --version
+          create-astro-launchpad --help
+
+      - name: Update npm for trusted publishing
+        if: steps.guard.outputs.skip != 'true'
+        run: npm install --global npm@latest
+
+      - name: Publish to npm
+        if: steps.guard.outputs.skip != 'true'
+        working-directory: packages/create-astro-launchpad
+        run: npm publish ./create-astro-launchpad-*.tgz --access public
+
+      - name: Commit version bump, tag, and push
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add packages/create-astro-launchpad/package.json
+          git commit -m "chore(release): v${{ steps.version.outputs.version }}"
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin main --follow-tags
+
+      - name: Create GitHub Release
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          node scripts/release-notes.mjs "${{ steps.version.outputs.version }}" "$RUNNER_TEMP/release-notes.md"
+          gh release create "$TAG" \
+            packages/create-astro-launchpad/create-astro-launchpad-*.tgz \
+            --notes-file "$RUNNER_TEMP/release-notes.md"

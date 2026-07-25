@@ -1,5 +1,7 @@
-name: Release
+name: Release (manual)
 
+# Triggered by manually pushing a version tag, e.g. for hotfixes.
+# Normal releases happen automatically via auto-release.yml on main push.
 on:
   push:
     tags: ["v*"]
