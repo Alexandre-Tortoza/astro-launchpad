@@ -12,6 +12,9 @@ export default tseslint.config(
     files: ["**/*.{js,mjs,ts}"],
     languageOptions: {
       globals: globals.node,
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
       "@typescript-eslint/no-unused-vars": [

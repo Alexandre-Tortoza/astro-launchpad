@@ -65,6 +65,7 @@ export async function collectOptions(
             message: "Project name:",
             initialValue: defaults.projectName,
             validate(value) {
+              if (!value) return undefined;
               return toPackageName(value) === "astro-launchpad-app" &&
                 value.trim() !== "astro-launchpad-app"
                 ? "Enter a name containing letters or numbers."

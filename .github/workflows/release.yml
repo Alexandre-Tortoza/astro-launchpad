@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 11.3.0
+          version: 11.17.0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -37,6 +37,8 @@ jobs:
         run: npm install --global ./create-astro-launchpad-*.tgz && create-astro-launchpad --version && create-astro-launchpad --help
       - name: Publish the tested artifact
         working-directory: packages/create-astro-launchpad
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish ./create-astro-launchpad-*.tgz --access public --provenance
       - name: Create GitHub release
         env:
