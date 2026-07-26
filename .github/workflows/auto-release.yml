@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   release:
@@ -81,9 +80,15 @@ jobs:
           create-astro-launchpad --version
           create-astro-launchpad --help
 
-      - name: Update npm for trusted publishing
+      - name: Verify npm authentication
         if: steps.guard.outputs.skip != 'true'
-        run: npm install --global npm@latest
+        working-directory: packages/create-astro-launchpad
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          test -n "$NODE_AUTH_TOKEN"
+          npm config get registry
+          npm whoami --registry=https://registry.npmjs.org/
 
       - name: Publish to npm
         if: steps.guard.outputs.skip != 'true'
