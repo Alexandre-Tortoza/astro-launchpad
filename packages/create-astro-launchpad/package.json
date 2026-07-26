@@ -1,6 +1,6 @@
 {
   "name": "create-astro-launchpad",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CLI to scaffold Astro Launchpad projects",
   "type": "module",
   "bin": {
